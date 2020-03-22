@@ -133,7 +133,6 @@ public class KugUtils {
 					next.getFieldType()));
 		}
 
-		System.out.println(retVal.toString());
 		try (FileOutputStream writer = new FileOutputStream(csvFileName);
 				OutputStreamWriter outputWriter = new OutputStreamWriter(writer, StandardCharsets.UTF_8)) {
 			outputWriter.write(retVal.toString());

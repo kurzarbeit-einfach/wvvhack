@@ -9,8 +9,7 @@ $().ready(function() {
     $('.tooltip').click(showTooltip);
     $('.tooltipContent .close').click(hideTooltip);
 
-    runBot();
-
+    if( $('#my-botui-app').length ) runBot();
 
 });
 
@@ -77,7 +76,6 @@ function increaseProgess() {
 
         progressCurrentSteps++;
         var newProgressWidth = 100 / (progressTotalSteps-1) * progressCurrentSteps;
-        console.log('Progress', progressCurrentSteps);
         $('body > .progress .line > div.blueline').css('width',newProgressWidth+'%');
     
         setTimeout(function(){ 

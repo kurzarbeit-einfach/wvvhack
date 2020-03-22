@@ -16,6 +16,7 @@ import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.eclipse.jetty.util.log.Log;
 import org.eclipse.jetty.util.log.Logger;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.udo.pdf.AnzeigeArbeitsausfall;
@@ -28,6 +29,8 @@ public class GeneratePdfHandler extends AbstractHandler {
 	private ObjectMapper mapper = new ObjectMapper();
 
 	public GeneratePdfHandler() {
+		mapper.disable(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES);
+		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 	}
 
 	@Override

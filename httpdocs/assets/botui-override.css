@@ -1,10 +1,29 @@
 /* --- Bot UI override --- */
 /* --------------------------------------------- */
 
+.botui-actions-container {
+    text-align: right;
+    padding:0;
+}
+
+button.botui-actions-buttons-button {
+    margin: 0;
+}
 
 .botui-message {
     margin: 0 0 20px 0;
     position:relative;
+}
+
+button.botui-actions-buttons-button:not(:last-child) {
+    margin-right: 10px;
+}
+button.botui-actions-buttons-button:last-child {
+    margin-right: 10px;
+}
+
+.botui-actions-buttons button {
+    margin:10px;
 }
 
 .botui-message-content:before,
@@ -69,13 +88,13 @@
 
 .botui-actions-container > div {
     position:relative;
-    margin: 20px -20px 25px;
+    margin: 0;
     padding: 20px 25px;
     background: #E6F4F1;
     border-radius: 10px;
     max-width: 100%;
-    float:right;
     text-align: right;
+    display: inline-block;
 }
 
 .botui-actions-buttons-button {
@@ -137,24 +156,56 @@
     width:200px;
 }
 
+textarea.botui-actions-text-input {
+    width: 530px;
+    max-width: 100%;
+    height: 90px;
+    font-size: 14px;
+    color: #3D555D;
+    padding: 5px 10px;
+    resize: none;
+    display: block;
+    margin-bottom: 10px;
+}
+
 .botui-actions-text-input[type="number"] {
     width: 100px;
 }
 
-
 .botui-hint {
     color: #0E3745;
     padding: 10px 20px 10px 36px;
-    border-radius: 0 0 7px 7px;
+    border-radius: 7px;
     border: none;
     width: auto;
     display: block;
     max-width: 55%;
-    margin-left: 25px;
+    margin-left: 15px;
     background: #71C9B8;
     font-size: 14px;
     line-height: 18px;
     position: relative;
+    margin-top: 5px;
+}
+
+.botui-hint li {
+    font-size: 14px;
+    line-height: 18px;
+    margin-bottom: 5px;
+}
+
+.botui-hint:after {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 26px;
+    height: 18px;
+    background: no-repeat right;
+    background-size: contain;
+    background-image: url(images/chat-bubble-human.svg);
+    left: 7px;
+    top: -8px;
+    transform: rotate(-90deg);
 }
 
 .botui-hint:before {
@@ -171,10 +222,43 @@
     top: 11px;
 }
 
+.botui-actions-text-select {
+    border: 0;
+    outline: 0;
+    border-radius: 0;
+    padding: 5px 12px;
+    font-family: 'Raleway',sans-serif;
+    background-color: transparent;
+    color: #595a5a;
+    border: 1px solid #FFFFFF;
+    height: 50px;
+    margin-right: 10px !important;
+    border-radius: 8px;
+    width: auto;
+    font-size: 14px;
+    font-weight: bold;
+    position: relative;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+    background: none;
+    background-image: url(images/icon-select-arrow.svg);
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-size: 28px;
+    padding-right: 45px;
+}
+.botui-actions-text-select::-ms-expand {
+    display: none;
+}  
+.botui-actions-text-select:focus::-ms-value {
+    background-color: transparent;
+}  
+
 @media screen and (max-width: 600px) {
 
     .botui-actions-container > div {
-        max-width: 90%;
+        max-width: 100%;
     }
 
     .botui-message-content {
@@ -202,6 +286,10 @@
 
     .botui-actions-buttons-button {
         padding: 14px 18px 13px;
+    }
+
+    .botui-hint {
+        max-width: 75%;
     }
 
 }

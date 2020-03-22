@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="45.004" height="20" viewBox="0 0 45.004 20">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: rgba(255,255,255,0);
+      }
+
+      .cls-2 {
+        fill: #103846;
+      }
+    </style>
+  </defs>
+  <g id="Gruppe_15" data-name="Gruppe 15" transform="translate(0.004 89)">
+    <rect id="Rechteck_8" data-name="Rechteck 8" class="cls-1" width="45" height="20" transform="translate(0 -89)"/>
+    <path id="Icon_awesome-angle-down" data-name="Icon awesome-angle-down" class="cls-2" d="M10.055,24.771.492,15.209a1.681,1.681,0,0,1,0-2.384l1.589-1.589a1.681,1.681,0,0,1,2.384,0l6.778,6.778,6.778-6.778a1.681,1.681,0,0,1,2.384,0l1.589,1.589a1.681,1.681,0,0,1,0,2.384l-9.562,9.562a1.672,1.672,0,0,1-2.377,0Z" transform="translate(0 -96.74)"/>
+  </g>
+</svg>

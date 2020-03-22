@@ -228,35 +228,35 @@ var steps = [
                             {
                                 icon: 'times',
                                 text: "Bauhauptgewerbe",
-                                value: "bauhauptgewerbe"
+                                value: "Bauhauptgewerbe"
                             },
                             {
                                 icon: 'times',
                                 text: "Dachdeckerhandwerk",
-                                value: "dachdeckerhandwerk"
+                                value: "Dachdeckerhandwerk"
                             },
                             {
                                 icon: 'times',
                                 text: "Garten-, Landschafts- und Sportplatzbau",
-                                value: "garten_landschaft_und_sportplatzbau"
+                                value: "Garten-, Landschafts- und Sportplatzbau"
                             },
                             {
                                 icon: 'times',
                                 text: "Gerüstbau",
-                                value: "geruestbau"
+                                value: "Gerüstbau"
                             },
                             {
                                 icon: 'check',
                                 text: "Andere Branche",
-                                value: "andere"
+                                value: "Andere Branche"
                             },                     
                         ]               
                     }).then( (result) => {
                         setCurrentAnswer(result.value);
-                        if (result.value !== "andere") {
+                        if (result.value !== "Andere Branche") {
                             renderStep("besondere_branche");
                         } else {
-                            renderStep("ursachen_fuer_arbeitsausfall");
+                            renderStep("branche_freitext");
                         }
                     });
                 }
@@ -269,6 +269,20 @@ var steps = [
             textAndInteraction(
                 "Für deine Branche gilt eine Sonderbehandlung in den Wintermonaten. Wir raten dir dazu weitere Beratung einzuholen. Möchtest du dennoch fortfahren?",
                 () => createYesNoButtons("ursachen_fuer_arbeitsausfall", "ende_ohne_pdf", "Weiter", "Ende")
+            );
+        }
+    },
+    {
+        "id": "branche_freitext",
+        "render": () => {
+            textAndInteraction(
+                "Um welche Branche handelt es sich?",
+                () => {
+                    createTextInput(null, true).then( (result) => { 
+                        setCurrentAnswer(result.value);
+                        renderStep("ursachen_fuer_arbeitsausfall");
+                    });
+                }
             );
         }
     },
@@ -373,7 +387,7 @@ var steps = [
             textAndInteraction(
                 "Wie lautet die Betriebsnummer bei der Bundesagentur für Arbeit?",
                 () => {
-                    createIntegerInput(1, 1).then( (result) => { 
+                    createTextInput("", 1, true, "[0-9]+").then( (result) => { 
                         setCurrentAnswer(result.value);
                         renderStep("betriebsname");
                     });
@@ -602,17 +616,17 @@ var steps = [
                             {
                                 icon: 'building',
                                 text: 'Gesamtes Unternehmen',
-                                value: 'gesamtbetrieb'
+                                value: 'Gesamtes Unternehmen'
                             },
                             {
                                 icon: 'sitemap',
                                 text: 'Abteilung',
-                                value: 'betriebsabteilung'
+                                value: 'Abteilung'
                             }
                         ]               
                     }).then( (res) => {
                         setCurrentAnswer(res.value);
-                        if (res.value === 'betriebsabteilung') {
+                        if (res.value === 'Abteilung') {
                             renderStep("arbeitzeitreduzierung_fuer_abteilung");
                         } else {
                             renderStep("besteht_unternehmen_laenger_als_1_jahr");
@@ -756,14 +770,14 @@ var steps = [
                 () => {
                     const date = new Date();
                     const options = [
-                        { value: "einfache_vereinbarung", text: "Per einfacher Vereinbarung"},
-                        { value: "arbeitsvertrag", text: "Per Arbeitsvertrag"},
-                        { value: "aenderungskuendigung", text: "Per Änderungskündigung"}
+                        { value: "Per einfacher Vereinbarung", text: "Per einfacher Vereinbarung"},
+                        { value: "Per Arbeitsvertrag", text: "Per Arbeitsvertrag"},
+                        { value: "Per Änderungskündigung", text: "Per Änderungskündigung"}
                     ];
-                    let defaultValue = "einfache_vereinbarung";
+                    let defaultValue = "Per einfacher Vereinbarung";
                     if (state.answers["gibt_es_einen_betriebsrat"] === true) {
-                        options.push({ value: "betriebsvereinbarung", text: "Per Betriebsvereinbarung" });
-                        defaultValue = "betriebsvereinbarung";
+                        options.push({ value: "Per Betriebsvereinbarung", text: "Per Betriebsvereinbarung" });
+                        defaultValue = "Per Betriebsvereinbarung";
                     }
 
                     createSelect(options, defaultValue).then( (result) => { 
@@ -794,7 +808,7 @@ var steps = [
             textAndInteraction(
                 "Wieviele Leiharbeiter beschäftigst du in deinem Unternehmen bzw. in der betroffenen Abteilung?",
                 () => {
-                    createIntegerInput(0, 0, state.answers["anzahl_beschaeftigte"]).then( (result) => { 
+                    createIntegerInput("0", 0, state.answers["anzahl_beschaeftigte"],1,false).then( (result) => { 
                         setCurrentAnswer(result.value);
                         renderStep("ist_arbeitsausfall_massgeblich_branchenueblich_betriebsueblich_oder_saisonbedingt");
                     });
@@ -1026,12 +1040,13 @@ function createDateInput(defaultValue = null, required = true,addAutoText=true)
     });
 }
 
-function createTextInput(defaultValue = null, required = true,addAutoText=true)
+function createTextInput(defaultValue = null, required = true,addAutoText=true,pattern=null)
 {        
     return botui.action.text({
         addMessage: addAutoText,
         action: {
             value: defaultValue,
+            pattern: pattern,
             required: required,
             button: {
                 icon: 'chevron-right',
@@ -1114,10 +1129,10 @@ function getPdfDataFromState() {
         "agenturFuerArbeitAnschrift" : "", // leave empty
         "stammNrKug" : "", // leave empty
         "abteilungsNr" : "", // leave empty
-        "betriebsNr" : a.betriebsNr,
+        "betriebsNr" : a.betriebsnummer,
       
         "betriebsanschrift": {
-          "nameAnschrift": a.betriebsname+"\n"+a.betriebsanschrift,
+          "nameAnschrift": a.betriebsname+"\n"+a.betriebsadresse+"\n"+a.betriebsort,
           "zusaetzlicheKontaktinfos": a.betriebskontakt
         },
         "betriebsanschriftAnsprechpartner": {
@@ -1125,15 +1140,15 @@ function getPdfDataFromState() {
             "zusaetzlicheKontaktinfos": a.betriebskontakt
         },
         "lohnabrechnungsstelle": {
-            "nameAnschrift": a.lohnabrechnungsstellenname+"\n"+a.lohnabrechnungsstellenanschrift,
-            "zusaetzlicheKontaktinfos": a.lohnabrechnungsstellenkontakt
+            "nameAnschrift": a.hat_abweichende_lohnabrechnungsstelle === true ? a.lohnabrechnungsstellenname+"\n"+a.lohnabrechnungsstellenadresse+"\n"+a.lohnabrechnungsstellenort : "",
+            "zusaetzlicheKontaktinfos":a.hat_abweichende_lohnabrechnungsstelle === true ? a.lohnabrechnungsstellenkontakt : ""
         },
         "lohnabrechnungsstelleAnsprechpartner": {
-            "nameAnschrift": a.lohnabrechnungsstellenansprechpartner,
-            "zusaetzlicheKontaktinfos": a.lohnabrechnungsstellenkontakt
+            "nameAnschrift": a.hat_abweichende_lohnabrechnungsstelle === true ? a.lohnabrechnungsstellenansprechpartner : "",
+            "zusaetzlicheKontaktinfos": a.hat_abweichende_lohnabrechnungsstelle === true ? a.lohnabrechnungsstellenkontakt : ""
         },
       
-        "branche" : a.branche,
+        "branche" : a.besondere_branche ? a.branche : a.branche_freitext,
         "zeitraumVon" : {
           "monat" : a.arbeitzeitreduzierung_von.split(" ")[0],
           "jahr" : a.arbeitzeitreduzierung_von.split(" ")[1]
@@ -1142,11 +1157,11 @@ function getPdfDataFromState() {
           "monat" : a.arbeitzeitreduzierung_bis.split(" ")[0],
           "jahr" : a.arbeitzeitreduzierung_bis.split(" ")[1]
         },
-        "abteilungsBeschraenkung" : (a.arbeitzeitreduzierung_fuer == 'betriebsabteilung' ? a.arbeitzeitreduzierung_fuer_abteilung : null),
+        "abteilungsBeschraenkung" : (a.arbeitzeitreduzierung_fuer === 'Abteilung' ? a.arbeitzeitreduzierung_fuer_abteilung : null),
         "vollarbeitArbeitszeit" : a.anzahl_wochenstunden_der_beschaeftigten_regulaer,
         "kurzarbeitArbeitszeit" : a.anzahl_wochenstunden_der_beschaeftigten_in_kurzarbeit,
         "unternehmenAelterAlsEinJahr": a.besteht_unternehmen_laenger_als_1_jahr,
-        "unternehmenGruendungsdatum": a.betriebsgruendung,
+        "unternehmenGruendungsdatum": a.besteht_unternehmen_laenger_als_1_jahr === true ? "" : a.betriebsgruendung,
         "arbeiterTarifvertrag": {
             "bezeichnung": "",							//Hardcoded!
             "normaleArbeitszeit": "",					//Hardcoded!
@@ -1160,23 +1175,38 @@ function getPdfDataFromState() {
         "tarifvertragHatAnkuendigungsfrist": false,		//Hardcoded!
         "betriebNichtTarifgebunden": !a.gibt_es_eines_tarifvertrag,
         "betriebsratVorhanden": a.gibt_es_einen_betriebsrat,
-        "kurzarbeitVereinbartDurchBetriebsvereinbarung": (a.wie_wurde_vereinbart == 'betriebsvereinbarung'),
-        "kurzarbeitVereinbartDurchVereinbarungMitArbeitnehmern": (a.wie_wurde_vereinbart == 'arbeitsvertrag' || a.wie_wurde_vereinbart == 'einfache_vereinbarung'),
-        "kurzarbeitVereinbartDurchAenderungskuendigung": (a.wie_wurde_vereinbart == 'aenderungskuendigung'),
-        "kurzarbeitVereinbartDurchAenderungskuendigungVereinbartAm": a.wann_wurde_vereinbart,
-        "kurzarbeitVereinbartDurchAenderungskuendigungWirksamZu": a.wann_wurde_vereinbart,    // Same as vereinbarung / make it less complex
-      	"kurzarbeitVereinbartDurchSonstiges": (a.wie_wurde_vereinbart == 'arbeitsvertrag'),	//Hardcoded!
-        "kurzarbeitVereinbartAnmerkungen": (a.wie_wurde_vereinbart == 'arbeitsvertrag' ? "Im Arbeitsvertrag vereinbart." : ""),			//Hardcoded!
+        "kurzarbeitVereinbartDurchBetriebsvereinbarung": (a.wie_wurde_vereinbart == 'Per Betriebsvereinbarung'),
+        "kurzarbeitVereinbartDurchVereinbarungMitArbeitnehmern": (a.wie_wurde_vereinbart == 'Per Arbeitsvertrag' || a.wie_wurde_vereinbart == 'Per einfacher Vereinbarung'),
+        "kurzarbeitVereinbartDurchAenderungskuendigung": (a.wie_wurde_vereinbart == 'Per Änderungskündigung'),
+        "kurzarbeitVereinbartDurchAenderungskuendigungVereinbartAm": parseYmdDateStrIntoLocalDateStr(a.wann_wurde_vereinbart),
+        "kurzarbeitVereinbartDurchAenderungskuendigungWirksamZu": parseYmdDateStrIntoLocalDateStr(a.wann_wurde_vereinbart),    // Same as vereinbarung / make it less complex
+      	"kurzarbeitVereinbartDurchSonstiges": (a.wie_wurde_vereinbart == 'Per Arbeitsvertrag'),	//Hardcoded!
+        "kurzarbeitVereinbartAnmerkungen": (a.wie_wurde_vereinbart == 'Per Arbeitsvertrag' ? "Im Arbeitsvertrag vereinbart." : ""),			//Hardcoded!
         "anzahlArbeitnehmerInBetroffenerAbteilung": a.anzahl_beschaeftigte,
-        "anzahlLeiharbeiterInBetroffenerAbteilung": 0,	//Hardcoded!
+        "anzahlLeiharbeiterInBetroffenerAbteilung": a.wieviele_leiharbeiter_in_gesamtbetrieb_bzw_betriebsabteilung,
         "anzahlArbeitnehmerMitEntgeltAusfall": a.anzahl_beschaeftigte_in_kurzarbeit,
         "angabenArbeitsausfall": "- siehe Anlage -",
         "angabenArbeitsausfallAnlage": begruendung,
-        "auchUeblicheUrsachenFuerAusfall": false,
-        "ortDatum": "16.11.2019"
+        "auchUeblicheUrsachenFuerAusfall": a.ist_arbeitsausfall_massgeblich_branchenueblich_betriebsueblich_oder_saisonbedingt,
+        "ortDatum": getCurrentLocalDateStr(),
+        "path": state.path
     };
 };
 
+function parseYmdDateStrIntoLocalDateStr(str)
+{
+    return str.substr(8, 2) + "." + str.substr(5, 2) + "." + str.substr(0, 4);
+}
+
+function getCurrentLocalDateStr()
+{
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+
+    return dd + "." + mm + "." + yyyy;
+}
 
 var pdfCache = null;
 
