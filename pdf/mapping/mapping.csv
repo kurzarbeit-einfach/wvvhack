@@ -1,0 +1,66 @@
+getFullyQualifiedName();getPartialName();getAlternateFieldName();getFieldType()
+1a;Kug101[0];Kug101[0];;null
+1b;Kug101[0].Seite1[0];Seite1[0];;null
+1c;Kug101[0].Seite1[0].PLZ_Ort_AA[0];PLZ_Ort_AA[0];Hinweis: Ein vollständiges Ausfüllen des Vordruckes erleichtert und beschleunigt die Bearbeitung.  Bitte füllen Sie die noch nicht ausgefüllten Felder aus.  Sobald alle erforderlichen Felder ausgefüllt sind, wird die Druckfunktion aktiviert. Eingabe Postleitzahl und Ort der zuständigen Agentur für Arbeit;Tx
+1d;Kug101[0].Seite1[0].Stamm-Nr_Kug[0];Stamm-Nr_Kug[0];Die 9-stellige Stamm-Nr. Kug besteht 1) aus dem vorbelegten Buchstaben K und 2) aus dem 8-stelligen Ausfüllfeld. Bitte Stamm-Nr. Kug eingeben;Tx
+1e;Kug101[0].Seite1[0].Ableitungs-Nr[0];Ableitungs-Nr[0];4-stellige Ableitungs-Nr. (soweit bekannt);Tx
+1f;Kug101[0].Seite1[0].Betriebsnummer[0];Betriebsnummer[0];8-stellige Betriebsnummer;Tx
+1g;Kug101[0].Seite1[0].ZutreffendAnkreuz[0];ZutreffendAnkreuz[0];Zutreffendes bitte ankreuzen!;Btn
+1h;Kug101[0].Seite1[0].TeilformularAnschriftBetrieb[0];TeilformularAnschriftBetrieb[0];;null
+1i;Kug101[0].Seite1[0].TeilformularAnschriftBetrieb[0].BezAnschriftBetrieb[0];BezAnschriftBetrieb[0];Bezeichnung und Anschrift des Betriebes;Tx
+1j;Kug101[0].Seite1[0].TeilformularAnschriftBetrieb[0].Tel_Fax_Mail1[0];Tel_Fax_Mail1[0];Telefon-Nr., Fax-Nr. u. ggf. E-Mail-Adresse;Tx
+1k;Kug101[0].Seite1[0].TeilformularAnschriftBetrieb[0].AnsprechpartnBetrieb[0];AnsprechpartnBetrieb[0];Ansprechpartner(in);Tx
+1l;Kug101[0].Seite1[0].TeilformularAnschriftBetrieb[0].Tel_Fax_Mail2[0];Tel_Fax_Mail2[0];Telefon-Nr., Fax-Nr. u. ggf. E-Mail-Adresse;Tx
+1m;Kug101[0].Seite1[0].TeilformularAnschriftBetrieb[0].AnschriftLohnAbrStell[0];AnschriftLohnAbrStell[0];falls abweichend Anschrift der Lohnabrechnungsstelle;Tx
+1n;Kug101[0].Seite1[0].TeilformularAnschriftBetrieb[0].Tel_Fax_Mail3[0];Tel_Fax_Mail3[0];Telefon-Nr., Fax-Nr. u. ggf. E-Mail-Adresse;Tx
+1o;Kug101[0].Seite1[0].TeilformularAnschriftBetrieb[0].AnsprechpartnLohnAbrStell[0];AnsprechpartnLohnAbrStell[0];Ansprechpartner(in);Tx
+1p;Kug101[0].Seite1[0].TeilformularAnschriftBetrieb[0].Tel_Fax_Mail4[0];Tel_Fax_Mail4[0];Telefon-Nr., Fax-Nr. u. ggf. E-Mail-Adresse;Tx
+1q;Kug101[0].Seite1[0].TeilformularAnschriftBetrieb[0].Art_Wirtschaftszweig[0];Art_Wirtschaftszweig[0];Art des Betriebes / Wirtschaftszweig bzw. Branche;Tx
+1r;Kug101[0].Seite1[0].TeilformularArbZeitReduz[0];TeilformularArbZeitReduz[0];;null
+1s;Kug101[0].Seite1[0].TeilformularArbZeitReduz[0].Monat1[0];Monat1[0];Angabe des Monats, ab dem die regelmäßige betriebsübliche wöchentliche Arbeitszeit herabgesetzt wird;Ch
+1t;Kug101[0].Seite1[0].TeilformularArbZeitReduz[0].Jahr1[0];Jahr1[0];Auswahl des Jahres, ab dem die regelmäßige betriebsübliche wöchentliche Arbeitszeit herabgesetzt wird;Ch
+1u;Kug101[0].Seite1[0].TeilformularArbZeitReduz[0].Monat2[0];Monat2[0];Angabe des Monats, bis wann voraussichtlich die regelmäßige betriebsübliche wöchentliche Arbeitszeit herabgesetzt wird;Ch
+1v;Kug101[0].Seite1[0].TeilformularArbZeitReduz[0].Jahr2[0];Jahr2[0];Auswahl des Jahres, bis wann voraussichtlich die regelmäßige betriebsübliche wöchentliche Arbeitszeit herabgesetzt wird;Ch
+1w;Kug101[0].Seite1[0].TeilformularArbZeitReduz[0].OptionsfeldlisteBetrieb[0];OptionsfeldlisteBetrieb[0];OptionsfeldlisteBetrieb;Btn
+1x;Kug101[0].Seite1[0].TeilformularArbZeitReduz[0].BezeichnBetriebsAbtlg[0];BezeichnBetriebsAbtlg[0];Bezeichnung der Betriebsabteilung;Tx
+1y;Kug101[0].Seite1[0].TeilformularArbeitszeit[0];TeilformularArbeitszeit[0];;null
+1z;Kug101[0].Seite1[0].TeilformularArbeitszeit[0].Stunden1[0];Stunden1[0]; Stunden.;Tx
+2a;Kug101[0].Seite1[0].TeilformularArbeitszeit[0].Stunden2[0];Stunden2[0]; Stunden.;Tx
+2b;Kug101[0].Seite1[0].TeilformularAngabBetriebS1[0];TeilformularAngabBetriebS1[0];;null
+2c;Kug101[0].Seite1[0].TeilformularAngabBetriebS1[0].UnternLaengA1Jahr[0];UnternLaengA1Jahr[0];Das Unternehmen besteht länger als ein Jahr;Btn
+2d;Kug101[0].Seite1[0].TeilformularAngabBetriebS1[0].WennKuerzerSeit[0];WennKuerzerSeit[0];wenn kürzer: seit;Tx
+2e;Kug101[0].Seite1[0].TeilformularAngabBetriebS1[0].TabelleTV[0];TabelleTV[0];;null
+2f;Kug101[0].Seite1[0].TeilformularAngabBetriebS1[0].TabelleTV[0].Zeile1[0];Zeile1[0];;null
+2g;Kug101[0].Seite1[0].TeilformularAngabBetriebS1[0].TabelleTV[0].Zeile1[0].Zelle2[0];Zelle2[0];Bezeichnung des Tarifvertrages für Arbeiter;Tx
+2h;Kug101[0].Seite1[0].TeilformularAngabBetriebS1[0].TabelleTV[0].Zeile1[0].Zelle3[0];Zelle3[0];Anzahl der normalen regelmäßigen tariflichen wöchentlichen Arbeitszeit  für Arbeiter in Stunden;Tx
+2i;Kug101[0].Seite1[0].TeilformularAngabBetriebS1[0].TabelleTV[0].Zeile1[0].Zelle4[0];Zelle4[0];Enthält der Tarifvertrag eine Kurzarbeitsklausel für Arbeiter? Bitte mit ja oder nein beantworten!;Tx
+2j;Kug101[0].Seite1[0].TeilformularAngabBetriebS1[0].TabelleTV[0].Zeile2[0];Zeile2[0];;null
+2k;Kug101[0].Seite1[0].TeilformularAngabBetriebS1[0].TabelleTV[0].Zeile2[0].Zelle2[0];Zelle2[0];Bezeichnung des Tarifvertrages für Angestellte;Tx
+2l;Kug101[0].Seite1[0].TeilformularAngabBetriebS1[0].TabelleTV[0].Zeile2[0].Zelle3[0];Zelle3[0];Anzahl der normalen regelmäßigen tariflichen wöchentlichen Arbeitszeit  für Angestellte in Stunden;Tx
+2m;Kug101[0].Seite1[0].TeilformularAngabBetriebS1[0].TabelleTV[0].Zeile2[0].Zelle4[0];Zelle4[0];Enthält der Tarifvertrag eine Kurzarbeitsklausel für Angestellte? Bitte mit ja oder nein beantworten!;Tx
+2n;Kug101[0].Seite1[0].TeilformularAngabBetriebS1[0].OptionAnkuendigungsfrist[0];OptionAnkuendigungsfrist[0];OptionAnkuendigungsfrist;Btn
+2o;Kug101[0].Seite1[0].TeilformularAngabBetriebS1[0].AnkuendFrist1[0];AnkuendFrist1[0];Angabe, um welche Ankündigungsfrist es sich handelt - Zeile 1;Tx
+2p;Kug101[0].Seite1[0].TeilformularAngabBetriebS1[0].AnkuendFrist2[0];AnkuendFrist2[0];Angabe, um welche Ankündigungsfrist es sich handelt - Zeile 2;Tx
+2q;Kug101[0].Seite1[0].TeilformularAngabBetriebS1[0].BetribNTarifgebund[0];BetribNTarifgebund[0];Der Betrieb ist nicht tarifgebunden.;Btn
+2r;Kug101[0].#pageSet[0];#pageSet[0];;null
+2s;Kug101[0].#pageSet[0].Seite2[0];Seite2[0];;null
+2t;Kug101[0].#pageSet[0].Seite2[0].DruckenSchaltfläche[0];DruckenSchaltfläche[0];Formular drucken;Btn
+2u;Kug101[0].#pageSet[0].Seite2[0].ZurücksetzenSchaltfläche[0];ZurücksetzenSchaltfläche[0];Formular zurücksetzen;Btn
+2v;Kug101[0].Seite2[0];Seite2[0];;null
+2w;Kug101[0].Seite2[0].TeilformularAngabBetriebS2[0];TeilformularAngabBetriebS2[0];;null
+2x;Kug101[0].Seite2[0].TeilformularAngabBetriebS2[0].OptionBetriebsrat[0];OptionBetriebsrat[0];OptionBetriebsrat;Btn
+2y;Kug101[0].Seite2[0].TeilformularAngabBetriebS2[0].EinfuehrKurzarbeit[0];EinfuehrKurzarbeit[0];Durch Betriebsvereinbarung mit dem Betriebsrat (in Kopie beifügen);Btn
+2z;Kug101[0].Seite2[0].TeilformularAngabBetriebS2[0].EinfuehrKurzarbeit[1];EinfuehrKurzarbeit[1];Bei Betrieben ohne Betriebsrat durch Vereinbarung mit den Arbeitnehmern/innen  *;Btn
+3a;Kug101[0].Seite2[0].TeilformularAngabBetriebS2[0].EinfuehrKurzarbeit[2];EinfuehrKurzarbeit[2];Durch Änderungskündigungen  *;Btn
+3b;Kug101[0].Seite2[0].TeilformularAngabBetriebS2[0].DatumVereinbarg[0];DatumVereinbarg[0];Datum;Tx
+3c;Kug101[0].Seite2[0].TeilformularAngabBetriebS2[0].DatumWirkgZum[0];DatumWirkgZum[0];Datum;Tx
+3d;Kug101[0].Seite2[0].TeilformularAngabBetriebS2[0].Sonst-AnmerkgKF[0];Sonst-AnmerkgKF[0];Sonstiges / Anmerkungen:;Btn
+3e;Kug101[0].Seite2[0].TeilformularAngabBetriebS2[0].Sonst-AnmerkgEingabe[0];Sonst-AnmerkgEingabe[0];Sonstiges / Anmerkungen;Tx
+3f;Kug101[0].Seite2[0].TeilformularAngabBetriebS2[0].AN-7[0];AN-7[0];Anzahl der Arbeitnehmer/innen, die im Betrieb oder in der von Kurzarbeit betroffenen Betriebsabteilung beschäftigt sind (einschließlich erkrankter, beurlaubter und geringfügig beschäftigter Arbeitnehmerinnen/Arbeitnehmer));Tx
+3g;Kug101[0].Seite2[0].TeilformularAngabBetriebS2[0].LeihAN[0];LeihAN[0];Zahl der Leiharbeitnehmer/innen:;Tx
+3h;Kug101[0].Seite2[0].TeilformularAngabBetriebS2[0].AN-8[0];AN-8[0];Anzahl der Arbeitnehmer/innen die von Kurzarbeit mit einem Entgeltausfall von mehr als 10 vom Hundert ihres monatlichen Bruttoentgelts im jeweiligen Anspruchszeitraum (Kalendermonat) voraussichtlich betroffen sind;Tx
+3i;Kug101[0].Seite2[0].TeilformularArbeitsausfall[0];TeilformularArbeitsausfall[0];;null
+3j;Kug101[0].Seite2[0].TeilformularArbeitsausfall[0].Begruendung[0];Begruendung[0];Bitte legen Sie in einfacher Form den Grund des Arbeitsausfalls dar.;Tx
+3k;Kug101[0].Seite2[0].TeilformularArbeitsausfall[0].OptionUrsachenMassgebl[0];OptionUrsachenMassgebl[0];OptionUrsachenMassgebl;Btn
+3l;Kug101[0].Seite2[0].TeilformularUnterschrift[0];TeilformularUnterschrift[0];;null
+3m;Kug101[0].Seite2[0].TeilformularUnterschrift[0].Ort-Datum[0];Ort-Datum[0];(Ort, Datum);Tx

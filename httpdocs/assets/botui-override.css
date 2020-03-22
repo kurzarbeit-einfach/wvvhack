@@ -1,0 +1,210 @@
+/* --- Bot UI override --- */
+/* --------------------------------------------- */
+
+
+.botui-message {
+    margin: 0 0 20px 0;
+    position:relative;
+}
+
+.botui-message-content:before,
+.botui-actions-container > div:before {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 26px;
+    height: 18px;
+    left: -26px;
+    top: 13px;
+    background: no-repeat right;
+    background-size: contain;
+    background-image: url(images/chat-bubble-bot.svg);
+}
+
+.botui-message-content.human:before {
+    left: auto;
+    right:-12px;
+    background-image: url(images/chat-bubble-human.svg);
+}
+
+.botui-actions-container > div:before {
+    left: auto;
+    right:-12px;
+    background-image: url(images/chat-bubble-human-action.svg);
+}
+
+.botui-container {
+    font-size: 18px;
+    background-color: #fff;
+    font-family: 'Raleway',sans-serif;
+}
+
+.botui-message-content,
+.botui-message-content.loading {
+    padding: 20px 25px;
+    border-radius: 10px;
+    color: #fff;
+    background-color: #3D555D;
+}
+
+.botui-message-content.loading .dot {
+    width: .5rem;
+    height: .5rem;
+    border-radius: .5rem;
+    background-color: #fff;
+}
+
+.botui-message-content.text {
+    line-height: 28px;
+}
+
+.botui-message:nth-of-type(2n) .botui-message-content {
+    max-width: 60%;
+}
+
+.botui-message-content.human {
+    color: #0E3745;
+    background-color: #71C9B8;
+}
+
+.botui-actions-container > div {
+    position:relative;
+    margin: 20px -20px 25px;
+    padding: 20px 25px;
+    background: #E6F4F1;
+    border-radius: 10px;
+    max-width: 100%;
+    float:right;
+    text-align: right;
+}
+
+.botui-actions-buttons-button {
+    -webkit-appearance: none;
+    display:inline-block;
+    border: none;
+    background: #0E3745;
+    color: #71C9B8;
+    font-size: 20px;
+    padding: 12px 30px 15px;
+    border-radius: 25px;
+    cursor:pointer;
+}
+
+.botui-actions-buttons-button {
+    background: #71C9B8;
+    color:#0E3745;
+    font-family: 'Raleway',sans-serif;
+    box-shadow:none;
+    width: auto;
+}
+
+.botui-actions-buttons-button:empty {
+    background: none;
+}
+
+.botui-messages-container {
+    padding: 0;
+}
+
+.botui-container {
+    overflow:visible;
+}
+
+.botui-actions-text-submit {
+    color: #0E3745;
+    width: 32px;
+    padding: 5px;
+    height: 32px;
+    line-height: 1;
+    border-radius: 50%;
+    border: none;
+    background: #71C9B8;
+    font-size: 14px;
+}
+
+.botui-actions-text-input {
+    border: 0;
+    outline: 0;
+    border-radius: 0;
+    padding: 5px 12px;
+    font-family: 'Raleway',sans-serif;
+    background-color: transparent;
+    color: #595a5a;
+    border: 1px solid #FFFFFF;
+    height: 50px;
+    margin-right: 10px !important;
+    border-radius: 8px;
+    width:200px;
+}
+
+.botui-actions-text-input[type="number"] {
+    width: 100px;
+}
+
+
+.botui-hint {
+    color: #0E3745;
+    padding: 10px 20px 10px 36px;
+    border-radius: 0 0 7px 7px;
+    border: none;
+    width: auto;
+    display: block;
+    max-width: 55%;
+    margin-left: 25px;
+    background: #71C9B8;
+    font-size: 14px;
+    line-height: 18px;
+    position: relative;
+}
+
+.botui-hint:before {
+    content: "";
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background: url(images/icon-info.svg) no-repeat center;
+    background-size: contain;
+    margin-right: 7px;
+    opacity: 0.5;
+    position: absolute;
+    left: 12px;
+    top: 11px;
+}
+
+@media screen and (max-width: 600px) {
+
+    .botui-actions-container > div {
+        max-width: 90%;
+    }
+
+    .botui-message-content {
+        max-width: 90%;
+    }
+    .botui-message:nth-of-type(2n) .botui-message-content {
+        max-width: 80%;
+    }
+
+    .botui-container {
+        font-size: 16px;
+    }
+
+    .botui-message-content.text {
+        line-height: 24px;
+    }
+
+    .botui-actions-container > div {
+        padding: 14px 16px;
+    }
+
+    .botui-actions-buttons-button span {
+        display:none;
+    }
+
+    .botui-actions-buttons-button {
+        padding: 14px 18px 13px;
+    }
+
+}
+
+
+

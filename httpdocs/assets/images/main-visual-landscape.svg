@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="757.73" height="291" viewBox="0 0 757.73 291">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #e6f4f1;
+      }
+
+      .cls-2 {
+        fill: #71c9b8;
+      }
+
+      .cls-3 {
+        fill: #0e3745;
+      }
+    </style>
+  </defs>
+  <g id="Gruppe_11" data-name="Gruppe 11" transform="translate(778.865 0) rotate(90)">
+    <path id="Schnittmenge_1" data-name="Schnittmenge 1" class="cls-1" d="M-1101,21.135C-933.456,65.688-810,218.429-810,400s-123.456,334.312-291,378.866Z" transform="translate(1101)"/>
+    <circle id="Ellipse_3" data-name="Ellipse 3" class="cls-2" cx="26" cy="26" r="26" transform="translate(140 242)"/>
+    <circle id="Ellipse_4" data-name="Ellipse 4" class="cls-3" cx="11" cy="11" r="11" transform="translate(207 164)"/>
+    <circle id="Ellipse_5" data-name="Ellipse 5" class="cls-3" cx="26" cy="26" r="26" transform="translate(218 543)"/>
+    <circle id="Ellipse_7" data-name="Ellipse 7" class="cls-3" cx="12" cy="12" r="12" transform="translate(154 583)"/>
+    <circle id="Ellipse_8" data-name="Ellipse 8" class="cls-2" cx="11" cy="11" r="11" transform="translate(92 722)"/>
+    <circle id="Ellipse_10" data-name="Ellipse 10" class="cls-2" cx="22.5" cy="22.5" r="22.5" transform="translate(57 83)"/>
+    <circle id="Ellipse_11" data-name="Ellipse 11" class="cls-3" cx="13.5" cy="13.5" r="13.5" transform="translate(92 94)"/>
+    <path id="Schnittmenge_2" data-name="Schnittmenge 2" class="cls-3" d="M-1585,282.989V227.012A47.937,47.937,0,0,1-1546,207a48,48,0,0,1,48,48,48,48,0,0,1-48,48A47.937,47.937,0,0,1-1585,282.989Z" transform="translate(1585)"/>
+    <path id="Schnittmenge_3" data-name="Schnittmenge 3" class="cls-3" d="M-1506,49.449a79.516,79.516,0,0,1,71,79.051,79.515,79.515,0,0,1-71,79.05Z" transform="translate(1506 420)"/>
+    <circle id="Ellipse_6" data-name="Ellipse 6" class="cls-2" cx="40" cy="40" r="40" transform="translate(39 470)"/>
+  </g>
+</svg>
