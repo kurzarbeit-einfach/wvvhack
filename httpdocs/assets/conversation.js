@@ -125,16 +125,18 @@ var steps = [
             textAndInteraction(
                 "Wie viele Stunden pro Woche sollen diese Beschäftigten arbeiten während der Kurzarbeit?",
                 () => {                    
-                    createIntegerInput(20, 1, state.answers["anzahl_wochenstunden_der_beschaeftigten_regulaer"], 1, true, false).then( (result) => { 
+                    createIntegerInput(20, 0, state.answers["anzahl_wochenstunden_der_beschaeftigten_regulaer"], 1, true, false).then( (result) => { 
                         setCurrentAnswer(result.value);
 
-                        
-                        if(result.value == 1)
+                        if (result.value == 0) {
+                            createTextMessage(`Sie sollen _gar nicht_ arbeiten, wenn ich Kurzarbeit anordne.`,"",true);
+                        } else if(result.value == 1) {
                             createTextMessage(`Sie sollen _eine Stunde_ in der Woche arbeiten, wenn ich Kurzarbeit anordne.`,"",true);
-                        else
+                        } else {
                             createTextMessage(`Sie sollen _${result.value} Stunden_ in der Woche arbeiten, wenn ich Kurzarbeit anordne.`,"",true);
+                        }
 
-                        if(result.value > (state.answers["anzahl_wochenstunden_der_beschaeftigten_regulaer"]/1.1)) {
+                        if (result.value > (state.answers["anzahl_wochenstunden_der_beschaeftigten_regulaer"]/1.1)) {
                             renderStep("anzahl_wochenstunden_der_beschaeftigten_in_kurzarbeit_kleiner_10_prozent_geringer");
                         } else {
                             renderStep("ist_verursacht_durch_unabwendbares_ereignis_oder_wirtschaftlich");

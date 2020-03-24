@@ -37,8 +37,8 @@
     <nav class="meta">
         <ul>
             <li><a href="/">Home</a></li>    
-            <li><a href="/presse">Presse</a></li>
-            <li><a href="/ressourcen">Ressourcen</a></li>
+            <li><a href="/projekt">Das Projekt</a></li>
+            <!--<li><a href="/presse">Presse</a></li>-->
             <li><a href="/impressum">Impressum</a></li>
         </ul>
     </nav>

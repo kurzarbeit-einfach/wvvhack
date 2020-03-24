@@ -10,7 +10,6 @@ $().ready(function() {
     $('.tooltipContent .close').click(hideTooltip);
 
     if( $('#my-botui-app').length ) runBot();
-
 });
 
 function scrollToContent(e) {
@@ -148,6 +147,8 @@ function showLastPageWithPdfDownload() {
     $('html,body').stop(true).animate({scrollTop:targetPosition}, 1000);
 
     $('.container.thanks button.download').click(function(e){
+        jQuery('.container.thanks .part_1').slideUp();
+        jQuery('.container.thanks .part_2').slideDown();
         downloadPdf();
     });
     

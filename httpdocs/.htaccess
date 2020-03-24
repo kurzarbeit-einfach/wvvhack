@@ -15,8 +15,8 @@ RewriteRule ^(.*)$ presse.php [NC,L]
 RewriteCond %{REQUEST_URI} ^/datenschutz$
 RewriteRule ^(.*)$ datenschutz.php [NC,L]
 
-RewriteCond %{REQUEST_URI} ^/ressourcen$
-RewriteRule ^(.*)$ ressourcen.php [NC,L]
+RewriteCond %{REQUEST_URI} ^/projekt$
+RewriteRule ^(.*)$ projekt.php [NC,L]
 
 RewriteCond %{REQUEST_URI} ^/$
 RewriteRule ^.*$ /index.php [L]

@@ -5,7 +5,7 @@
         <h2>Datenschutz</h2>
         
         <p>
-            Du bist durch die CORONA-Krise mit deinem Unternehmen unverschuldet in Schieflage geraten? Kurzarbeit kann dir durch Kostenersparnis helfen, diese Krise zu überstehen. Der Weg zur Bewilligung war bisher kompliziert. Das muss nicht so sein! <b>U:DO nimmt dich mit durch den gesamten Prozess:</b>
+Hier kommt die Datenschutzerklärung hin!
         </p>  
 
                    
