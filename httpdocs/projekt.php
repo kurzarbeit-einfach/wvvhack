@@ -19,7 +19,7 @@
 
             <h2>Herausforderung</h2>
 
-            <p>Die Corona-Krise trifft kleine Unternehmen ohne große Finanzkraft am stärksten. Vom Einzelhandel bis zum Gastronom; vom Handwerksbetrieb bis zum Friseursalon - laut einer Umfrage sehen 77% aller Betribe ihre wirtschaftliche Existenz gefährdet. Um Entlassungen zu vermeiden, unterstützt der Staat Betriebe in Kurzarbeit finanziell. </p>
+            <p>Die Corona-Krise trifft kleine Unternehmen ohne große Finanzkraft am stärksten. Vom Einzelhandel bis zum Gastronom; vom Handwerksbetrieb bis zum Friseursalon - laut einer Umfrage sehen 77% aller Betriebe ihre wirtschaftliche Existenz gefährdet. Um Entlassungen zu vermeiden, unterstützt der Staat Betriebe in Kurzarbeit finanziell. </p>
 
             <p>In der Praxis gibt es hier jedoch ein Problem: Der Weg zum Kurzarbeitergeld ist kompliziert und verworren, und Antragsformulare sind ohne juristisches Know-How oft schwer verständlich. Zusätzlich sind viele Unternehmer von der Vielzahl an verstreuten Informationen überfordert, wie persönliche Erfahrungen von Projektmitgliedern und Gespräche mit verschiedenen Kleinstunternehmern zeigen.</p>
 

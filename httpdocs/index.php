@@ -111,7 +111,7 @@
             <ul>
                 <li>Du kannst Kurzarbeitergeld direkt für bis zu 12 Monate anzeigen.</li>
                 <li>Machst du eine Pause von ein bis drei Monaten, kann sich der Zeitraum entsprechend nach Hinten verlängern.</li>
-                <li>Machst du eine Pause von mehr drei Monaten, musst du es der Bundesagentur für Arbeit neu anzeigen.</li>
+                <li>Machst du eine Pause von mehr als drei Monaten, musst du es der Bundesagentur für Arbeit neu anzeigen.</li>
             </ul>
             
             
@@ -159,8 +159,7 @@
                 <span class="highlightStep">
                     <span class="stepLabel stepLabelPrioLeft">Schritt 2</span><span class="stepLabel stepLabelPrioRight">Hier hilft U:DO</span><br/>
                     <span class="stepLabelInner">
-                        Zeige der Arbeitsagentur an, dass deine Mitarbeiter Arbeits- und Lohnausfall haben und Kurzarbeitergeld erhalten möchten.<br/>
-                        Im Normalfall erhälst du innerhalb weniger Tage eine Zu- oder Absage.<br/>
+                        Zeige der Arbeitsagentur an, dass deine Mitarbeiter Arbeits- und Lohnausfall haben und Kurzarbeitergeld erhalten möchten. Im Normalfall erhälst du innerhalb weniger Tage eine Zu- oder Absage.<br/>
                         <span class="pullRight"><button class="next conversation" data-target="conversation">Weiter <b>zur Fragerunde</b></button></span>
                     </span>
                 </span>
@@ -170,8 +169,8 @@
                 <br><br>
                 <span class="stepLabel">Schritt 4</span><br/>
                 <span class="stepLabelInner">
-                    Bei der nächsten Lohnabrechnung berechnest du das Gehalt inkl. des zustehenden Kurzarbeitergelds.<br/>
-                    Mit dem Gehalt zahlst du auch das Kurzarbeitergeld aus, die Bundesagentur erstattet es dir aber auf Antrag kurzfristig.<br/>
+                    Bei der nächsten Lohnabrechnung berechnest du das Gehalt inkl. des zustehenden Kurzarbeitergelds.
+                    Mit dem Gehalt zahlst du auch das Kurzarbeitergeld aus, die Bundesagentur erstattet es dir aber auf Antrag kurzfristig.
                     Den Erstattungsantrag lässt du am Besten direkt vom Steuerberater ausfüllen und versenden.
                 </span>
         

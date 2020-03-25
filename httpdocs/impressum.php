@@ -5,8 +5,7 @@
         <h2>Impressum</h2>
         
         <p>
-            Gemäß deutschem Recht benötigen Webseiten, die zu privaten Zwecken und von Privatpersonen betrieben werden, kein Impressum.<br/>
-            Wir erklären hiermit, dass dies für diese Webseite zutrifft.
+            Gemäß deutschem Recht benötigen Webseiten, die zu privaten Zwecken und von Privatpersonen betrieben werden, kein Impressum. Wir erklären hiermit, dass dies für diese Webseite zutrifft.
         </p>
         <p>
             Erfinder und Betreiber dieser Seite sind:<br/>
