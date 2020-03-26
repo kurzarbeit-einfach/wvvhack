@@ -3,7 +3,7 @@ var steps = [
         "id": "hallo",
         "render": () => {
             textAndInteraction(
-                "Mit den Grundlagen kennst du dich jetzt aus. Lass' uns anfangen das Formular auszufüllen. Dazu stelle ich dir eine Reihe von Fragen. Wenn wir damit durch sind, bekommst du von mir die fertig ausgefüllte PDF zum Einreichen bei der Bundesagentur für Arbeit. Los geht's!",
+                "Mit den Grundlagen kennst du dich jetzt aus. Lass uns anfangen, das Formular zur Einreichung bei der Bundesagentur für Arbeit gemeinsam auszufüllen. Dazu stelle ich dir eine Reihe von Fragen. Deine Antworten nutze ich, um die Formularfelder für dich zu füllen. Danach kannst du es herunterladen, prüfen und dann an die Agentur übertragen. Los geht's!",
                 () => createConfirmButton("anzahl_beschaeftigte", "Ich bin bereit")
             );
         }

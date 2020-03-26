@@ -3,31 +3,31 @@
 <div class="container hero">
     <div class="inner">
         <h2>
-            Kurzarbeit beantragen.<br> 
+            Kurzarbeitergeld beantragen.<br> 
             Einfach. Schnell.
         </h2>
         
         <p>
-            Du bist durch die CORONA-Krise mit deinem Unternehmen unverschuldet in Schieflage geraten? Kurzarbeit kann dir durch Kostenersparnis helfen, diese Krise zu überstehen. Der Weg zur Bewilligung war bisher kompliziert. Das muss nicht so sein! <b>U:DO nimmt dich mit durch den gesamten Prozess:</b>
+            Du bist durch die CORONA-Krise mit deinem Unternehmen unverschuldet in Schieflage geraten? Kurzarbeit kann dir durch Kostenersparnis helfen, diese Krise zu überstehen. Der Weg zur Bewilligung war bisher kompliziert. Doch das muss nicht so sein! <b>U:DO begleitet dich  durch den gesamten Prozess:</b>
         </p>  
 
         <div class="grid">
             <div class="item">
-                <h3><span class="icon calculator"></span>Grundlagen</h3>
+                <h3><span class="icon calculator"></span>Grundlagen verstehen</h3>
                 <p>
-                    Was ist Kurzarbeit? Welche Bedinungen müssen erfüllt sein? Ich gebe einen Überblick und erkläre es dir!
+                    Was ist Kurzarbeit? Welche Bedinungen müssen erfüllt sein, um Kurzarbeitergeld zu erhalten? Ich gebe einen Überblick und erkläre es dir!
                 </p>
             </div>
             <div class="item">
-                <h3><span class="icon attachment"></span>Ausfüllen</h3>
+                <h3><span class="icon attachment"></span>Informationen sammeln</h3>
                 <p>
-                    Ich stelle dir ein paar Fragen und fülle das Formular der Bundesagentur für Arbeit für dich aus.
+                    Ich stelle dir ein paar Fragen und fülle mithilfe deiner Antworten ein Formular für die Bundesagentur für Arbeit für dich aus.
                 </p>
             </div>
             <div class="item">
-                <h3><span class="icon notice"></span>Versenden</h3>
+                <h3><span class="icon notice"></span>Formular versenden</h3>
                 <p>
-                    Fast geschafft! Ich sage dir, wie du das Formular einfach an die Bundesagentur für Arbeit sendest.
+                    Fast geschafft! Ich erkläre dir, wie du das ausgefüllte Formular einfach an die Bundesagentur für Arbeit sendest.
                 </p>
             </div>
         </div>                    
@@ -42,16 +42,29 @@
 <div class="container info">
     <div class="inner">
         <h2>Welche Idee steckt hinter Kurzarbeitergeld?</h2>
-        Die Begriffe Kurzarbeit und Kurzarbeitergeld werden oft missverständlich genutzt.<br/><br/>
+        Die Begriffe &quot;Kurzarbeit&quot; und &quot;Kurzarbeitergeld&quot; werden oft missverständlich genutzt.<br/><br/>
         <ul>
+<!--
+            <li>
+                Bist du in eine wirtschaftlich herausfordernde Situation geraten, musst du vielleicht auch Lohnkosten einsparen.
+            </li>
+            <li>
+                Um auf Kündigungen zu verzichten, kannst du mit deinen Mitarbeitern <b>Kurzarbeit</b> vereinbaren. Sie arbeiten dann vorübergehend weniger und erhalten ein geringeres Gehalt.
+            </li>
+            <li>
+                Unter bestimmten Voraussetzungen gleicht die Bundesagentur für Arbeit deinen Mitarbeitern einen Teil ihres Lohnausfalls aus. Diese Zahlung heißt <b>Kurzarbeitergeld</b>.<br/>
+            </li>
+
+-->
+
             <li>
                 In schwierigen Situationen kannst du mit deinen Mitarbeitern Kurzarbeit vereinbaren, um Kündigungen zu vermeiden.
             </li>
             <li>
-                Deine Mitarbeiter arbeiten vorübergehend weniger, du sparst Lohnkosten, deine Mitarbeiter erhalten aber weniger Geld.
+                Deine Mitarbeiter arbeiten dann vorübergehend weniger. Hierdurch sparst du Lohnkosten, jedoch erhalten deine Mitarbeiter auch weniger Gehalt.
             </li>
             <li>
-                Die Agentur für Arbeit übernimmt dann unter gewissen Voraussetzungen einen Teil des Lohnausfalls deiner Mitarbeiter: <br/>das Kurzarbeitergeld.
+                Unter bestimmten Voraussetzungen gleicht die Bundesagentur für Arbeit einen Teil des Lohnausfalls deiner Mitarbeiter aus. Diese Zahlung heißt <b>Kurzarbeitergeld</b>.
             </li>
 
         </ul>
@@ -64,85 +77,89 @@
 
 <div class="container info2">
     <div class="inner">
-        <h2>Voraussetzungen für die Zahlung von Kurzarbeitergeld?</h2>
+        <h2>Was sind die Voraussetzungen für Kurzarbeitergeld?</h2>
         <p>
-            Du kannst Kurzarbeitergeld beantragen wenn...
+            Du kannst Kurzarbeitergeld bekommen, wenn&hellip;
         </p>
         <ul>
             <li>
-                    ... du mindestens einen sozialversicherungspflichten Mitarbeiter hast. 
+                    &hellip;du mindestens einen sozialversicherungspflichten Mitarbeiter hast;
             </li>
             <li>
-                    ... du entschieden hast, dass mindestens 10% deiner Mitarbeiter weniger Arbeiten sollen, als üblich.
+                    &hellip;du entschieden hast, dass mindestens 10% deiner Mitarbeiter weniger arbeiten sollen als üblich;
             </li>
             <li>
-                    ... die betroffenen Mitarbeiter nun mehr als 10% weniger verdienen, als üblich.
+                    &hellip;die betroffenen Mitarbeiter nun mehr als 10% weniger verdienen als üblich;
             </li>
             <li>
-                    ... der Auslöser deiner Entscheidung ein wirtschaftlicher Grund (wie verschobene Aufträge), oder ein unabwendbares Ereignis (wie eine behördliche angeordnete Maßnahme wegen Corona) ist.
+                    &hellip;der Auslöser deiner Entscheidung ein wirtschaftlicher Grund (z.B. verschobene oder ausbleibende Kundenaufträge) oder ein unabwendbares Ereignis (z.B. eine behördlich angeordnete Maßnahme zur Eindämmung der Corona-Pandemie) ist;
             </li>
             <li>
-                    ... die Arbeitsreduktion vorübergehend ist.
+                    &hellip;die Arbeitsreduktion vorübergehend ist;
             </li>
             <li>
-                    ... die Arbeitsreduktion nicht vermeidbar ist, zum Beispiel durch:
+                    &hellip;die Arbeitsreduktion nicht vermeidbar ist &ndash; auch nicht durch:
 
                     <ul>
-                        <li>Abfeiern des Resturlaubs aus dem Vorjahr</li>
-                        <li>Abfeiern von Überstunden</li>
-                        <li>Auflösung von Arbeitszeitkonten</li>
-                        <li>Arbeit in anderen Positionen im Unternehmen</li>
+                        <li>Abfeiern des Resturlaubs aus dem Vorjahr,</li>
+                        <li>Abfeiern von Überstunden,</li>
+                        <li>Auflösung von Arbeitszeitkonten,</li>
+                        <li>Arbeit in anderen Positionen im Unternehmen.</li>
                     </ul>
             </li>
         </ul>
         
         
         <div class="innerBottom">
-            <button class="next" data-target="info3">Weiter zu: Dauer</button>
+            <button class="next" data-target="info3">Weiter zu: Mitarbeiter</button>
         </div>
     </div>
 </div>
 
 <div class="container info3">
     <div class="inner">
-        <h2>Wie lange kann ich Kurzarbeitergeld bekommen?</h2>
-        <p>
-            Wenn du Kurzarbeit anordnest, musst du dies bei der Bundesagentur für Arbeit anzeigen, damit deine Mitarbeiter Kurzarbeitergeld erhalten können.
-            <ul>
-                <li>Du kannst Kurzarbeitergeld direkt für bis zu 12 Monate anzeigen.</li>
-                <li>Machst du eine Pause von ein bis drei Monaten, kann sich der Zeitraum entsprechend nach Hinten verlängern.</li>
-                <li>Machst du eine Pause von mehr als drei Monaten, musst du es der Bundesagentur für Arbeit neu anzeigen.</li>
-            </ul>
-            
-            
-        </p>
-        
-        <div class="innerBottom">
-            <button class="next" data-target="info4">Weiter zu: Mitarbeiter</button>
-        </div>
-    </div>
-</div>
-
-<div class="container info4">
-    <div class="inner">
         <h2>Was bedeutet Kurzarbeit für meine Mitarbeiter?</h2>
-        Mitarbeiter arbeiten bei Kurzarbeit weniger - und erhalten deshalb auch weniger Gehalt. Die Bundesagentur erstattet diesen Gehaltsausfall teilweise.<br/><br/>
+        Mitarbeiter arbeiten bei Kurzarbeit weniger &ndash; und erhalten deshalb auch weniger Gehalt. Die Bundesagentur für Arbeit erstattet diesen Gehaltsausfall teilweise.<br/><br/>
         <ul>
             <li>
-                    Wie viel deine Mitarbeiter weniger arbeiten, entscheidest du. Eventuell sogar so wenig, dass sie vorübergehend gar nicht arbeiten.
+                    In welchem Umfang deine Mitarbeiter weniger arbeiten, entscheidest du! Es ist sogar möglich, dass sie ihre Arbeit vorübergehend vollständig niederlegen.
             </li>
             <li>
-                    Die Bundesagentur für Arbeit erstattet für deine Mitarbeiter 60 Prozent des ausgefallenen Nettolohns, wenn der Mitarbeiter Kinder hat, sogar 67 Prozent.
+                    Die Bundesagentur für Arbeit zahlt deinen Mitarbeitern 60 Prozent des ausgefallenen Nettolohns. Hat der Mitarbeiter Kinder, zahlt sie sogar 67 Prozent.
             </li>
             <li>
-                    Erstattet wird Kurzarbeitergeld für fast alle betroffenen Mitarbeiter, also auch für Leiharbeiter und befristete Mitarbeiter.
+                    Fast alle betroffenen Mitarbeitern können Kurzarbeitergeld erhalten &ndash; also auch für Leiharbeiter und zeitlich befristet angestellte Mitarbeiter.
             </li>
             <li>
                     Deine Mitarbeiter müssen sich um nichts kümmern. Du bist verpflichtet, alles abzuwickeln.
             </li>
         </ul>
         
-        
+        <div class="innerBottom">
+            <button class="next" data-target="info4">Weiter zu: Dauer</button>
+        </div>
+    </div>
+</div>
+
+<div class="container info4">
+    <div class="inner">
+    <h2>Wie lange kann ich Kurzarbeitergeld bekommen?</h2>
+        <p>
+            <!--
+                Wenn du Kurzarbeit anordnest, musst du dies bei der Bundesagentur für Arbeit anzeigen, damit deine Mitarbeiter Kurzarbeitergeld erhalten können.
+                <li>Du kannst Kurzarbeitergeld ab sofort für bis zu 12 Monate erhalten.</li>
+                <li>Machst du eine Pause von ein bis drei Monaten, kann sich der Zeitraum entsprechend nach Hinten verlängern.</li>
+                <li>Machst du eine Pause von mehr als drei Monaten, musst du es der Bundesagentur für Arbeit neu anzeigen.</li>
+-->
+            Damit deine Mitarbeiter Kurzarbeitergeld erhalten können, musst du der Bundesagentur für Arbeit anzeigen, dass du Kurzarbeit angeordnet hast.
+            <ul>
+                <li>Du kannst Kurzarbeitergeld ab sofort für bis zu 12 Monate erhalten.</li>
+                <li>Verbessert sich deine Geschäftssituation vorübergehend, kannst du bis zu drei Monate auf die Zahlung von Kurzarbeitergeld verzichten und später nachholen.</li>
+                <li>Konntest du länger als drei Monate auf Kurzarbeit verzichten, musst du es bei erneutem Bedarf auch neu beantragen.</li>
+            </ul>
+        </p>
+
+
         <div class="innerBottom">
             <button class="next" data-target="info5">Weiter zu: Ablauf</button>
         </div>
@@ -159,7 +176,7 @@
                 <span class="highlightStep">
                     <span class="stepLabel stepLabelPrioLeft">Schritt 2</span><span class="stepLabel stepLabelPrioRight">Hier hilft U:DO</span><br/>
                     <span class="stepLabelInner">
-                        Zeige der Arbeitsagentur an, dass deine Mitarbeiter Arbeits- und Lohnausfall haben und Kurzarbeitergeld erhalten möchten. Im Normalfall erhälst du innerhalb weniger Tage eine Zu- oder Absage.<br/>
+                        Zeige der Arbeitsagentur an, dass deine Mitarbeiter Arbeits- und Lohnausfall haben und Kurzarbeitergeld erhalten möchten. Im Normalfall erhältst du innerhalb weniger Tage die Rückmeldung, ob du mit der Zahlung von Kurzabeitergeld rechnen kannst.<br/>
                         <span class="pullRight"><button class="next conversation" data-target="conversation">Weiter <b>zur Fragerunde</b></button></span>
                     </span>
                 </span>
@@ -168,11 +185,19 @@
                 <span class="stepLabelInner">Lass deine Mitarbeiter ganz normal arbeiten, aber mit reduzierten Stunden. Dokumentiere alle geleisteten Arbeits-, Ausfall- und Fehlzeiten genau.</span>
                 <br><br>
                 <span class="stepLabel">Schritt 4</span><br/>
+                
+                <span class="stepLabelInner">
+                    Mit der nächsten Abrechnung zahlst du deinen Mitarbeitern das Gehalt, das sie durch ihre reduzierte Arbeit verdienen.
+                    Mit derselben Abrechnung zahlst du ihnen zudem auch das Kurtarbeitergeld aus.
+                    Die Bundesagentur für Arbeit ersttet dir das ausgezahlte Kurzarbeitergeld. Hierfür musst du einen schriftlcihen Antrag stellen, den du am Besten von deinem Steuerberater ausfüllen und versenden lässt.
+                </span>
+                <!--
                 <span class="stepLabelInner">
                     Bei der nächsten Lohnabrechnung berechnest du das Gehalt inkl. des zustehenden Kurzarbeitergelds.
                     Mit dem Gehalt zahlst du auch das Kurzarbeitergeld aus, die Bundesagentur erstattet es dir aber auf Antrag kurzfristig.
                     Den Erstattungsantrag lässt du am Besten direkt vom Steuerberater ausfüllen und versenden.
                 </span>
+-->
         
         </p>
     </div>
@@ -181,7 +206,11 @@
 
 <div class="container conversation">
     <div class="inner">
-        <h2>Formular zur Anzeige von Kurzarbeit - Udo hilft dir!</h2>
+        <!--
+            BU, 26.03.
+            <h2>Formular zur Anzeige von Kurzarbeit - U:DO hilft dir!</h2>
+-->
+        <h2>Formular zur Anzeige von Kurzarbeitergeld &ndash; ich helfe dir dabei!</h2>
         <div id="my-botui-app">
             <bot-ui></bot-ui>
         </div>
