@@ -103,7 +103,7 @@ var steps = [
         "id": "anzahl_wochenstunden_der_beschaeftigten_regulaer",
         "render": () => {
             textAndInteraction(
-                "Wie viele Stunden arbeiten deine Beschäftigten normalerweise pro Woche?",
+                "Wieviele Stunden arbeiten deine Vollzeitbeschäftigten normalerweise pro Woche?",
                 () => {                    
                     createIntegerInput(40, 1, null, 0.5, true, false).then( (result) => { 
                         setCurrentAnswer(result.value);
@@ -123,7 +123,7 @@ var steps = [
         "id": "anzahl_wochenstunden_der_beschaeftigten_in_kurzarbeit",
         "render": () => {
             textAndInteraction(
-                "Wie viele Stunden pro Woche sollen diese Beschäftigten arbeiten während der Kurzarbeit?",
+                "Wieviele Stunden pro Woche sollen diese Vollzeitbeschäftigten arbeiten während der Kurzarbeit?",
                 () => {                    
                     createIntegerInput(20, 0, state.answers["anzahl_wochenstunden_der_beschaeftigten_regulaer"], 1, true, false).then( (result) => { 
                         setCurrentAnswer(result.value);
@@ -800,7 +800,8 @@ var steps = [
                         setCurrentAnswer(result.value);
                         renderStep("wieviele_leiharbeiter_in_gesamtbetrieb_bzw_betriebsabteilung");
                     });
-                }
+                },
+		"Sollten Vereinbarungen an verschiedenen Daten abgeschlossen worden sein, so kannst du hier das letzte Datum wählen."
             );
         }
     },
@@ -827,22 +828,22 @@ var steps = [
                     botui.action.button({
                         action: [
                             {
-                                icon: 'check',
+                                icon: 'times',
                                 text: "Branchenübliche Ursachen",
                                 value: true
                             },
                             {
-                                icon: 'check',
+                                icon: 'times',
                                 text: "Betriebsübliche Ursachen",
                                 value: true
                             },
                             {
-                                icon: 'check',
+                                icon: 'times',
                                 text: "Saisonbedingte Ursachen",
                                 value: true
                             },
                             {
-                                icon: 'times',
+                                icon: 'check',
                                 text: "Keine andere üblichen Ursachen",
                                 value: false
                             }

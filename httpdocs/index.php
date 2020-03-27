@@ -44,27 +44,14 @@
         <h2>Welche Idee steckt hinter Kurzarbeitergeld?</h2>
         Die Begriffe &quot;Kurzarbeit&quot; und &quot;Kurzarbeitergeld&quot; werden oft missverständlich genutzt.<br/><br/>
         <ul>
-<!--
-            <li>
-                Bist du in eine wirtschaftlich herausfordernde Situation geraten, musst du vielleicht auch Lohnkosten einsparen.
-            </li>
-            <li>
-                Um auf Kündigungen zu verzichten, kannst du mit deinen Mitarbeitern <b>Kurzarbeit</b> vereinbaren. Sie arbeiten dann vorübergehend weniger und erhalten ein geringeres Gehalt.
-            </li>
-            <li>
-                Unter bestimmten Voraussetzungen gleicht die Bundesagentur für Arbeit deinen Mitarbeitern einen Teil ihres Lohnausfalls aus. Diese Zahlung heißt <b>Kurzarbeitergeld</b>.<br/>
-            </li>
-
--->
-
             <li>
                 In schwierigen Situationen kannst du mit deinen Mitarbeitern Kurzarbeit vereinbaren, um Kündigungen zu vermeiden.
             </li>
             <li>
-                Deine Mitarbeiter arbeiten dann vorübergehend weniger. Hierdurch sparst du Lohnkosten, jedoch erhalten deine Mitarbeiter auch weniger Gehalt.
+                Deine Mitarbeiter arbeiten dann vorübergehend weniger bis gar nicht. Hierdurch sparst du Lohnkosten, jedoch erhalten deine Mitarbeiter auch weniger Gehalt.
             </li>
             <li>
-                Unter bestimmten Voraussetzungen gleicht die Bundesagentur für Arbeit einen Teil des Lohnausfalls deiner Mitarbeiter aus. Diese Zahlung heißt <b>Kurzarbeitergeld</b>.
+                Unter bestimmten Voraussetzungen gleicht die Bundesagentur für Arbeit einen Teil des Lohnausfalls deiner Mitarbeiter aus. Dieser Zuschuss heißt <b>Kurzarbeitergeld</b>.
             </li>
 
         </ul>
@@ -89,7 +76,7 @@
                     &hellip;du entschieden hast, dass mindestens 10% deiner Mitarbeiter weniger arbeiten sollen als üblich;
             </li>
             <li>
-                    &hellip;die betroffenen Mitarbeiter nun mehr als 10% weniger verdienen als üblich;
+                    &hellip;die betroffenen Mitarbeiter nun mehr als 10% Lohnausfall haben;
             </li>
             <li>
                     &hellip;der Auslöser deiner Entscheidung ein wirtschaftlicher Grund (z.B. verschobene oder ausbleibende Kundenaufträge) oder ein unabwendbares Ereignis (z.B. eine behördlich angeordnete Maßnahme zur Eindämmung der Corona-Pandemie) ist;
@@ -101,8 +88,8 @@
                     &hellip;die Arbeitsreduktion nicht vermeidbar ist &ndash; auch nicht durch:
 
                     <ul>
-                        <li>Abfeiern des Resturlaubs aus dem Vorjahr,</li>
-                        <li>Abfeiern von Überstunden,</li>
+                        <li>Abbau des Resturlaubs aus dem Vorjahr,</li>
+                        <li>Abbau von Überstunden,</li>
                         <li>Auflösung von Arbeitszeitkonten,</li>
                         <li>Arbeit in anderen Positionen im Unternehmen.</li>
                     </ul>
@@ -122,13 +109,13 @@
         Mitarbeiter arbeiten bei Kurzarbeit weniger &ndash; und erhalten deshalb auch weniger Gehalt. Die Bundesagentur für Arbeit erstattet diesen Gehaltsausfall teilweise.<br/><br/>
         <ul>
             <li>
-                    In welchem Umfang deine Mitarbeiter weniger arbeiten, entscheidest du! Es ist sogar möglich, dass sie ihre Arbeit vorübergehend vollständig niederlegen.
+                    In welchem Umfang deine Mitarbeiter weniger arbeiten, entscheidest du! Es ist sogar möglich, dass sie vorübergehend gar nicht arbeiten.
+	    </li>
+            <li>
+                    Fast alle betroffenen Mitarbeitern können Kurzarbeitergeld erhalten &ndash; auch zeitlich befristet angestellte Mitarbeiter. Ausgenommen sind z.B. geringfügig Beschäftigte (Mini-Job oder "450 EUR"-Job), Auszubildende und schon gekündigte Mitarbeiter.
             </li>
             <li>
-                    Die Bundesagentur für Arbeit zahlt deinen Mitarbeitern 60 Prozent des ausgefallenen Nettolohns. Hat der Mitarbeiter Kinder, zahlt sie sogar 67 Prozent.
-            </li>
-            <li>
-                    Fast alle betroffenen Mitarbeitern können Kurzarbeitergeld erhalten &ndash; also auch für Leiharbeiter und zeitlich befristet angestellte Mitarbeiter.
+                    Die Bundesagentur für Arbeit zahlt deinen Mitarbeitern 60 Prozent der Nettoeinbußen. Hat der Mitarbeiter Kinder, zahlt sie sogar 67 Prozent.
             </li>
             <li>
                     Deine Mitarbeiter müssen sich um nichts kümmern. Du bist verpflichtet, alles abzuwickeln.
@@ -145,16 +132,10 @@
     <div class="inner">
     <h2>Wie lange kann ich Kurzarbeitergeld bekommen?</h2>
         <p>
-            <!--
-                Wenn du Kurzarbeit anordnest, musst du dies bei der Bundesagentur für Arbeit anzeigen, damit deine Mitarbeiter Kurzarbeitergeld erhalten können.
-                <li>Du kannst Kurzarbeitergeld ab sofort für bis zu 12 Monate erhalten.</li>
-                <li>Machst du eine Pause von ein bis drei Monaten, kann sich der Zeitraum entsprechend nach Hinten verlängern.</li>
-                <li>Machst du eine Pause von mehr als drei Monaten, musst du es der Bundesagentur für Arbeit neu anzeigen.</li>
--->
             Damit deine Mitarbeiter Kurzarbeitergeld erhalten können, musst du der Bundesagentur für Arbeit anzeigen, dass du Kurzarbeit angeordnet hast.
             <ul>
                 <li>Du kannst Kurzarbeitergeld ab sofort für bis zu 12 Monate erhalten.</li>
-                <li>Verbessert sich deine Geschäftssituation vorübergehend, kannst du bis zu drei Monate auf die Zahlung von Kurzarbeitergeld verzichten und später nachholen.</li>
+                <li>Verbessert sich deine Geschäftssituation vorübergehend, kannst du Kurzarbeit für bis zu drei Monate aussetzen und später fortführen, ohne einen neuen Antrag stellen zu müssen.</li>
                 <li>Konntest du länger als drei Monate auf Kurzarbeit verzichten, musst du es bei erneutem Bedarf auch neu beantragen.</li>
             </ul>
         </p>
@@ -171,7 +152,7 @@
         <h2>So läuft Kurzarbeit ab!</h2>
         <p>
                 <span class="stepLabel">Schritt 1</span><br/>
-                <span class="stepLabelInner">Vereinbare Kurzarbeit mit deinen Mitarbeitern. In vielen Fällen ist dies schon direkt im Arbeitsvertrag geschehen. Ansonsten kann man es auch nachträglich vereinbaren.</span>
+                <span class="stepLabelInner">Vereinbare Kurzarbeit mit deinen Mitarbeitern. In manchen Fällen ist dies schon direkt im Arbeitsvertrag geschehen. Ansonsten kann man es auch nachträglich vereinbaren. Wenn es einen Betriebsrat gibt, dann brauchst du eine Betriebsvereinbarung.</span>
                 <br><br>
                 <span class="highlightStep">
                     <span class="stepLabel stepLabelPrioLeft">Schritt 2</span><span class="stepLabel stepLabelPrioRight">Hier hilft U:DO</span><br/>
@@ -188,16 +169,9 @@
                 
                 <span class="stepLabelInner">
                     Mit der nächsten Abrechnung zahlst du deinen Mitarbeitern das Gehalt, das sie durch ihre reduzierte Arbeit verdienen.
-                    Mit derselben Abrechnung zahlst du ihnen zudem auch das Kurtarbeitergeld aus.
-                    Die Bundesagentur für Arbeit ersttet dir das ausgezahlte Kurzarbeitergeld. Hierfür musst du einen schriftlcihen Antrag stellen, den du am Besten von deinem Steuerberater ausfüllen und versenden lässt.
+                    Mit derselben Abrechnung zahlst du ihnen zudem auch das Kurzarbeitergeld aus.
+                    Die Bundesagentur für Arbeit erstattet dir das ausgezahlte Kurzarbeitergeld. Hierfür musst du einen schriftlichen Antrag stellen, den du am Besten von deinem Steuerberater ausfüllen und versenden lässt.
                 </span>
-                <!--
-                <span class="stepLabelInner">
-                    Bei der nächsten Lohnabrechnung berechnest du das Gehalt inkl. des zustehenden Kurzarbeitergelds.
-                    Mit dem Gehalt zahlst du auch das Kurzarbeitergeld aus, die Bundesagentur erstattet es dir aber auf Antrag kurzfristig.
-                    Den Erstattungsantrag lässt du am Besten direkt vom Steuerberater ausfüllen und versenden.
-                </span>
--->
         
         </p>
     </div>
@@ -222,7 +196,7 @@
         <div class="part_1">
             <h2>Dein Formular ist fertig!</h2>
             <p>
-                Das wäre geschafft, auf Basis deiner Antworten habe ich für dich das Formular zur Anzeige der Kurzarbeit für die Agentur für Arbeit komplett ausgefüllt!<br/><br/>
+                Das wäre geschafft, auf Basis deiner Antworten habe ich für dich das Formular zur Anzeige der Kurzarbeit für die Bundesagentur für Arbeit komplett ausgefüllt!<br/><br/>
                 <strong>Disclaimer:</strong><br/>
                 Bitte beachte, dass diese Webseite keine Rechtsberatung tätigt und wir für die Richtigkeit der in der nachfolgend downloadbaren PDF keine Gewähr übernehmen.<br/>
                 Zwar haben wir diese Webseite unter bestmöglicher Absprache, auch mit Unterstützung von Rechtsanwälten erstellt, die Verwendung des Formulars geschieht aber auf eigenes Risiko. Aus diesem Grund kannst du alle Angaben im Formular auch nach dem Download direkt im PDF nochmal ändern.
@@ -239,12 +213,12 @@
             </p>
             <ol>
                 <li>
-                    Überprüfe das Formular, drucke es aus, Unterschreibe es und scanne es wieder ein.
+                    Überprüfe das Formular, drucke es aus, unterschreibe es und scanne es wieder ein.
                 </li>
                 <li>
-                    Du wirst das Formular gleich direkt online zur Arbeitsagentur übertragen. Dazu benötigst du einen Zugang zu den eServices der Arbeitsagentur.<br/>
-                    Hast du diesen bereits (z.B. weil du die Jobbörse benutzt), kannst du direkt zum nächsten Schritt gehen.<br/>
-                    Wenn du noch keinen Zugang zu den eServices hast, dann rufe jetzt bitte die Rufnummer <strong>0800 4 5555 20</strong> an und frage nach einem Zugang zu den eServices um online Kurzarbeitergeld zu beantragen.<br/>
+                    Du wirst das Formular gleich direkt online zur Bundesagentur für Arbeit übertragen. Dazu benötigst du einen Zugang zu den eServices der Arbeitsagentur.
+                    Hast du diesen bereits (z.B. weil du die Jobbörse benutzt), kannst du direkt zum nächsten Schritt gehen.
+                    Wenn du noch keinen Zugang zu den eServices hast, dann rufe jetzt bitte die Rufnummer <strong>0800 4 5555 20</strong> an und frage nach einem Zugang zu den eServices um online Kurzarbeitergeld zu beantragen.
                     Man wird dir innerhalb von ein paar Minuten Zugangsdaten per E-Mail zusenden.
                 </li>
                 <li>
