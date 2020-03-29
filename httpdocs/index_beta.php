@@ -1,4 +1,4 @@
-<?php include('header.php'); ?>
+<?php include('header_beta.php'); ?>
 
 <div class="container hero">
     <div class="inner">
@@ -186,6 +186,10 @@
         <h2>Formular zur Anzeige von Kurzarbeitergeld &ndash; ich helfe dir dabei!</h2>
         <div id="my-botui-app">
             <bot-ui></bot-ui>
+
+            <div id="backButton" style="text-align: right; margin-top: 15px; display: none;">
+                <a href="#" onclick="goBack(); return false;" style="font-size: 15px;">Vorherige Frage nochmal</a>
+            </div>
         </div>
     </div>
 </div>
@@ -245,4 +249,4 @@
     </div>
 </div>
 
-<?php include('footer.php'); ?>
+<?php include('footer_beta.php'); ?>

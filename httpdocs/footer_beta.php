@@ -11,11 +11,11 @@
     <div class="close"></div>
 </div>
 
-<?php if( strtok($_SERVER["REQUEST_URI"], '?') == "/" ): ?>
+<?php if( strtok($_SERVER["REQUEST_URI"], '?') == "/index_beta.php" ): ?>
 <script src="/assets/vuejs/vue.min.js"></script>
 <script src="/assets/botui/build/vue-select.js"></script>
 <script src="/assets/botui/build/botui_patched.js"></script> <!-- patched version!! -->
-<script src="/assets/conversation.js"></script>
+<script src="/assets/conversation_beta.js"></script>
 <?php endif; ?>
 
 <script src="/assets/jquery-3.4.1.min.js"></script>

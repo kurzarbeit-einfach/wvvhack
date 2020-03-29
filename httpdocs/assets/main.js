@@ -22,7 +22,7 @@ function scrollToContent(e) {
 
 function showTooltip(e) {
 
-    var textContent = $(this).attr('data');
+    var textContent = $(this).attr('data-tooltip');
 
     if( !$('.tooltipContent').hasClass('show') ) {
 

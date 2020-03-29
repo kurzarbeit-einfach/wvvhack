@@ -1,25 +1,68 @@
-RewriteEngine On
+###
+###   Inhaltsverzeichnis:
+###       1) Mod-Rewrite-Config
+###       2) Error-Document (404)
+###       3) Page-Speed-Modul aktivieren (kann während Entw. ausgeschaltet werden)
+###       4) Cache-Optimierungen mit eTags
+###
 
-RewriteCond %{REQUEST_URI} !^/$
-RewriteCond %{REQUEST_FILENAME} -s [OR]
-RewriteCond %{REQUEST_FILENAME} -l [OR]
-RewriteCond %{REQUEST_FILENAME} -d
-RewriteRule ^.*$ - [NC,L]
 
-RewriteCond %{REQUEST_URI} ^/impressum$
-RewriteRule ^(.*)$ impressum.php [NC,L]
+########  1 - Mod-Rewrite-Config  ########
 
-RewriteCond %{REQUEST_URI} ^/presse$
-RewriteRule ^(.*)$ presse.php [NC,L]
+<IfModule mod_rewrite.c>
+    # Generelle Rewrite-Settings für existierende Dateien etc.
+    RewriteEngine On
 
-RewriteCond %{REQUEST_URI} ^/datenschutz$
-RewriteRule ^(.*)$ datenschutz.php [NC,L]
+    RewriteCond %{REQUEST_URI} !^/$
+    RewriteCond %{REQUEST_FILENAME} -s [OR]
+    RewriteCond %{REQUEST_FILENAME} -l [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^.*$ - [NC,L]
 
-RewriteCond %{REQUEST_URI} ^/projekt$
-RewriteRule ^(.*)$ projekt.php [NC,L]
+    # Rewrite von Unterseiten
+    RewriteCond %{REQUEST_URI} ^/impressum$
+    RewriteRule ^(.*)$ impressum.php [NC,L]
+    RewriteCond %{REQUEST_URI} ^/presse$
+    RewriteRule ^(.*)$ presse.php [NC,L]
+    RewriteCond %{REQUEST_URI} ^/datenschutz$
+    RewriteRule ^(.*)$ datenschutz.php [NC,L]
+    RewriteCond %{REQUEST_URI} ^/projekt$
+    RewriteRule ^(.*)$ projekt.php [NC,L]
 
-RewriteCond %{REQUEST_URI} ^/$
-RewriteRule ^.*$ /index.php [L]
+    # Rewrite für die Homepage
+    RewriteCond %{REQUEST_URI} ^/$
+    RewriteRule ^.*$ /index.php [L]
+</IfModule>
+
+
+
+########  2 - Error-Document (404)  ########
 
 ErrorDocument 404 /404.php
 
+
+
+########  3 - Page-Speed-Modul aktivieren (kann während Entw. ausgeschaltet werden)  ########
+
+<IfModule pagespeed_module>
+    ModPagespeed off
+</IfModule>
+
+
+
+########  4 - Cache-Optimierungen mit eTags  ########
+
+<FilesMatch "\.(ico|svg|png|gif|js|css|jpg|jpeg)">
+    <IfModule mod_expires.c>
+        ExpiresActive on
+        ExpiresDefault "access plus 7 days"
+        ExpiresDefault "access plus 2 months"
+    </IfModule>
+
+    # ... mit ETag
+    FileETag MTime Size
+    <IfModule mod_headers.c>
+        FileETag none
+        Header unset Last-Modified
+    </IfModule>
+</FilesMatch>

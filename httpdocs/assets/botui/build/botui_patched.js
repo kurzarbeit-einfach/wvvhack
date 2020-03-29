@@ -58,8 +58,8 @@
       var _botApp, // current vue instance.
       _options = {
         debug: false,
-        fontawesome: true,
-        searchselect: true
+        fontawesome: false,
+        searchselect: false
       },
       enableAutoFocus = false, // flag for disableing the first focus after page load
       _container, // the outermost Element. Needed to scroll to bottom, for now.
@@ -72,9 +72,9 @@
         italic: /\*(.+)\*/igm, // *text*
         bold: /_(.+)_/igm // _text_
       },
-      _fontAwesome = 'https://use.fontawesome.com/ea731dcb6f.js',
-      _esPromisePollyfill = 'https://cdn.jsdelivr.net/es6-promise/4.1.0/es6-promise.min.js', // mostly for IE
-      _searchselect =  "https://unpkg.com/vue-select@2.4.0/dist/vue-select.js";
+      _fontAwesome = '',
+      _esPromisePollyfill = '/assets/botui/build/es6-promise.min.js', // mostly for IE
+      _searchselect =  "";
   
       root.Vue = root.Vue || opts.vue;
   

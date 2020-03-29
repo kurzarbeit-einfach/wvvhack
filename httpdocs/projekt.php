@@ -71,6 +71,7 @@
                 <li>Anne Deremtz</li>
                 <li>Aline Kirchhoff</li>
                 <li>Feli</li>
+                <li>Maria Tsioka</li>
             </ul>
 
             <h2>Credits</h2>
