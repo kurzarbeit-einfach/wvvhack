@@ -15,7 +15,7 @@
 <script src="/assets/vuejs/vue.min.js"></script>
 <script src="/assets/botui/build/vue-select.js"></script>
 <script src="/assets/botui/build/botui_patched.js"></script> <!-- patched version!! -->
-<script src="/assets/conversation_beta.js"></script>
+<script src="/assets/conversation_beta.js?v=20200403a"></script>
 <?php endif; ?>
 
 <script src="/assets/jquery-3.4.1.min.js"></script>

@@ -13,7 +13,7 @@
                 <br/><br/>
             </p>
 
-            <h2>Promo-Viedo</h2>
+            <h2>Promo-Video</h2>
 
             <p><iframe width="560" height="315" src="https://www.youtube.com/embed/PHVYqSbUmw0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="max-width: 100%;"></iframe></p>
 
@@ -72,6 +72,7 @@
                 <li>Aline Kirchhoff</li>
                 <li>Feli</li>
                 <li>Maria Tsioka</li>
+                <li>Mia-Malaika Lange</li>
             </ul>
 
             <h2>Credits</h2>

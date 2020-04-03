@@ -1,0 +1,222 @@
+{
+  "startStepKey": "ersterSchritt",
+  "exitSteps": [
+    "ende_ohne_pdf"
+  ],
+  "steps": {
+    "ersterSchritt": {
+      "nextStepKeys": {
+        "default": "zweiterSchritt"
+      },
+      "type": "textAndInteraction",
+      "request": {
+        "msg": "message",
+        "hint": "hintText"
+      },
+      "interaction": {
+        "confirmButton": {
+          "defaultValue": null,
+          "required": true
+        }
+      }
+    },
+    "zweiterSchritt": {
+      "nextStepKeys": {
+        "default": "zweiterSchritt"
+      },
+      "type": "textAndInteraction",
+      "request": {
+        "msg": "Wieviele Beschäftigte hat dein Unternehmen?",
+        "hint": "Es zählen alle Beschäftigten und Leiharbeiter, außer Auszubildende."
+      },
+      "interaction": {
+        "textInput": {
+          "defaultValue": "Standard",
+          "required": false
+        }
+      }
+    },
+    "dritterSchritt": {
+      "nextStepKeys": {
+        "dritterSchrittA": "dritterSchrittA",
+        "value2": "dritterSchrittB"
+      },
+      "type": "textAndInteraction",
+      "request": {
+        "msg": "Wieviele Beschäftigte hat dein Unternehmen?",
+        "hint": "Es zählen alle Beschäftigten und Leiharbeiter, außer Auszubildende."
+      },
+      "interaction": {
+        "buttons": [
+          {
+            "icon": "building",
+            "text": "Gesamtes Unternehmen",
+            "value": "value1",
+            "nextStepKey": "dritterSchrittA"
+          },
+          {
+            "icon": "sitemap",
+            "text": "schoenerText",
+            "value": "value2",
+            "nextStepKey": "value2"
+          }
+        ]
+      }
+    },
+    "vierterSchritt": {
+      "nextStepKeys": {
+        "default": "neuterSchritt",
+        "toSmall": "achterSchrittA",
+        "toBit": "achterSchrittB"
+      },
+      "type": "textAndInteraction",
+      "request": {
+        "msg": "Betriebsnummer"
+      },
+      "interaction": {
+        "numberInput": {
+          "defaultValue": 1,
+          "minValue": -1,
+          "maxValue": 10,
+          "stepValue": 0.5,
+          "required": false,
+          "replyFunctionCall": {
+            "name": "functionToCall",
+            "parameter": {
+              "param1": "value1",
+              "param2": "value2"
+            }
+          },
+          "forwardFunctionCall": {
+            "name": "functionToCall",
+            "parameter": {
+              "param1": "achterSchritt",
+              "param2": "achterSchrittB",
+              "param3": "achterSchrittA"
+            }
+          }
+        }
+      }
+    },
+    "fuenfterSchritt": {
+      "nextStepKeys": {
+        "default": "siebterSchritt"
+      },
+      "type": "textAndInteraction",
+      "request": {
+        "msg": "Bis wann planst du die Reduzierung der Arbeitszeit?"
+      },
+      "interaction": {
+        "monthInputRelative": {
+          "minMonthFromRelative": 0,
+          "maxMonthFromRelative": 18,
+          "relative": "vierterSchritt"
+        }
+      }
+    },
+    "sechsterSchritt": {
+      "nextStepKeys": {
+        "default": "fünfterSchritt"
+      },
+      "type": "textAndInteraction",
+      "request": {
+        "msg": "Wieviele Beschäftigte hat dein Unternehmen?",
+        "hint": "Es zählen alle Beschäftigten und Leiharbeiter, außer Auszubildende."
+      },
+      "interaction": {
+        "monthInputRelative": {
+          "minMonthFromRelative": -1,
+          "maxMonthFromRelative": 6,
+          "relative": "TODO:nowNewFieldInState"
+        }
+      }
+    },
+    "siebterSchritt": {
+      "nextStepKeys": {
+        "default": "neuterSchritt",
+        "toSmall": "achterSchrittA",
+        "toBit": "achterSchrittB"
+      },
+      "type": "textAndInteraction",
+      "request": {
+        "msg": "Betriebsnummer"
+      },
+      "interaction": {
+        "numberInput": {
+          "defaultValue": 1,
+          "minValue": -1,
+          "maxValue": 10,
+          "stepValue": 0.5,
+          "required": false,
+          "replyFunctionCall": {
+            "name": "functionToCall",
+            "parameter": {
+              "param1": "value1",
+              "param2": "value2"
+            }
+          },
+          "forwardFunctionCall": {
+            "name": "functionToCall",
+            "parameter": {
+              "param1": "achterSchritt",
+              "param2": "achterSchrittB",
+              "param3": "achterSchrittA"
+            }
+          }
+        }
+      }
+    },
+    "achterSchritt": {
+      "nextStepKeys": {
+        "default": "achterSchritt",
+        "toShort": "siebterSchrittA",
+        "toLong": "siebterSchrittB"
+      },
+      "type": "textAndInteraction",
+      "request": {
+        "msg": "Wieviele Beschäftigte hat dein Unternehmen?",
+        "hint": "Es zählen alle Beschäftigten und Leiharbeiter, außer Auszubildende."
+      },
+      "interaction": {
+        "textInput": {
+          "defaultValue": "langerText",
+          "required": false,
+          "regExPattern": "[0-9]+",
+          "validations": [
+            {
+              "type": "minLength",
+              "length": 30,
+              "nextStepKey": "siebterSchrittA"
+            },
+            {
+              "type": "maxLength",
+              "length": 100,
+              "nextStepKey": "siebterSchrittB"
+            }
+          ]
+        }
+      }
+    },
+    "neunterSchritt": {
+      "nextStepKeys": {
+        "default": "ende_ohne_pdf"
+      },
+      "request": {
+        "msg": "Oups das geht ${param1} nicht ${adfasdf}?",
+        "param1": "${state.answers[\"valueKey\"]}",
+        "irgendeinname": "adfasdf",
+        "hint": "Es zählen alle Beschäftigten und Leiharbeiter, außer Auszubildende."
+      },
+      "interaction": {
+        "buttons": [
+          {
+            "icon": "building",
+            "text": "Gesamtes Unternehmen",
+            "value": "value1",
+            "nextStepKey": "ende_ohne_pdf"
+          }
+        ]
+      }
+    }
+  }
+}

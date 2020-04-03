@@ -1,0 +1,74 @@
+{
+  "startStepKey": "hallo",
+  "exitSteps": [
+    "ende_ohne_pdf"
+  ],
+  "steps": {
+    "hallo": {
+      "nextStepKeys": {
+        "default": "zweiterSchritt"
+      },
+      "type": "textAndInteraction",
+      "request": {
+        "msg": "Mit den Grundlagen kennst du dich jetzt aus. Lass uns anfangen, das Formular zur Einreichung bei der Bundesagentur für Arbeit gemeinsam auszufüllen. Dazu stelle ich dir eine Reihe von Fragen. Deine Antworten nutze ich, um die Formularfelder für dich zu füllen. Danach kannst du es herunterladen, prüfen, ggfs. anpassen und dann an die Agentur übertragen. Los geht's!",
+        "hint": "hintText"
+      },
+      "interaction": {
+        "confirmButton": {
+          "defaultValue": "Ich bin bereit",
+          "required": true
+        }
+      }
+    },
+    "anzahl_beschaeftigte": {
+      "nextStepKeys": {
+        "default": "anzahl_beschaeftigte_in_kurzarbeit",
+        "keine_beschaeftigte": "keine_beschaeftigte",
+        "anzahl_beschaeftigte_hoch": "anzahl_beschaeftigte_hoch"
+      },
+      "type": "textAndInteraction",
+      "request": {
+        "msg": "Wieviele Beschäftigte hat dein Unternehmen?",
+        "hint": "Einschließlich Auszubildender, geringfügig Beschäftigter (Mini-Job oder &quot;450 EUR&quot;-Job) und Leiharbeiter."
+      },
+      "interaction": {
+        "numberInput": {
+          "defaultValue": 1,
+          "minValue": -1,
+          "maxValue": 10,
+          "stepValue": 0.5,
+          "required": false,
+          "replyFunctionCall": {
+            "name": "responseHeadCount",
+            "parameter": {
+              "param1": "state.answers[\"anzahl_beschaeftigte\"]"
+            }
+          },
+          "forwardFunctionCall": {
+            "name": "forwardHeadCount",
+            "parameter": {
+              "param1": "state.answers[\"anzahl_beschaeftigte\"]",
+              "param2": "steps[\"anzahl_beschaeftigte\"]"
+            }
+          }
+        }
+      }
+    },
+    "keine_beschaeftigte": {
+      "nextStepKeys": {
+        "default": "ende_ohne_pdf"
+      },
+      "type": "textAndInteraction",
+      "request": {
+        "msg": "Für Unternehmen ohne Beschäftigte kann leider kein Geld für Kurzarbeit beantragt werden.",
+        "hint": "Es gibt andere Möglichkeiten. Schau' doch mal nach unter [taxy.io](https://www.taxy.io/corona-hilfe-fuer-unternehmen)^ oder [wir-bleiben-liqui.de](https://wir-bleiben-liqui.de/)^."
+      },
+      "interaction": {
+        "confirmButton": {
+          "defaultValue": "Ich bin bereit",
+          "required": true
+        }
+      }
+    }
+  }
+}

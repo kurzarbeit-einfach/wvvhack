@@ -2,12 +2,10 @@
 <html lang="de-DE">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="viewport" content="width=400, initial-scale=1.0, maximum-scale=1.0">
 
+    <title>UDO – Kurzarbeit beantragen. Einfach. Schnell.</title>
 
-    <title>U:DO – Kurzarbeit beantragen. Einfach. Schnell.</title>
-
-    <link href="https://fonts.googleapis.com/css?family=Raleway:400,700|Roboto:400,700,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/assets/botui/build/botui.min.css" />
     <link rel="stylesheet" href="/assets/botui/build/botui-theme-default.css" />
     <link rel="stylesheet" href="/assets/main.css">
@@ -32,21 +30,21 @@
     <meta name="theme-color" content="#71c9b8">
 
     <!-- Primary Meta Tags -->
-    <meta name="title" content="Kurzarbeit beantragen. Einfach. Schnell">
-    <meta name="description" content="Udo erklärt dir Kurzarbeit. Beantworte ihm einfache Fragen und er füllt dir das erforderliche Formular aus.">
+    <meta name="title" content="UDO – Kurzarbeit beantragen. Einfach. Schnell.">
+    <meta name="description" content="UDO erklärt dir Kurzarbeit. Beantworte ihm einfache Fragen und er füllt dir das erforderliche Formular aus.">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://kurzarbeit-einfach.de">
-    <meta property="og:title" content="Kurzarbeit beantragen. Einfach. Schnell">
-    <meta property="og:description" content="Udo erklärt dir Kurzarbeit. Beantworte ihm einfache Fragen und er füllt dir das erforderliche Formular aus.">
+    <meta property="og:title" content="UDO – Kurzarbeit beantragen. Einfach. Schnell.">
+    <meta property="og:description" content="UDO erklärt dir Kurzarbeit. Beantworte ihm einfache Fragen und er füllt dir das erforderliche Formular aus.">
     <meta property="og:image" content="https://kurzarbeit-einfach.de/assets/images/social.jpg">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://kurzarbeit-einfach.de">
-    <meta property="twitter:title" content="Kurzarbeit beantragen. Einfach. Schnell">
-    <meta property="twitter:description" content="Udo erklärt dir Kurzarbeit. Beantworte ihm einfache Fragen und er füllt dir das erforderliche Formular aus.">
+    <meta property="twitter:title" content="UDO – Kurzarbeit beantragen. Einfach. Schnell.">
+    <meta property="twitter:description" content="UDO erklärt dir Kurzarbeit. Beantworte ihm einfache Fragen und er füllt dir das erforderliche Formular aus.">
     <meta property="twitter:image" content="https://kurzarbeit-einfach.de/assets/images/social.jpg">
 
 </head>
@@ -66,8 +64,8 @@
         <section class="side">
             <div class="inner">
                 <h1>
-                    <img src="/assets/images/logo.svg" alt="U:DO – Kurzarbeit beantragen. Einfach. Schnell.">
-                    <span class="icon info tooltip" data-tooltip="U:DO ist ein im Rahmen des #wirvsvirushack entstandener Prototyp. Wir k&ouml;nnen nicht garantieren, dass er vollst&auml;ndig oder gar fehlerfrei ist."></span>
+                    <img src="/assets/images/logo.svg" alt="UDO – Kurzarbeit beantragen. Einfach. Schnell.">
+                    <span class="icon info tooltip" data-tooltip="UDO ist ein im Rahmen des #wirvsvirushack entstandener Prototyp. Wir k&ouml;nnen nicht garantieren, dass er vollst&auml;ndig oder gar fehlerfrei ist."></span>
                     <span class="prototype">...ist ein Prototyp</span>
                 </h1>
             </div>

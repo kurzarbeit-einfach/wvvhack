@@ -1,0 +1,65 @@
+{
+  "agenturFuerArbeitAnschrift" : "Anschrift der Agentur fuer Arbeit",
+  "stammNrKug" : "123456789",
+  "abteilungsNr" : "9876",
+  "betriebsNr" : "abcd",
+  "betriebsanschrift" : {
+    "nameAnschrift" : "Die WirVsVirus Hackathon GmbH + Co. KG\nAllee der widerstandsfähigen Rachenflora 42a\n12321 Porta Resistenzia",
+    "zusaetzlicheKontaktinfos" : "T: 024 123456\ninfo@wirvsvirushackathon.org"
+  },
+  "betriebsanschriftAnsprechpartner" : {
+    "nameAnschrift" : "Fr. Martina Mustermann",
+    "zusaetzlicheKontaktinfos" : "T: 024 123456-999\nmartina.marx@wirvsvirushackathon.org"
+  },
+  "lohnabrechnungsstelle" : {
+    "nameAnschrift" : "Lohnabrechnung des beständigen Immunsystems e.V.\nBazillengasse 69\n98789 Sankt Aspirin",
+    "zusaetzlicheKontaktinfos" : "T: 07898 654321\nmail@lar-immun.com"
+  },
+  "lohnabrechnungsstelleAnsprechpartner" : {
+    "nameAnschrift" : "Hr. Jean-Luc de la Santé",
+    "zusaetzlicheKontaktinfos" : "T: 07898 654321-555\njean-luc.delasante@lar-immun.com"
+  },
+  "branche" : "Die Mega-Branche",
+  "zeitraumVon" : {
+    "monat" : "April",
+    "jahr" : "2020"
+  },
+  "zeitraumBis" : {
+    "monat" : "Januar",
+    "jahr" : "2021"
+  },
+  "abteilungsBeschraenkung" : null,
+  "vollarbeitArbeitszeit" : "38,5",
+  "kurzarbeitArbeitszeit" : "20",
+  "unternehmenAelterAlsEinJahr" : true,
+  "unternehmenGruendungsdatum" : null,
+  "arbeiterTarifvertrag" : {
+    "bezeichnung" : "TV der fleißigen Arbeiter",
+    "normaleArbeitszeit" : "35,6",
+    "hatKurzarbeitKlausel" : "Ja"
+  },
+  "angestellteTarifvertrag" : {
+    "bezeichnung" : "TV der langsamen Angestellten",
+    "normaleArbeitszeit" : "24",
+    "hatKurzarbeitKlausel" : "Nein"
+  },
+  "tarifvertragHatAnkuendigungsfrist" : true,
+  "tarifvertragAnkuendigungZ1" : "tarifvertragAnkuendigungZ1",
+  "tarifvertragAnkuendigungZ2" : "tarifvertragAnkuendigungZ2",
+  "betriebNichtTarifgebunden" : true,
+  "betriebsratVorhanden" : false,
+  "kurzarbeitVereinbartDurchBetriebsvereinbarung" : false,
+  "kurzarbeitVereinbartDurchVereinbarungMitArbeitnehmern" : true,
+  "kurzarbeitVereinbartDurchAenderungskuendigung" : false,
+  "kurzarbeitVereinbartDurchAenderungskuendigungVereinbartAm" : null,
+  "kurzarbeitVereinbartDurchAenderungskuendigungWirksamZu" : null,
+  "kurzarbeitVereinbartDurchSonstiges" : true,
+  "kurzarbeitVereinbartAnmerkungen" : "durch konsequentes Beleidigen",
+  "anzahlArbeitnehmerInBetroffenerAbteilung" : "32",
+  "anzahlLeiharbeiterInBetroffenerAbteilung" : "16",
+  "anzahlArbeitnehmerMitEntgeltAusfall" : "24",
+  "angabenArbeitsausfall" : "Bitte entnehmen Sie die Angaben zum Arbeitsausfall der Anlage.",
+  "angabenArbeitsausfallAnlage" : "Es ist ja alles so furchtbar.\nIch bekomme keine Gummibäume mehr...\n...und mein Schaukelpferd ist jetzt auch in Quarantäne.",
+  "auchUeblicheUrsachenFuerAusfall" : false,
+  "ortDatum" : "Wuhan, 16.11.2019"
+}

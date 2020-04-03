@@ -3,7 +3,7 @@ var steps = [
         "id": "hallo",
         "render": () => {
             textAndInteraction(
-                "Mit den Grundlagen kennst du dich jetzt aus. Lass uns anfangen, das Formular zur Einreichung bei der Bundesagentur für Arbeit gemeinsam auszufüllen. Dazu stelle ich dir eine Reihe von Fragen. Deine Antworten nutze ich, um die Formularfelder für dich zu füllen. Danach kannst du es herunterladen, prüfen und dann an die Agentur übertragen. Los geht's!",
+                "Mit den Grundlagen kennst du dich jetzt aus. Lass uns anfangen, das Formular zur Einreichung bei der Bundesagentur für Arbeit gemeinsam auszufüllen. Dazu stelle ich dir eine Reihe von Fragen. Deine Antworten nutze ich, um die Formularfelder für dich zu füllen. Danach kannst du es herunterladen, prüfen, ggfs. anpassen und dann an die Agentur übertragen. Los geht's!",
                 () => createConfirmButton("anzahl_beschaeftigte", "Ich bin bereit")
             );
         }
@@ -14,13 +14,13 @@ var steps = [
             textAndInteraction(
                 "Wieviele Beschäftigte hat dein Unternehmen?",
                 () => {
-                    createIntegerInput(1, 0, null, 1, 1, false).then( (result) => { 
+                    createIntegerInput(state.answers["anzahl_beschaeftigte"] || 1, 0, null, 1, 1, false).then( (result) => { 
                         setCurrentAnswer(result.value);
 
                         if (result.value == 1) {
                             createTextMessage("Ich habe zur Zeit _einen Beschäftigten_.","",true);
                         } else {
-                            createTextMessage("Ich habe zur Zeit "+result.value+" Beschäftigte_.","",true);
+                            createTextMessage("Ich habe zur Zeit _"+result.value+" Beschäftigte_.","",true);
                         }
                         
                         if (result.value <= 0) {
@@ -32,7 +32,7 @@ var steps = [
                         }
                     });
                 },
-                "Es zählen alle Beschäftigten und Leiharbeiter, außer Auszubildende."
+                "Einschließlich Auszubildender, geringfügig Beschäftigter (Mini-Job oder &quot;450 EUR&quot;-Job) und Leiharbeiter."
             );
         }
     },
@@ -50,7 +50,7 @@ var steps = [
         "id": "anzahl_beschaeftigte_hoch",
         "render": () => {
             textAndInteraction(
-                "Wir haben diese Hilfe nicht für Unternehmen mit mehr als 50 Beschäftigten optimiert. Grundsätzlich empfehlen wir für Unternehmen mit entsprechender Größe Beratung in Anspruch zu nehmen. Möchtest du dennoch fortfahren?",
+                "Das tut mir leid; ich bin leider nicht gut für Unternehmen mit mehr als 50 Beschäftigten vorbereitet. Grundsätzlich empfehle ich Unternehmen mit entsprechender Größe professionelle Beratung in Anspruch zu nehmen. Möchtest du dennoch fortfahren?",
                 () => createYesNoButtons("anzahl_beschaeftigte_in_kurzarbeit", "ende_ohne_pdf", "Weiter", "Ende")
             );
         }
@@ -61,7 +61,7 @@ var steps = [
             textAndInteraction(
                 "Wieviele Beschäftigte sollen in Kurzarbeit gehen?",
                 () => {                    
-                    createIntegerInput(1, 0, state.answers["anzahl_beschaeftigte"], 1, true, false).then( (result) => { 
+                    createIntegerInput(state.answers["anzahl_beschaeftigte_in_kurzarbeit"] || 1, 0, state.answers["anzahl_beschaeftigte"], 1, true, false).then( (result) => { 
                         setCurrentAnswer(result.value);
 
                         if(result.value == 1)
@@ -77,7 +77,8 @@ var steps = [
                             renderStep("anzahl_wochenstunden_der_beschaeftigten_regulaer");
                         }
                     });
-                }
+                },
+		        "<ul><li>Fast alle betroffenen Mitarbeiter können Kurzarbeitergeld erhalten &ndash; auch zeitlich befristet angestellte Mitarbeiter.</li><li>Ausgenommen sind z.B. geringfügig Beschäftigte (Mini-Job oder &quot;450 EUR&quot;-Job), Auszubildende und schon gekündigte Mitarbeiter.</li></ul>"
             );
         }
     },
@@ -105,7 +106,7 @@ var steps = [
             textAndInteraction(
                 "Wieviele Stunden arbeiten deine Vollzeitbeschäftigten normalerweise pro Woche?",
                 () => {                    
-                    createIntegerInput(40, 1, null, 0.5, true, false).then( (result) => { 
+                    createIntegerInput(state.answers["anzahl_wochenstunden_der_beschaeftigten_regulaer"] || 40, 1, null, 0.5, true, false).then( (result) => { 
                         setCurrentAnswer(result.value);
 
                         if(result.value == 1)
@@ -123,9 +124,9 @@ var steps = [
         "id": "anzahl_wochenstunden_der_beschaeftigten_in_kurzarbeit",
         "render": () => {
             textAndInteraction(
-                "Wieviele Stunden pro Woche sollen diese Vollzeitbeschäftigten arbeiten während der Kurzarbeit?",
+                "Wieviele Stunden sollen diese Vollzeitbeschäftigten während der Kurzarbeit pro Woche arbeiten?",
                 () => {                    
-                    createIntegerInput(20, 0, state.answers["anzahl_wochenstunden_der_beschaeftigten_regulaer"], 1, true, false).then( (result) => { 
+                    createIntegerInput(state.answers["anzahl_wochenstunden_der_beschaeftigten_in_kurzarbeit"] || 20, 0, state.answers["anzahl_wochenstunden_der_beschaeftigten_regulaer"], 1, true, false).then( (result) => { 
                         setCurrentAnswer(result.value);
 
                         if (result.value == 0) {
@@ -187,7 +188,7 @@ var steps = [
                             renderStep("nicht_verursacht_durch_unabwendbares_ereignis_oder_wirtschaftlich");
                     });
                 },
-                "<ul><li>Unabwendbares Ereignis ist z.B. angeordnete Schließung wegen Corona.</li><li>Wirtschaftliche Ursache ist z.B. wegen Corona stornierter Großauftrag.</li></ul>"
+                "<ul><li>Ein unabwendbares Ereignis ist z.B. eine angeordnete Schließung zur Vorbeugung einer weiteren Ausbreitung der Corona-Pandemie.</li><li>Eine wirtschaftliche Ursache ist z.B. ein aufgrund der Corona-Krise stornierter Großauftrag.</li></ul>"
             );
         }
     },
@@ -195,7 +196,7 @@ var steps = [
         "id": "nicht_verursacht_durch_unabwendbares_ereignis_oder_wirtschaftlich",
         "render": () => {
             exitTextAndModifyQuestion(
-                `Die Voraussetzung für Kurzarbeit ist, dass der Arbeitsausfall auf einem unabwendbarem Ereignis basiert oder wirtschaftliche Ursachen hat.`,
+                `Die Voraussetzung für Kurzarbeit ist, dass der Arbeitsausfall auf einem unabwendbaren Ereignis basiert oder wirtschaftliche Ursachen hat.`,
                 "ist_verursacht_durch_unabwendbares_ereignis_oder_wirtschaftlich"
             );
         }
@@ -206,7 +207,7 @@ var steps = [
             textAndInteraction(
                 "Sind alle internen Maßnahmen zur Vermeidung von Kurzarbeit umgesetzt worden?",
                 () => createYesNoButtons("branche", "massnahmen_zur_vermeidung_sind_nicht_umgesetzt_worden", "Maßnahmen umgesetzt", "Nicht umgesetzt"),
-                "Beispiele: Resturlaub aufbrauchen, Überstunden abbauen, Versetzungen von Mitarbeitern"
+                "Beispiele: Resturlaub aufbrauchen, Überstunden abbauen, Mitarbeiter in andere Abteilungen versetzen"
             );
         }
     },
@@ -269,8 +270,8 @@ var steps = [
         "id": "besondere_branche",
         "render": () => {
             textAndInteraction(
-                "Für deine Branche gilt eine Sonderbehandlung in den Wintermonaten. Wir raten dir dazu weitere Beratung einzuholen. Möchtest du dennoch fortfahren?",
-                () => createYesNoButtons("ursachen_fuer_arbeitsausfall", "ende_ohne_pdf", "Weiter", "Ende")
+                "Für deine Branche gilt eine Sonderbehandlung in den Wintermonaten. Ich rate dir, dazu weitere Beratung einzuholen. Möchtest du dennoch fortfahren?",
+                () => createYesNoButtons("sektion_gruende", "ende_ohne_pdf", "Weiter", "Ende")
             );
         }
     },
@@ -280,11 +281,20 @@ var steps = [
             textAndInteraction(
                 "Um welche Branche handelt es sich?",
                 () => {
-                    createTextInput(null, true).then( (result) => { 
+                    createTextInput(state.answers["branche_freitext"] || null, true).then( (result) => { 
                         setCurrentAnswer(result.value);
-                        renderStep("ursachen_fuer_arbeitsausfall");
+                        renderStep("sektion_gruende");
                     });
                 }
+            );
+        }
+    },
+    {
+        "id": "sektion_gruende",
+        "render": () => {
+            textAndInteraction(
+                "Vielen Dank für diese ersten Informationen. Nun müssen wir der Agentur erklären, wie es zu deinem Arbeitsausfall gekommen ist. Hierzu stelle ich dir nun ein paar Fragen zu deinem Geschäft.",
+                () => createConfirmButton("ursachen_fuer_arbeitsausfall", "OK, verstanden")
             );
         }
     },
@@ -302,8 +312,7 @@ var steps = [
                             renderStep("angaben_zu_produkten_dienstleistungen_auftraggebern_und_auftragnehmern");
                         }
                     });
-                },
-                "Hier musst du deine individuellen Texte hinterlegen. Wir arbeiten daran, dies mit Standardtexten für typische Fälle zu vereinfachen."
+                }
             );
         }
     },
@@ -330,8 +339,7 @@ var steps = [
                             renderStep("angaben_zu_voruebergehender_natur_des_arbeitsausfalls");
                         }
                     });
-                },
-                "Hier musst du deine individuellen Texte hinterlegen. Wir arbeiten daran, dies mit Standardtexten für typische Fälle zu vereinfachen."
+                }
             );
         }
     },
@@ -358,8 +366,7 @@ var steps = [
                             renderStep("sektion_betriebsangaben");
                         }
                     });
-                },
-                "Hier musst du deine individuellen Texte hinterlegen. Wir arbeiten daran, dies mit Standardtexten für typische Fälle zu vereinfachen."
+                }
             );
         }
     },
@@ -376,9 +383,8 @@ var steps = [
         "id": "sektion_betriebsangaben",
         "render": () => {
             textAndInteraction(
-                "Super, dass du es bis hierhin geschafft hast. Als nächstes stellen wir dir einige Fragen rund um dein Unternehmen, damit wir für dich das Formular für die Bundesagentur für Arbeit vorbereiten können.",
-                () => createConfirmButton("betriebsnummer", "Weiter"),
-                "Ab hier folgen die typischen Formulareingaben. Leider muss das sein!"
+                "Super, dass du es bis hierhin geschafft hast. Als nächstes stelle ich dir einige Fragen rund um dein Unternehmen, damit ich für dich das Formular für die Bundesagentur für Arbeit vorbereiten kann.",
+                () => createConfirmButton("betriebsnummer", "Weiter")
             );
         }
     },
@@ -389,7 +395,7 @@ var steps = [
             textAndInteraction(
                 "Wie lautet die Betriebsnummer bei der Bundesagentur für Arbeit?",
                 () => {
-                    createTextInput("", 1, true, "[0-9]+").then( (result) => { 
+                    createTextInput(state.answers["betriebsnummer"] || "", 1, true, "[0-9]+").then( (result) => { 
                         setCurrentAnswer(result.value);
                         renderStep("betriebsname");
                     });
@@ -404,7 +410,7 @@ var steps = [
             textAndInteraction(
                 "Wie lautet der Name deines Unternehmens?",
                 () => {
-                    createTextInput(null, true).then( (result) => { 
+                    createTextInput(state.answers["betriebsname"] || null, true).then( (result) => { 
                         setCurrentAnswer(result.value);
                         renderStep("betriebsadresse");
                     });
@@ -418,7 +424,7 @@ var steps = [
             textAndInteraction(
                 "Wie lautet die Straße und Hausnummer deines Unternehmens?",
                 () => {
-                    createTextInput(null, true).then( (result) => { 
+                    createTextInput(state.answers["betriebsadresse"] || null, true).then( (result) => { 
                         setCurrentAnswer(result.value);
                         renderStep("betriebsort");
                     });
@@ -432,7 +438,7 @@ var steps = [
             textAndInteraction(
                 "Wie lautet die PLZ und der Ort deines Unternehmens?",
                 () => {
-                    createTextInput(null, true).then( (result) => { 
+                    createTextInput(state.answers["betriebsort"] || null, true).then( (result) => { 
                         setCurrentAnswer(result.value);
                         renderStep("betriebsansprechpartner");
                     });
@@ -446,7 +452,7 @@ var steps = [
             textAndInteraction(
                 "Wer ist der richtige Ansprechpartner in deinem Unternehmen?",
                 () => {
-                    createTextInput(null, true).then( (result) => { 
+                    createTextInput(state.answers["betriebsansprechpartner"] || null, true).then( (result) => { 
                         setCurrentAnswer(result.value);
                         renderStep("betriebskontakt");
                     });
@@ -458,9 +464,9 @@ var steps = [
         "id": "betriebskontakt",
         "render": () => {
             textAndInteraction(
-                "Wie kann der Ansprechpartner für dein Unternehmen kontaktiert werden?",
+                "Wie kann dieser Ansprechpartner kontaktiert werden?",
                 () => {
-                    createTextInput(null, true).then( (result) => { 
+                    createTextInput(state.answers["betriebskontakt"] || null, true).then( (result) => { 
                         setCurrentAnswer(result.value);
                         renderStep("hat_abweichende_lohnabrechnungsstelle");
                     });
@@ -485,7 +491,7 @@ var steps = [
             textAndInteraction(
                 "Welches Unternehmen übernimmt für dein Unternehmen die Lohnbuchhaltung?",
                 () => {
-                    createTextInput(null, true).then( (result) => { 
+                    createTextInput(state.answers["lohnabrechnungsstellenname"] || null, true).then( (result) => { 
                         setCurrentAnswer(result.value);
                         renderStep("lohnabrechnungsstellenadresse");
                     });
@@ -499,7 +505,7 @@ var steps = [
             textAndInteraction(
                 "Wie lautet die Straße und Hausnummer deiner Lohnbuchhaltung?",
                 () => {
-                    createTextInput(null, true).then( (result) => { 
+                    createTextInput(state.answers["lohnabrechnungsstellenadresse"] || null, true).then( (result) => { 
                         setCurrentAnswer(result.value);
                         renderStep("lohnabrechnungsstellenort");
                     });
@@ -513,7 +519,7 @@ var steps = [
             textAndInteraction(
                 "Wie lautet die PLZ und der Ort deiner Lohnbuchhaltung?",
                 () => {
-                    createTextInput(null, true).then( (result) => { 
+                    createTextInput(state.answers["lohnabrechnungsstellenort"] || null, true).then( (result) => { 
                         setCurrentAnswer(result.value);
                         renderStep("lohnabrechnungsstellenansprechpartner");
                     });
@@ -527,7 +533,7 @@ var steps = [
             textAndInteraction(
                 "Wer ist der richtige Ansprechpartner für deine Lohnbuchhaltung?",
                 () => {
-                    createTextInput(null, true).then( (result) => { 
+                    createTextInput(state.answers["lohnabrechnungsstellenansprechpartner"] || null, true).then( (result) => { 
                         setCurrentAnswer(result.value);
                         renderStep("lohnabrechnungsstellenkontakt");
                     });
@@ -541,7 +547,7 @@ var steps = [
             textAndInteraction(
                 "Wie kann der Ansprechpartner deiner Lohnbuchhaltung kontaktiert werden?",
                 () => {
-                    createTextInput(null, true).then( (result) => { 
+                    createTextInput(state.answers["lohnabrechnungsstellenkontakt"] || null, true).then( (result) => { 
                         setCurrentAnswer(result.value);
                         renderStep("arbeitzeitreduzierung_von");
                     });
@@ -567,7 +573,7 @@ var steps = [
                         });
                     }
 
-                    createSelect(options, getDateYearAndMonth(date)).then( (result) => { 
+                    createSelect(options, state.answers["arbeitzeitreduzierung_von"] || options[1].value).then( (result) => { 
                         setCurrentAnswer(result.value);
                         renderStep("arbeitzeitreduzierung_bis");
                     });
@@ -585,21 +591,28 @@ var steps = [
                     const options = [];
                     const fromDateStr = state.answers["arbeitzeitreduzierung_von"];
                     let onOrAfterFromDate = false;
+                    let defaultValue = null;
                     for (let i=-1; i<18; i++) {
                         const curDateStr = getDateYearAndMonth(createDateShiftedByNumberOfMonths(date, i));
                         if (curDateStr === fromDateStr) {
                             onOrAfterFromDate = true;
                         }
 
-                        if (onOrAfterFromDate) {
+                        const isMinimumOneMonthInFuture = i >= 1;
+
+                        if (isMinimumOneMonthInFuture && onOrAfterFromDate) {
                             options.push({
                                 value: curDateStr,
                                 text: curDateStr
                             });
+
+                            if (defaultValue === null) {
+                                defaultValue = curDateStr;
+                            }
                         }
                     }
 
-                    createSelect(options, state.answers["arbeitzeitreduzierung_von"]).then( (result) => { 
+                    createSelect(options, state.answers["arbeitzeitreduzierung_bis"] || defaultValue).then( (result) => { 
                         setCurrentAnswer(result.value);
                         renderStep("arbeitzeitreduzierung_fuer");
                     });
@@ -644,7 +657,7 @@ var steps = [
             textAndInteraction(
                 "Für welche Abteilung gilt die Kurzarbeit?",
                 () => {
-                    createTextInput(null, true).then( (result) => { 
+                    createTextInput(state.answers["arbeitzeitreduzierung_fuer_abteilung"] || null, true).then( (result) => { 
                         setCurrentAnswer(result.value);
                         renderStep("besteht_unternehmen_laenger_als_1_jahr");
                     });
@@ -677,7 +690,7 @@ var steps = [
                         });
                     }
 
-                    createSelect(options, getDateYearAndMonth(date)).then( (result) => { 
+                    createSelect(options, state.answers["betriebsgruendung"] || getDateYearAndMonth(date)).then( (result) => { 
                         setCurrentAnswer(result.value);
                         renderStep("gibt_es_eines_tarifvertrag");
                     });
@@ -685,22 +698,174 @@ var steps = [
             );
         }
     },
-    // TODO: Sollten wir diese Exit-Frage nicht weiter nach oben ziehen?
+
     {
         "id": "gibt_es_eines_tarifvertrag",
         "render": () => {
             textAndInteraction(
-                "Hat dein Unternehmen einen Tarifvertrag?",
-                () => createYesNoButtons("hat_tarifvertrag", "gibt_es_einen_betriebsrat", "Tarifvertrag existiert", "Kein Tarifvertrag")
+                "Gilt für deine Beschäftigten ein Tarifvertrag?",
+                () => createYesNoButtons("gibt_es_arbeiter_und_angestellte", "gibt_es_einen_betriebsrat", "Tarifvertrag vorhanden", "Kein Tarifvertrag")
             );
         }
     },    
     {
-        "id": "hat_tarifvertrag",
+        "id": "gibt_es_arbeiter_und_angestellte",
         "render": () => {
-            exitTextAndModifyQuestion(
-                "Diese Hilfe wurde nicht für Unternehmen mit einem Tarifvertrag optimiert. Wir empfehlen dir Rat eines Experten einzuholen.",
-                "gibt_es_eines_tarifvertrag"
+            textAndInteraction(
+                "In meinem Unternehmen gelten Tarifverträge...",
+                () => {
+                    botui.action.button({
+                        action: [
+                            {
+                                icon: 'wrench',
+                                text: '...nur für Arbeiter',
+                                value: 'nur_arbeiter'
+                            },
+                            {
+                                icon: 'briefcase',
+                                text: '...nur für Angestellte',
+                                value: 'nur_angestellte'
+                            },
+                            {
+                                icon: 'building',
+                                text: '...für Arbeiter und Angestellte',
+                                value: 'beides'
+                            }
+                        ]               
+                    }).then( (res) => {
+                        setCurrentAnswer(res.value);
+                        if (res.value === 'nur_arbeiter') {
+                            renderStep("wie_heisst_tarifvertrag_fuer_arbeiter");
+                        } else if (res.value === 'nur_angestellte') {
+                            renderStep("wie_heisst_tarifvertrag_fuer_angestellte");
+                        } else {
+                            renderStep("wie_heisst_tarifvertrag_fuer_arbeiter");
+                        }
+                    });
+                },
+                "Mehr zur Unterscheidung zwischen Arbeitern und Angestellten findest du [hier](https://www.dbb.de/lexikon/themenartikel/a/angestellte-und-arbeiter.html)^."
+            );
+        }
+    },
+    {
+        "id": "wie_heisst_tarifvertrag_fuer_arbeiter",
+        "render": () => {
+            textAndInteraction(
+                "Wie heißt der Tarifvertrag für die Arbeiter?",
+                () => {
+                    createTextInput(state.answers["wie_heisst_tarifvertrag_fuer_arbeiter"] || null, true).then( (result) => { 
+                        setCurrentAnswer(result.value);
+                        renderStep("wieviele_regulaere_wochenstunden_hat_tarifvertrag_fuer_arbeiter");
+                    });
+                },
+                "Beispiel: Entgelt- und Manteltarifvertrag für die Systemgastronomie."
+            );
+        }
+    },
+    {
+        "id": "wieviele_regulaere_wochenstunden_hat_tarifvertrag_fuer_arbeiter",
+        "render": () => {
+            textAndInteraction(
+                "Wie viele Stunden Wochenarbeitszeit sind für die Arbeiter (Vollzeit) laut Tarifvertrag vereinbart?",
+                () => {                    
+                    createIntegerInput(state.answers["wieviele_regulaere_wochenstunden_hat_tarifvertrag_fuer_arbeiter"] || 40, 1, null, 0.5).then( (result) => { 
+                        setCurrentAnswer(result.value);                           
+                        renderStep("tarifvertrag_fuer_arbeiter_enthaelt_kurzarbeitsklausel");
+                    });
+                }
+            );
+        }
+    },
+    {
+        "id": "tarifvertrag_fuer_arbeiter_enthaelt_kurzarbeitsklausel",
+        "render": () => {
+            textAndInteraction(
+                "Enthält der Tarifvertrag für die Arbeiter eine Kurzarbeitsklausel?",
+                () => {
+                    botui.action.button({
+                        action: [
+                            {
+                                icon: 'check',
+                                text: "Kurzarbeitsklausel vorhanden",
+                                value: true
+                            },
+                            {
+                                icon: 'times',
+                                text: "Keine Kurzarbeitsklausel",
+                                value: false
+                            }
+                        ]               
+                    }).then( (res) => {
+                        setCurrentAnswer(res.value);
+
+                        if (state.answers["gibt_es_arbeiter_und_angestellte"] === "nur_arbeiter") {
+                            renderStep("hat_tarifvertrag_ankuendigungsfrist");
+                        } else {
+                            renderStep("wie_heisst_tarifvertrag_fuer_angestellte");
+                        }
+                    });
+                }
+            );
+        }
+    },
+    {
+        "id": "wie_heisst_tarifvertrag_fuer_angestellte",
+        "render": () => {
+            textAndInteraction(
+                "Wie heißt der Tarifvertrag für Angestellte?",
+                () => {
+                    createTextInput(state.answers["wie_heisst_tarifvertrag_fuer_angestellte"] || null, true).then( (result) => { 
+                        setCurrentAnswer(result.value);
+                        renderStep("wieviele_regulaere_wochenstunden_hat_tarifvertrag_fuer_angestellte");
+                    });
+                },
+                "Beispiel: Entgelt- und Manteltarifvertrag für die Systemgastronomie."
+            );
+        }
+    },
+    {
+        "id": "wieviele_regulaere_wochenstunden_hat_tarifvertrag_fuer_angestellte",
+        "render": () => {
+            textAndInteraction(
+                "Wie viele Stunden Wochenarbeitszeit sind für Angestellte (Vollzeit) laut Tarifvertrag vereinbart?",
+                () => {                    
+                    createIntegerInput(state.answers["wieviele_regulaere_wochenstunden_hat_tarifvertrag_fuer_angestellte"] || 40, 1, null, 0.5).then( (result) => { 
+                        setCurrentAnswer(result.value);                           
+                        renderStep("tarifvertrag_fuer_angestellte_enthaelt_kurzarbeitsklausel");
+                    });
+                }
+            );
+        }
+    },
+    {
+        "id": "tarifvertrag_fuer_angestellte_enthaelt_kurzarbeitsklausel",
+        "render": () => {
+            textAndInteraction(
+                "Enthält der Tarifvertrag für Angestellte eine Kurzarbeitsklausel?",
+                () => createYesNoButtons("hat_tarifvertrag_ankuendigungsfrist", "hat_tarifvertrag_ankuendigungsfrist", "Kurzarbeitsklausel vorhanden", "Keine Kurzarbeitsklausel")
+            );
+        }
+    },
+    {
+        "id": "hat_tarifvertrag_ankuendigungsfrist",
+        "render": () => {
+            textAndInteraction(
+                "Sieht der Tarifvertrag eine Ankündigungsfrist zur Einführung der Kurzarbeit vor?",
+                () => createYesNoButtons("beschreibung_ankuendigungsfrist", "gibt_es_einen_betriebsrat", "Ankündigungsfrist vorgesehen", "Keine Ankündigungsfrist")
+            );
+        }
+    },
+    {
+        "id": "beschreibung_ankuendigungsfrist",
+        "render": () => {
+            textAndInteraction(
+                "Wie lang ist die Ankündigungsfrist?",
+                () => {
+                    createTextInput(state.answers["beschreibung_ankuendigungsfrist"] || null, true).then( (result) => { 
+                        setCurrentAnswer(result.value);
+                        renderStep("gibt_es_einen_betriebsrat");
+                    });
+                }
             );
         }
     },
@@ -712,7 +877,7 @@ var steps = [
                 () => createYesNoButtons("wurde_kurzarbeit_vereinbart", "wurde_kurzarbeit_vereinbart", "Betriebsrat existiert", "Kein Betriebsrat")
             );
         }
-    },    
+    },
     {
         "id": "wurde_kurzarbeit_vereinbart",
         "render": () => {
@@ -782,7 +947,7 @@ var steps = [
                         defaultValue = "Per Betriebsvereinbarung";
                     }
 
-                    createSelect(options, defaultValue).then( (result) => { 
+                    createSelect(options, state.answers["wie_wurde_vereinbart"] || defaultValue).then( (result) => { 
                         setCurrentAnswer(result.value);
                         renderStep("wann_wurde_vereinbart");
                     });
@@ -796,12 +961,12 @@ var steps = [
             textAndInteraction(
                 "Wann wurde die Vereinbarung getroffen?",
                 () => {
-                    createDateInput().then( (result) => { 
+                    createDateInput(state.answers["wann_wurde_vereinbart"] || null).then( (result) => { 
                         setCurrentAnswer(result.value);
                         renderStep("wieviele_leiharbeiter_in_gesamtbetrieb_bzw_betriebsabteilung");
                     });
                 },
-		"Sollten Vereinbarungen an verschiedenen Daten abgeschlossen worden sein, so kannst du hier das letzte Datum wählen."
+		"Sollten Vereinbarungen an verschiedenen Tagen abgeschlossen worden sein, so kannst du hier das spätere Datum wählen."
             );
         }
     },
@@ -811,7 +976,7 @@ var steps = [
             textAndInteraction(
                 "Wieviele Leiharbeiter beschäftigst du in deinem Unternehmen bzw. in der betroffenen Abteilung?",
                 () => {
-                    createIntegerInput("0", 0, state.answers["anzahl_beschaeftigte"],1,false).then( (result) => { 
+                    createIntegerInput(state.answers["wieviele_leiharbeiter_in_gesamtbetrieb_bzw_betriebsabteilung"] || "0", 0, state.answers["anzahl_beschaeftigte"],1,false).then( (result) => { 
                         setCurrentAnswer(result.value);
                         renderStep("ist_arbeitsausfall_massgeblich_branchenueblich_betriebsueblich_oder_saisonbedingt");
                     });
@@ -860,7 +1025,7 @@ var steps = [
         "id": "pdf_erstellung",
         "render": () => {
             textAndInteraction(
-                "Das war's! Wir haben alle notwendigen Informationen von dir erhalten und erstellen nun das Anzeigeformular. Bitte habe einen Moment Geduld.",
+                "Das war's! Ich habe jetzt alle notwendigen Informationen von dir erhalten und erstelle nun das Anzeigeformular. Bitte habe einen Moment Geduld.",
                 () => {
                     preLoadPdf();
                     showLastPageWithPdfDownload();
@@ -872,7 +1037,7 @@ var steps = [
         "id": "ende_ohne_pdf",
         "render": () => {
             botui.message.add({
-                content: 'Vielen Dank, dass du unsere Hilfe genutzt hast. Falls du weitere Ideen zur Verbesserung dieses Angebots hast, dann freuen wir uns riesig, wenn du uns unter hallo@kurzarbeit-einfach.de schreibst.',
+                content: 'Vielen Dank, dass du meine Hilfe genutzt hast. Falls du Ideen zur Verbesserung dieses Angebots hast, dann freue ich mich sehr, wenn du mir eine E-Mail an hallo@kurzarbeit-einfach.de schickst.',
                 hint_content: "Es gibt andere Möglichkeiten. Schau' doch mal nach unter [taxy.io](https://www.taxy.io/corona-hilfe-fuer-unternehmen)^ oder [wir-bleiben-liqui.de](https://wir-bleiben-liqui.de/)^.",
                 human: false
             });
@@ -891,18 +1056,22 @@ var state = {
  */
 function renderStep(stepId) {
 
-    if(stepId === null)
-    {        
+    if (stepId === null) {        
         return;
     }
 
     var matchingSteps = steps.filter((v) => {return v.id === stepId});
 
-    if(matchingSteps.length > 0)
-    {
+    if(matchingSteps.length > 0) {
         state.currentStep = stepId;
         state.path.push(stepId);
-        matchingSteps[0].render();
+        matchingSteps[0].render();        
+        
+        if (state.path.length > 2) {
+            $('#backButton').show();
+        } else {
+            $('#backButton').hide();
+        }
     }
 };
 
@@ -952,6 +1121,30 @@ function restartConversation(step = "hallo")
     state.answers = {};
     state.path = [];
     renderStep(step);
+}
+
+function goBack()
+{
+    // second last element holds the step id of the previous question
+    const stepId = state.path[state.path.length-2];
+
+    // remove everything until there from the path
+    state.path = state.path.slice(0, -2);
+
+    // now let the conversation continue by showing the user wants to see the previous question
+    // followed by the previous step.
+    botui.message.add({
+        content: "Vorherige Frage nochmal",
+        human: true
+    }).then((res) => {
+        // This is a "trick" to force botui to close it's potentially existing button actions from the
+        // current step before moving on to the previous step. Otherwise botui does not re-render the
+        // buttons with those from the previous step.
+
+        // TODO: Investigate why botui does not re-render button actions when calling botui.action.button(...) multiple times in a row without user interacting in-between
+        botui.action.hide();
+        renderStep(stepId);
+    });
 }
 
 function createTextMessage(msg,hint="",human=false)
@@ -1097,7 +1290,9 @@ function createSelect(options,defaultValue=null,placeholder="Bitte wählen...",s
 function createDateShiftedByNumberOfMonths(date, monthOffset)
 {
     const dateCopy = new Date(date.getTime());
-    return new Date(dateCopy.setMonth(dateCopy.getMonth() + monthOffset));
+    dateCopy.setDate(1);
+    dateCopy.setMonth(dateCopy.getMonth() + monthOffset);
+    return dateCopy;
 }
 
 function getDateYearAndMonth(date)
@@ -1126,7 +1321,15 @@ function getPdfDataFromState() {
   	var begruendung = "";
   	begruendung += "** Was sind die Ursachen für den Arbeitsausfall?\n"+a.ursachen_fuer_arbeitsausfall+"\n\n";
   	begruendung += "** Welche Produkte / Dienstleistungen werden angeboten?\n"+a.angaben_zu_produkten_dienstleistungen_auftraggebern_und_auftragnehmern+"\n\n";
-  	begruendung += "** Warum ist der Arbeitsausfall vorübergehender Natur?\n"+a.angaben_zu_voruebergehender_natur_des_arbeitsausfalls+"\n\n";
+    begruendung += "** Warum ist der Arbeitsausfall vorübergehender Natur?\n"+a.angaben_zu_voruebergehender_natur_des_arbeitsausfalls+"\n\n";
+
+    var tarifvertragAnkuendigungZeile1 = "";
+    var tarifvertragAnkuendigungZeile2 = "";
+    if (typeof a.beschreibung_ankuendigungsfrist !== "undefined") {
+        var lines = splitStrIntoLines(a.beschreibung_ankuendigungsfrist, 90);
+        tarifvertragAnkuendigungZeile1 = lines[0];
+        tarifvertragAnkuendigungZeile2 = lines.length > 1 ? lines.slice(1).join(" ") : "";
+    }    
 
     return {
         "agenturFuerArbeitAnschrift" : "", // leave empty
@@ -1166,16 +1369,18 @@ function getPdfDataFromState() {
         "unternehmenAelterAlsEinJahr": a.besteht_unternehmen_laenger_als_1_jahr,
         "unternehmenGruendungsdatum": a.besteht_unternehmen_laenger_als_1_jahr === true ? "" : a.betriebsgruendung,
         "arbeiterTarifvertrag": {
-            "bezeichnung": "",							//Hardcoded!
-            "normaleArbeitszeit": "",					//Hardcoded!
-            "hatKurzarbeitKlausel": ""					//Hardcoded!
+            "bezeichnung": typeof a.wie_heisst_tarifvertrag_fuer_arbeiter !== "undefined" ? a.wie_heisst_tarifvertrag_fuer_arbeiter : "",
+            "normaleArbeitszeit": typeof a.wieviele_regulaere_wochenstunden_hat_tarifvertrag_fuer_arbeiter !== "undefined" ? a.wieviele_regulaere_wochenstunden_hat_tarifvertrag_fuer_arbeiter : "",
+            "hatKurzarbeitKlausel": typeof a.tarifvertrag_fuer_arbeiter_enthaelt_kurzarbeitsklausel !== "undefined" ? (a.tarifvertrag_fuer_arbeiter_enthaelt_kurzarbeitsklausel === true ? "Ja" : "Nein") : ""
         },
         "angestellteTarifvertrag": {
-            "bezeichnung": "",							//Hardcoded!
-            "normaleArbeitszeit": "",					//Hardcoded!
-            "hatKurzarbeitKlausel": ""					//Hardcoded!
+            "bezeichnung": typeof a.wie_heisst_tarifvertrag_fuer_angestellte !== "undefined" ? a.wie_heisst_tarifvertrag_fuer_angestellte : "",
+            "normaleArbeitszeit": typeof a.wieviele_regulaere_wochenstunden_hat_tarifvertrag_fuer_angestellte !== "undefined" ? a.wieviele_regulaere_wochenstunden_hat_tarifvertrag_fuer_angestellte : "",
+            "hatKurzarbeitKlausel": typeof a.tarifvertrag_fuer_angestellte_enthaelt_kurzarbeitsklausel !== "undefined" ? (a.tarifvertrag_fuer_angestellte_enthaelt_kurzarbeitsklausel === true ? "Ja" : "Nein") : ""
         },
-        "tarifvertragHatAnkuendigungsfrist": false,		//Hardcoded!
+        "tarifvertragHatAnkuendigungsfrist": a.hat_tarifvertrag_ankuendigungsfrist,
+        "tarifvertragAnkuendigungZ1" : tarifvertragAnkuendigungZeile1,
+        "tarifvertragAnkuendigungZ2" : tarifvertragAnkuendigungZeile2,
         "betriebNichtTarifgebunden": !a.gibt_es_eines_tarifvertrag,
         "betriebsratVorhanden": a.gibt_es_einen_betriebsrat,
         "kurzarbeitVereinbartDurchBetriebsvereinbarung": (a.wie_wurde_vereinbart == 'Per Betriebsvereinbarung'),
@@ -1183,8 +1388,8 @@ function getPdfDataFromState() {
         "kurzarbeitVereinbartDurchAenderungskuendigung": (a.wie_wurde_vereinbart == 'Per Änderungskündigung'),
         "kurzarbeitVereinbartDurchAenderungskuendigungVereinbartAm": parseYmdDateStrIntoLocalDateStr(a.wann_wurde_vereinbart),
         "kurzarbeitVereinbartDurchAenderungskuendigungWirksamZu": parseYmdDateStrIntoLocalDateStr(a.wann_wurde_vereinbart),    // Same as vereinbarung / make it less complex
-      	"kurzarbeitVereinbartDurchSonstiges": (a.wie_wurde_vereinbart == 'Per Arbeitsvertrag'),	//Hardcoded!
-        "kurzarbeitVereinbartAnmerkungen": (a.wie_wurde_vereinbart == 'Per Arbeitsvertrag' ? "Im Arbeitsvertrag vereinbart." : ""),			//Hardcoded!
+      	"kurzarbeitVereinbartDurchSonstiges": (a.wie_wurde_vereinbart == 'Per Arbeitsvertrag'),
+        "kurzarbeitVereinbartAnmerkungen": (a.wie_wurde_vereinbart == 'Per Arbeitsvertrag' ? "Im Arbeitsvertrag vereinbart." : ""),
         "anzahlArbeitnehmerInBetroffenerAbteilung": a.anzahl_beschaeftigte,
         "anzahlLeiharbeiterInBetroffenerAbteilung": a.wieviele_leiharbeiter_in_gesamtbetrieb_bzw_betriebsabteilung,
         "anzahlArbeitnehmerMitEntgeltAusfall": a.anzahl_beschaeftigte_in_kurzarbeit,
@@ -1195,6 +1400,30 @@ function getPdfDataFromState() {
         "path": state.path
     };
 };
+
+/**
+ * Splits a given text into lines where each line has a max length specified.
+ */
+function splitStrIntoLines(text, maxLineLength)
+{
+    var rows = [];
+    var arrOfWords = text.split(" ");
+    var curRow = arrOfWords[0];
+    var curRowLength = curRow.length;
+    for (var i = 1; i < arrOfWords.length; i++) {
+        var word = arrOfWords[i];
+        curRowLength += word.length + 1;
+        if (curRowLength <= maxLineLength) {
+            curRow += " " + word;
+        } else {
+            rows.push(curRow);
+            curRow = word;
+            curRowLength = word.length;
+        }
+    }
+    rows.push(curRow);
+    return rows;
+}
 
 function parseYmdDateStrIntoLocalDateStr(str)
 {
@@ -1269,7 +1498,7 @@ function downloadPdf()
 var botui = new BotUI('my-botui-app');
 
 function runBot()
-{    
+{
     restartConversation();
 }
 
@@ -1286,5 +1515,3 @@ function unblockUi()
         jQuery('#ui_blocker').remove();
     });
 }
-
-

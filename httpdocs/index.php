@@ -3,12 +3,12 @@
 <div class="container hero">
     <div class="inner">
         <h2>
-            Kurzarbeitergeld beantragen.<br> 
+            UDO – Kurzarbeit beantragen.<br>
             Einfach. Schnell.
         </h2>
         
         <p>
-            Du bist durch die CORONA-Krise mit deinem Unternehmen unverschuldet in Schieflage geraten? Kurzarbeit kann dir durch Kostenersparnis helfen, diese Krise zu überstehen. Der Weg zur Bewilligung war bisher kompliziert. Doch das muss nicht so sein! <b>U:DO begleitet dich  durch den gesamten Prozess:</b>
+            Du bist durch die CORONA-Krise mit deinem Unternehmen unverschuldet in Schieflage geraten? Kurzarbeit kann dir durch Kostenersparnis helfen, diese Krise zu überstehen. Der Weg zur Bewilligung war bisher kompliziert. Doch das muss nicht so sein! <b>UDO begleitet dich  durch den gesamten Prozess:</b>
         </p>  
 
         <div class="grid">
@@ -155,7 +155,7 @@
                 <span class="stepLabelInner">Vereinbare Kurzarbeit mit deinen Mitarbeitern. In manchen Fällen ist dies schon direkt im Arbeitsvertrag geschehen. Ansonsten kann man es auch nachträglich vereinbaren. Wenn es einen Betriebsrat gibt, dann brauchst du eine Betriebsvereinbarung.</span>
                 <br><br>
                 <span class="highlightStep">
-                    <span class="stepLabel stepLabelPrioLeft">Schritt 2</span><span class="stepLabel stepLabelPrioRight">Hier hilft U:DO</span><br/>
+                    <span class="stepLabel stepLabelPrioLeft">Schritt 2</span><span class="stepLabel stepLabelPrioRight">Hier hilft UDO</span><br/>
                     <span class="stepLabelInner">
                         Zeige der Arbeitsagentur an, dass deine Mitarbeiter Arbeits- und Lohnausfall haben und Kurzarbeitergeld erhalten möchten. Im Normalfall erhältst du innerhalb weniger Tage die Rückmeldung, ob du mit der Zahlung von Kurzabeitergeld rechnen kannst.<br/>
                         <span class="pullRight"><button class="next conversation" data-target="conversation">Weiter <b>zur Fragerunde</b></button></span>
@@ -179,13 +179,12 @@
 
 <div class="container conversation">
     <div class="inner">
-        <!--
-            BU, 26.03.
-            <h2>Formular zur Anzeige von Kurzarbeit - U:DO hilft dir!</h2>
--->
         <h2>Formular zur Anzeige von Kurzarbeitergeld &ndash; ich helfe dir dabei!</h2>
         <div id="my-botui-app">
             <bot-ui></bot-ui>
+            <div id="backButton" style="text-align: right; margin-top: 15px; display: none;">
+                <a href="#" onclick="goBack(); return false;" style="font-size: 15px;">Vorherige Frage nochmal</a>
+            </div>
         </div>
     </div>
 </div>

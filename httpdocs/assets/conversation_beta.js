@@ -14,7 +14,7 @@ var steps = [
             textAndInteraction(
                 "Wieviele Beschäftigte hat dein Unternehmen?",
                 () => {
-                    createIntegerInput(1, 0, null, 1, 1, false).then( (result) => { 
+                    createIntegerInput(state.answers["anzahl_beschaeftigte"] || 1, 0, null, 1, 1, false).then( (result) => { 
                         setCurrentAnswer(result.value);
 
                         if (result.value == 1) {
@@ -26,7 +26,7 @@ var steps = [
                         if (result.value <= 0) {
                             renderStep("keine_beschaeftigte");
                         } else if(result.value <= 50) {
-                            renderStep("anzahl_beschaeftigte_in_kurzarbeit");
+                            renderStep("arbeitzeitreduzierung_fuer");
                         } else {
                             renderStep("anzahl_beschaeftigte_hoch"); 
                         }
@@ -56,12 +56,97 @@ var steps = [
         }
     },
     {
-        "id": "anzahl_beschaeftigte_in_kurzarbeit",
+        "id": "arbeitzeitreduzierung_fuer",
         "render": () => {
             textAndInteraction(
-                "Wieviele Beschäftigte sollen in Kurzarbeit gehen?",
+                "Betrifft die Kurzarbeit das gesamte Unternehmen oder nur eine Abteilung?",
+                () => {
+                    botui.action.button({
+                        action: [
+                            {
+                                icon: 'building',
+                                text: 'Gesamtes Unternehmen',
+                                value: 'Gesamtes Unternehmen'
+                            },
+                            {
+                                icon: 'sitemap',
+                                text: 'Abteilung',
+                                value: 'Abteilung'
+                            }
+                        ],
+                        delay: getRandomInteractionDelay(),
+                        loading: true
+                    }).then( (res) => {
+                        setCurrentAnswer(res.value);
+                        if (res.value === 'Abteilung') {
+                            renderStep("arbeitzeitreduzierung_fuer_abteilung");
+                        } else {
+                            renderStep("anzahl_beschaeftigte_in_kurzarbeit");
+                        }
+                    });
+                }
+            );
+        }
+    },
+    {
+        "id": "arbeitzeitreduzierung_fuer_abteilung",
+        "render": () => {
+            textAndInteraction(
+                "Für welche Abteilung gilt die Kurzarbeit?",
+                () => {
+                    createTextInput(state.answers["arbeitzeitreduzierung_fuer_abteilung"] || null, true).then( (result) => { 
+                        setCurrentAnswer(result.value);
+                        renderStep("anzahl_beschaeftigte_in_abteilung");
+                    });
+                }
+            );
+        }
+    },
+    {
+        "id": "anzahl_beschaeftigte_in_abteilung",
+        "render": () => {
+            textAndInteraction(
+                "Wieviele Beschäftigte hat diese Abteilung?",
+                () => {
+                    createIntegerInput(state.answers["anzahl_beschaeftigte_in_abteilung"] || 1, 0, state.answers["anzahl_beschaeftigte"], 1, 1, false).then( (result) => { 
+                        setCurrentAnswer(result.value);
+
+                        if (result.value == 1) {
+                            createTextMessage("Die betroffene Abteilung hat _einen Beschäftigten_.","",true);
+                        } else {
+                            createTextMessage("Die betroffene Abteilung hat _"+result.value+" Beschäftigte_.","",true);
+                        }
+                        
+                        if (result.value <= 0) {
+                            renderStep("keine_beschaeftigte_in_abteilung");
+                        } else {
+                            renderStep("anzahl_beschaeftigte_in_kurzarbeit"); 
+                        }
+                    });
+                },
+                "Einschließlich Auszubildender, geringfügig Beschäftigter (Mini-Job oder &quot;450 EUR&quot;-Job) und Leiharbeiter."
+            );
+        }
+    },    
+    {
+        "id": "keine_beschaeftigte_in_abteilung",
+        "render": () => {
+            exitTextAndModifyQuestion(
+                "Für Abteilungen ohne Beschäftigte kann leider kein Geld für Kurzarbeit beantragt werden.",
+                "anzahl_beschaeftigte_in_abteilung",
+                "Es gibt andere Möglichkeiten. Schau' doch mal nach unter [taxy.io](https://www.taxy.io/corona-hilfe-fuer-unternehmen)^ oder [wir-bleiben-liqui.de](https://wir-bleiben-liqui.de/)^."
+            );
+        }
+    },
+    {
+        "id": "anzahl_beschaeftigte_in_kurzarbeit",
+        "render": () => {
+            const betrifftAbteilung = state.answers["arbeitzeitreduzierung_fuer"] === "Abteilung";
+
+            textAndInteraction(
+                betrifftAbteilung ? "Wieviele Beschäftigte sollen in der Abteilung in Kurzarbeit gehen?" : "Wieviele Beschäftigte sollen in Kurzarbeit gehen?",
                 () => {                    
-                    createIntegerInput(1, 0, state.answers["anzahl_beschaeftigte"], 1, true, false).then( (result) => { 
+                    createIntegerInput(state.answers["anzahl_beschaeftigte_in_kurzarbeit"] || 1, 0, state.answers["arbeitzeitreduzierung_fuer"] === "Abteilung" ? state.answers["anzahl_beschaeftigte_in_abteilung"] : state.answers["anzahl_beschaeftigte"], 1, true, false).then( (result) => { 
                         setCurrentAnswer(result.value);
 
                         if(result.value == 1)
@@ -69,10 +154,19 @@ var steps = [
                         else
                             createTextMessage(`Es sollen _${result.value} Beschäftigte_ in Kurzarbeit gehen.`,"",true);
 
+                        const anzahlMitarbeiterGesamtbetriebOderAbteilung =
+                            betrifftAbteilung
+                                ? state.answers["anzahl_beschaeftigte_in_abteilung"]
+                                : state.answers["anzahl_beschaeftigte"];
+
                         if (result.value <= 0) {
                             renderStep("keine_beschaeftigte_in_kurzarbeit");
-                        } else if((result.value / state.answers["anzahl_beschaeftigte"] * 100) < 10) {
-                            renderStep("anzahl_beschaeftigte_in_kurzarbeit_kleiner_10_prozent");
+                        } else if((result.value / anzahlMitarbeiterGesamtbetriebOderAbteilung * 100) < 10) {
+                            if (betrifftAbteilung) {
+                                renderStep("anzahl_beschaeftigte_in_kurzarbeit_in_abteilung_kleiner_10_prozent");
+                            } else {                                
+                                renderStep("anzahl_beschaeftigte_in_kurzarbeit_kleiner_10_prozent");
+                            }                            
                         } else {
                             renderStep("anzahl_wochenstunden_der_beschaeftigten_regulaer");
                         }
@@ -101,12 +195,21 @@ var steps = [
         }
     },
     {
+        "id": "anzahl_beschaeftigte_in_kurzarbeit_in_abteilung_kleiner_10_prozent",
+        "render": () => {
+            exitTextAndModifyQuestion(
+                `Du möchtest nur ${state.answers["anzahl_beschaeftigte_in_kurzarbeit"]} von ${state.answers["anzahl_beschaeftigte_in_abteilung"]} Beschäftigten in dieser Abteilung in Kurzarbeit schicken. Um Unterstützung zu erhalten musst du mindestens 10% deiner Beschäftigten in Kurzarbeit schicken.`,
+                "anzahl_beschaeftigte_in_kurzarbeit"
+            );
+        }
+    },
+    {
         "id": "anzahl_wochenstunden_der_beschaeftigten_regulaer",
         "render": () => {
             textAndInteraction(
                 "Wieviele Stunden arbeiten deine Vollzeitbeschäftigten normalerweise pro Woche?",
                 () => {                    
-                    createIntegerInput(40, 1, null, 0.5, true, false).then( (result) => { 
+                    createIntegerInput(state.answers["anzahl_wochenstunden_der_beschaeftigten_regulaer"] || 40, 1, null, 0.5, true, false).then( (result) => { 
                         setCurrentAnswer(result.value);
 
                         if(result.value == 1)
@@ -126,7 +229,7 @@ var steps = [
             textAndInteraction(
                 "Wieviele Stunden sollen diese Vollzeitbeschäftigten während der Kurzarbeit pro Woche arbeiten?",
                 () => {                    
-                    createIntegerInput(20, 0, state.answers["anzahl_wochenstunden_der_beschaeftigten_regulaer"], 1, true, false).then( (result) => { 
+                    createIntegerInput(state.answers["anzahl_wochenstunden_der_beschaeftigten_in_kurzarbeit"] || 20, 0, state.answers["anzahl_wochenstunden_der_beschaeftigten_regulaer"], 1, true, false).then( (result) => { 
                         setCurrentAnswer(result.value);
 
                         if (result.value == 0) {
@@ -179,7 +282,9 @@ var steps = [
                                 text: "Andere Ursache",
                                 value: false
                             }
-                        ]               
+                        ],
+                        delay: getRandomInteractionDelay(),
+                        loading: true          
                     }).then( (res) => {
                         setCurrentAnswer(res.value);
                         if(res.value)
@@ -196,7 +301,7 @@ var steps = [
         "id": "nicht_verursacht_durch_unabwendbares_ereignis_oder_wirtschaftlich",
         "render": () => {
             exitTextAndModifyQuestion(
-                `Die Voraussetzung für Kurzarbeit ist, dass der Arbeitsausfall auf einem unabwendbarem Ereignis basiert oder wirtschaftliche Ursachen hat.`,
+                `Die Voraussetzung für Kurzarbeit ist, dass der Arbeitsausfall auf einem unabwendbaren Ereignis basiert oder wirtschaftliche Ursachen hat.`,
                 "ist_verursacht_durch_unabwendbares_ereignis_oder_wirtschaftlich"
             );
         }
@@ -253,7 +358,9 @@ var steps = [
                                 text: "Andere Branche",
                                 value: "Andere Branche"
                             },                     
-                        ]               
+                        ],
+                        delay: getRandomInteractionDelay(),
+                        loading: true
                     }).then( (result) => {
                         setCurrentAnswer(result.value);
                         if (result.value !== "Andere Branche") {
@@ -281,7 +388,7 @@ var steps = [
             textAndInteraction(
                 "Um welche Branche handelt es sich?",
                 () => {
-                    createTextInput(null, true).then( (result) => { 
+                    createTextInput(state.answers["branche_freitext"] || null, true).then( (result) => { 
                         setCurrentAnswer(result.value);
                         renderStep("sektion_gruende");
                     });
@@ -395,7 +502,7 @@ var steps = [
             textAndInteraction(
                 "Wie lautet die Betriebsnummer bei der Bundesagentur für Arbeit?",
                 () => {
-                    createTextInput("", 1, true, "[0-9]+").then( (result) => { 
+                    createTextInput(state.answers["betriebsnummer"] || "", 1, true, "[0-9]+").then( (result) => { 
                         setCurrentAnswer(result.value);
                         renderStep("betriebsname");
                     });
@@ -410,7 +517,7 @@ var steps = [
             textAndInteraction(
                 "Wie lautet der Name deines Unternehmens?",
                 () => {
-                    createTextInput(null, true).then( (result) => { 
+                    createTextInput(state.answers["betriebsname"] || null, true).then( (result) => { 
                         setCurrentAnswer(result.value);
                         renderStep("betriebsadresse");
                     });
@@ -424,7 +531,7 @@ var steps = [
             textAndInteraction(
                 "Wie lautet die Straße und Hausnummer deines Unternehmens?",
                 () => {
-                    createTextInput(null, true).then( (result) => { 
+                    createTextInput(state.answers["betriebsadresse"] || null, true).then( (result) => { 
                         setCurrentAnswer(result.value);
                         renderStep("betriebsort");
                     });
@@ -438,7 +545,7 @@ var steps = [
             textAndInteraction(
                 "Wie lautet die PLZ und der Ort deines Unternehmens?",
                 () => {
-                    createTextInput(null, true).then( (result) => { 
+                    createTextInput(state.answers["betriebsort"] || null, true).then( (result) => { 
                         setCurrentAnswer(result.value);
                         renderStep("betriebsansprechpartner");
                     });
@@ -452,7 +559,7 @@ var steps = [
             textAndInteraction(
                 "Wer ist der richtige Ansprechpartner in deinem Unternehmen?",
                 () => {
-                    createTextInput(null, true).then( (result) => { 
+                    createTextInput(state.answers["betriebsansprechpartner"] || null, true).then( (result) => { 
                         setCurrentAnswer(result.value);
                         renderStep("betriebskontakt");
                     });
@@ -466,7 +573,7 @@ var steps = [
             textAndInteraction(
                 "Wie kann dieser Ansprechpartner kontaktiert werden?",
                 () => {
-                    createTextInput(null, true).then( (result) => { 
+                    createTextInput(state.answers["betriebskontakt"] || null, true).then( (result) => { 
                         setCurrentAnswer(result.value);
                         renderStep("hat_abweichende_lohnabrechnungsstelle");
                     });
@@ -491,7 +598,7 @@ var steps = [
             textAndInteraction(
                 "Welches Unternehmen übernimmt für dein Unternehmen die Lohnbuchhaltung?",
                 () => {
-                    createTextInput(null, true).then( (result) => { 
+                    createTextInput(state.answers["lohnabrechnungsstellenname"] || null, true).then( (result) => { 
                         setCurrentAnswer(result.value);
                         renderStep("lohnabrechnungsstellenadresse");
                     });
@@ -505,7 +612,7 @@ var steps = [
             textAndInteraction(
                 "Wie lautet die Straße und Hausnummer deiner Lohnbuchhaltung?",
                 () => {
-                    createTextInput(null, true).then( (result) => { 
+                    createTextInput(state.answers["lohnabrechnungsstellenadresse"] || null, true).then( (result) => { 
                         setCurrentAnswer(result.value);
                         renderStep("lohnabrechnungsstellenort");
                     });
@@ -519,7 +626,7 @@ var steps = [
             textAndInteraction(
                 "Wie lautet die PLZ und der Ort deiner Lohnbuchhaltung?",
                 () => {
-                    createTextInput(null, true).then( (result) => { 
+                    createTextInput(state.answers["lohnabrechnungsstellenort"] || null, true).then( (result) => { 
                         setCurrentAnswer(result.value);
                         renderStep("lohnabrechnungsstellenansprechpartner");
                     });
@@ -533,7 +640,7 @@ var steps = [
             textAndInteraction(
                 "Wer ist der richtige Ansprechpartner für deine Lohnbuchhaltung?",
                 () => {
-                    createTextInput(null, true).then( (result) => { 
+                    createTextInput(state.answers["lohnabrechnungsstellenansprechpartner"] || null, true).then( (result) => { 
                         setCurrentAnswer(result.value);
                         renderStep("lohnabrechnungsstellenkontakt");
                     });
@@ -547,7 +654,7 @@ var steps = [
             textAndInteraction(
                 "Wie kann der Ansprechpartner deiner Lohnbuchhaltung kontaktiert werden?",
                 () => {
-                    createTextInput(null, true).then( (result) => { 
+                    createTextInput(state.answers["lohnabrechnungsstellenkontakt"] || null, true).then( (result) => { 
                         setCurrentAnswer(result.value);
                         renderStep("arbeitzeitreduzierung_von");
                     });
@@ -573,7 +680,7 @@ var steps = [
                         });
                     }
 
-                    createSelect(options, options[1].value).then( (result) => { 
+                    createSelect(options, state.answers["arbeitzeitreduzierung_von"] || options[1].value).then( (result) => { 
                         setCurrentAnswer(result.value);
                         renderStep("arbeitzeitreduzierung_bis");
                     });
@@ -591,73 +698,35 @@ var steps = [
                     const options = [];
                     const fromDateStr = state.answers["arbeitzeitreduzierung_von"];
                     let onOrAfterFromDate = false;
-                    for (let i=0; i<18; i++) {
+                    let defaultValue = null;
+                    for (let i=-1; i<18; i++) {
                         const curDateStr = getDateYearAndMonth(createDateShiftedByNumberOfMonths(date, i));
                         if (curDateStr === fromDateStr) {
                             onOrAfterFromDate = true;
                         }
 
-                        if (onOrAfterFromDate) {
+                        const isMinimumOneMonthInFuture = i >= 1;
+
+                        if (isMinimumOneMonthInFuture && onOrAfterFromDate) {
                             options.push({
                                 value: curDateStr,
                                 text: curDateStr
                             });
+
+                            if (defaultValue === null) {
+                                defaultValue = curDateStr;
+                            }
                         }
                     }
 
-                    createSelect(options, state.answers["arbeitzeitreduzierung_von"]).then( (result) => { 
-                        setCurrentAnswer(result.value);
-                        renderStep("arbeitzeitreduzierung_fuer");
-                    });
-                }
-            );
-        }
-    },
-    {
-        "id": "arbeitzeitreduzierung_fuer",
-        "render": () => {
-            textAndInteraction(
-                "Betrifft die Kurzarbeit das gesamte Unternehmen oder nur eine Abteilung?",
-                () => {
-                    botui.action.button({
-                        action: [
-                            {
-                                icon: 'building',
-                                text: 'Gesamtes Unternehmen',
-                                value: 'Gesamtes Unternehmen'
-                            },
-                            {
-                                icon: 'sitemap',
-                                text: 'Abteilung',
-                                value: 'Abteilung'
-                            }
-                        ]               
-                    }).then( (res) => {
-                        setCurrentAnswer(res.value);
-                        if (res.value === 'Abteilung') {
-                            renderStep("arbeitzeitreduzierung_fuer_abteilung");
-                        } else {
-                            renderStep("besteht_unternehmen_laenger_als_1_jahr");
-                        }
-                    });
-                }
-            );
-        }
-    },
-    {
-        "id": "arbeitzeitreduzierung_fuer_abteilung",
-        "render": () => {
-            textAndInteraction(
-                "Für welche Abteilung gilt die Kurzarbeit?",
-                () => {
-                    createTextInput(null, true).then( (result) => { 
+                    createSelect(options, state.answers["arbeitzeitreduzierung_bis"] || defaultValue).then( (result) => { 
                         setCurrentAnswer(result.value);
                         renderStep("besteht_unternehmen_laenger_als_1_jahr");
                     });
                 }
             );
         }
-    },
+    },    
     {
         "id": "besteht_unternehmen_laenger_als_1_jahr",
         "render": () => {
@@ -683,7 +752,7 @@ var steps = [
                         });
                     }
 
-                    createSelect(options, getDateYearAndMonth(date)).then( (result) => { 
+                    createSelect(options, state.answers["betriebsgruendung"] || getDateYearAndMonth(date)).then( (result) => { 
                         setCurrentAnswer(result.value);
                         renderStep("gibt_es_eines_tarifvertrag");
                     });
@@ -691,6 +760,7 @@ var steps = [
             );
         }
     },
+
     {
         "id": "gibt_es_eines_tarifvertrag",
         "render": () => {
@@ -723,7 +793,9 @@ var steps = [
                                 text: '...für Arbeiter und Angestellte',
                                 value: 'beides'
                             }
-                        ]               
+                        ],
+                        delay: getRandomInteractionDelay(),
+                        loading: true
                     }).then( (res) => {
                         setCurrentAnswer(res.value);
                         if (res.value === 'nur_arbeiter') {
@@ -745,7 +817,7 @@ var steps = [
             textAndInteraction(
                 "Wie heißt der Tarifvertrag für die Arbeiter?",
                 () => {
-                    createTextInput(null, true).then( (result) => { 
+                    createTextInput(state.answers["wie_heisst_tarifvertrag_fuer_arbeiter"] || null, true).then( (result) => { 
                         setCurrentAnswer(result.value);
                         renderStep("wieviele_regulaere_wochenstunden_hat_tarifvertrag_fuer_arbeiter");
                     });
@@ -758,9 +830,9 @@ var steps = [
         "id": "wieviele_regulaere_wochenstunden_hat_tarifvertrag_fuer_arbeiter",
         "render": () => {
             textAndInteraction(
-                "Wie viele Wochenstunden sind für die Arbeiter (Vollzeit) laut Tarifvertrag vereinbart?",
+                "Wie viele Stunden Wochenarbeitszeit sind für die Arbeiter (Vollzeit) laut Tarifvertrag vereinbart?",
                 () => {                    
-                    createIntegerInput(40, 1, null, 0.5).then( (result) => { 
+                    createIntegerInput(state.answers["wieviele_regulaere_wochenstunden_hat_tarifvertrag_fuer_arbeiter"] || 40, 1, null, 0.5).then( (result) => { 
                         setCurrentAnswer(result.value);                           
                         renderStep("tarifvertrag_fuer_arbeiter_enthaelt_kurzarbeitsklausel");
                     });
@@ -786,7 +858,9 @@ var steps = [
                                 text: "Keine Kurzarbeitsklausel",
                                 value: false
                             }
-                        ]               
+                        ],
+                        delay: getRandomInteractionDelay(),
+                        loading: true
                     }).then( (res) => {
                         setCurrentAnswer(res.value);
 
@@ -806,7 +880,7 @@ var steps = [
             textAndInteraction(
                 "Wie heißt der Tarifvertrag für Angestellte?",
                 () => {
-                    createTextInput(null, true).then( (result) => { 
+                    createTextInput(state.answers["wie_heisst_tarifvertrag_fuer_angestellte"] || null, true).then( (result) => { 
                         setCurrentAnswer(result.value);
                         renderStep("wieviele_regulaere_wochenstunden_hat_tarifvertrag_fuer_angestellte");
                     });
@@ -819,9 +893,9 @@ var steps = [
         "id": "wieviele_regulaere_wochenstunden_hat_tarifvertrag_fuer_angestellte",
         "render": () => {
             textAndInteraction(
-                "Wie viele Wochenstunden sind für Angestellte (Vollzeit) laut Tarifvertrag vereinbart?",
+                "Wie viele Stunden Wochenarbeitszeit sind für Angestellte (Vollzeit) laut Tarifvertrag vereinbart?",
                 () => {                    
-                    createIntegerInput(40, 1, null, 0.5).then( (result) => { 
+                    createIntegerInput(state.answers["wieviele_regulaere_wochenstunden_hat_tarifvertrag_fuer_angestellte"] || 40, 1, null, 0.5).then( (result) => { 
                         setCurrentAnswer(result.value);                           
                         renderStep("tarifvertrag_fuer_angestellte_enthaelt_kurzarbeitsklausel");
                     });
@@ -853,7 +927,7 @@ var steps = [
             textAndInteraction(
                 "Wie lang ist die Ankündigungsfrist?",
                 () => {
-                    createTextInput(null, true).then( (result) => { 
+                    createTextInput(state.answers["beschreibung_ankuendigungsfrist"] || null, true).then( (result) => { 
                         setCurrentAnswer(result.value);
                         renderStep("gibt_es_einen_betriebsrat");
                     });
@@ -888,7 +962,9 @@ var steps = [
                                 text: 'Keine Vereinbarung',
                                 value: false
                             }
-                        ]               
+                        ],
+                        delay: getRandomInteractionDelay(),
+                        loading: true
                     }).then( (res) => {
                         setCurrentAnswer(res.value);
                         if (res.value) {
@@ -939,7 +1015,7 @@ var steps = [
                         defaultValue = "Per Betriebsvereinbarung";
                     }
 
-                    createSelect(options, defaultValue).then( (result) => { 
+                    createSelect(options, state.answers["wie_wurde_vereinbart"] || defaultValue).then( (result) => { 
                         setCurrentAnswer(result.value);
                         renderStep("wann_wurde_vereinbart");
                     });
@@ -953,7 +1029,7 @@ var steps = [
             textAndInteraction(
                 "Wann wurde die Vereinbarung getroffen?",
                 () => {
-                    createDateInput().then( (result) => { 
+                    createDateInput(state.answers["wann_wurde_vereinbart"] || null).then( (result) => { 
                         setCurrentAnswer(result.value);
                         renderStep("wieviele_leiharbeiter_in_gesamtbetrieb_bzw_betriebsabteilung");
                     });
@@ -966,9 +1042,11 @@ var steps = [
         "id": "wieviele_leiharbeiter_in_gesamtbetrieb_bzw_betriebsabteilung",
         "render": () => {
             textAndInteraction(
-                "Wieviele Leiharbeiter beschäftigst du in deinem Unternehmen bzw. in der betroffenen Abteilung?",
+                state.answers["arbeitzeitreduzierung_fuer"] === "Abteilung" ? "Wieviele Leiharbeiter beschäftigst du in der betroffenen Abteilung?" : "Wieviele Leiharbeiter beschäftigst du in deinem Unternehmen?",
                 () => {
-                    createIntegerInput("0", 0, state.answers["anzahl_beschaeftigte"],1,false).then( (result) => { 
+                    const betrifftAbteilung = state.answers["arbeitzeitreduzierung_fuer"] === "Abteilung";
+
+                    createIntegerInput(state.answers["wieviele_leiharbeiter_in_gesamtbetrieb_bzw_betriebsabteilung"] || "0", 0, (betrifftAbteilung ? state.answers["anzahl_beschaeftigte_in_abteilung"] : state.answers["anzahl_beschaeftigte"]),1,false).then( (result) => { 
                         setCurrentAnswer(result.value);
                         renderStep("ist_arbeitsausfall_massgeblich_branchenueblich_betriebsueblich_oder_saisonbedingt");
                     });
@@ -1004,7 +1082,9 @@ var steps = [
                                 text: "Keine andere üblichen Ursachen",
                                 value: false
                             }
-                        ]               
+                        ],
+                        delay: getRandomInteractionDelay(),
+                        loading: true
                     }).then( (res) => {
                         setCurrentAnswer(res.value);
                         renderStep("pdf_erstellung");
@@ -1046,28 +1126,36 @@ var state = {
 /**
  * Search for first answer with "null"-answer + draw
  */
-function renderStep(stepId) {
-
-    if(stepId === null)
-    {        
+function renderStep(stepId)
+{
+    if (stepId === null) {        
         return;
     }
 
     var matchingSteps = steps.filter((v) => {return v.id === stepId});
 
-    if(matchingSteps.length > 0)
-    {
+    if(matchingSteps.length > 0) {
         state.currentStep = stepId;
         state.path.push(stepId);
-        matchingSteps[0].render();        
-        
-        if (state.path.length > 2) {
-            $('#backButton').show();
-        } else {
-            $('#backButton').hide();
-        }
+        matchingSteps[0].render();
+
+        showBackButton();
     }
 };
+
+function hideBackButton()
+{
+    $('#backButton').hide();
+}
+
+function showBackButton()
+{
+    if (state.path.length > 2) {
+        $('#backButton').show();
+    } else {
+        hideBackButton();
+    }
+}
 
 function textAndInteraction(msg,interaction,hint="")
 {
@@ -1091,7 +1179,9 @@ function exitTextAndModifyQuestion(exitReason, backStepId)
                         text: 'Ende',
                         value: false
                     }
-                ]               
+                ],
+                delay: getRandomInteractionDelay(),
+                loading: true           
             }).then( (res) => {
                 setCurrentAnswer(res.value);
                 if (res.value) {
@@ -1119,24 +1209,46 @@ function restartConversation(step = "hallo")
 
 function goBack()
 {
-    state.path.splice(-1, 1);
-    const stepId = state.path[state.path.length-1];
-    state.path.splice(-1, 1);
+    // second last element holds the step id of the previous question
+    const stepId = state.path[state.path.length-2];
 
+    // remove everything until there from the path
+    state.path = state.path.slice(0, -2);
+
+    // now let the conversation continue by showing the user wants to see the previous question
+    // followed by the previous step.
     botui.message.add({
         content: "Vorherige Frage nochmal",
         human: true
-    });
+    }).then((res) => {
+        // This is a "trick" to force botui to close it's potentially existing button actions from the
+        // current step before moving on to the previous step. Otherwise botui does not re-render the
+        // buttons with those from the previous step.
 
-    renderStep(stepId);
+        // TODO: Investigate why botui does not re-render button actions when calling botui.action.button(...) multiple times in a row without user interacting in-between
+        botui.action.hide();
+        renderStep(stepId);
+    });
 }
 
 function createTextMessage(msg,hint="",human=false)
 {
-    return botui.message.add({
+    let delay, loading;
+    if (human === true) {
+        // no delay and loading state for human messages added
+        delay = 0;
+        loading = false;
+    } else {
+        delay = getRandomBotMsgDelay();
+        loading = true;
+    }
+
+    return botui.message.add({        
         content: msg,
         hint_content: hint,
-        human: human
+        human: human,
+        delay: delay,
+        loading: loading
     });
 }
 
@@ -1155,7 +1267,9 @@ function createYesNoButtons(jumpOnYes,jumpOnNo,yesButtonText="Ja",noButtonText="
                 text: noButtonText,
                 value: false
             }
-        ]               
+        ],
+        delay: getRandomInteractionDelay(),
+        loading: true
     }).then( (res) => {
         setCurrentAnswer(res.value);
         if(res.value)
@@ -1175,7 +1289,9 @@ function createConfirmButton(jumpOnConfirm, confirmText = 'OK',addAutoText=true)
                 text: confirmText,
                 value: true
             }
-        ]               
+        ],
+        delay: getRandomInteractionDelay(),
+        loading: true
     }).then( (res) => {
         setCurrentAnswer(res.value);
         renderStep(jumpOnConfirm);
@@ -1197,7 +1313,9 @@ function createIntegerInput(value=1,min=null,max=null,step=1,required=true,addAu
                 icon: 'chevron-right',
                 label: 'OK'
             }
-        }
+        },
+        delay: getRandomInteractionDelay(),
+        loading: true
     });
 }
 
@@ -1216,7 +1334,9 @@ function createDateInput(defaultValue = null, required = true,addAutoText=true)
                 icon: 'chevron-right',
                 label: 'OK'
             }
-        }
+        },
+        delay: getRandomInteractionDelay(),
+        loading: true
     });
 }
 
@@ -1232,7 +1352,9 @@ function createTextInput(defaultValue = null, required = true,addAutoText=true,p
                 icon: 'chevron-right',
                 label: 'OK'
             }
-        }
+        },
+        delay: getRandomInteractionDelay(),
+        loading: true
     });
 }
 
@@ -1247,7 +1369,9 @@ function createTextareaInput(defaultValue = null,placeholder="Hier schreiben ...
             button: {
                 icon: 'chevron-right',
             }
-        }
+        },
+        delay: getRandomInteractionDelay(),
+        loading: true
     });
 }
 
@@ -1267,14 +1391,18 @@ function createSelect(options,defaultValue=null,placeholder="Bitte wählen...",s
               icon: 'check',
               label: 'OK'
             }
-          }
+        },
+        delay: getRandomInteractionDelay(),
+        loading: true
     });
 }
 
 function createDateShiftedByNumberOfMonths(date, monthOffset)
 {
     const dateCopy = new Date(date.getTime());
-    return new Date(dateCopy.setMonth(dateCopy.getMonth() + monthOffset));
+    dateCopy.setDate(1);
+    dateCopy.setMonth(dateCopy.getMonth() + monthOffset);
+    return dateCopy;
 }
 
 function getDateYearAndMonth(date)
@@ -1282,6 +1410,22 @@ function getDateYearAndMonth(date)
     return date.toLocaleString('default', { month: 'long' }) + ' ' + date.getFullYear();
 }
 
+function getRandomInt(min, max)
+{
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function getRandomBotMsgDelay()
+{
+    return getRandomInt(500, 700);
+}
+
+function getRandomInteractionDelay()
+{
+    return getRandomInt(200, 300);
+}
 
 /**
  * Convert answers to data structure for Bastian PDF
@@ -1372,7 +1516,7 @@ function getPdfDataFromState() {
         "kurzarbeitVereinbartDurchAenderungskuendigungWirksamZu": parseYmdDateStrIntoLocalDateStr(a.wann_wurde_vereinbart),    // Same as vereinbarung / make it less complex
       	"kurzarbeitVereinbartDurchSonstiges": (a.wie_wurde_vereinbart == 'Per Arbeitsvertrag'),
         "kurzarbeitVereinbartAnmerkungen": (a.wie_wurde_vereinbart == 'Per Arbeitsvertrag' ? "Im Arbeitsvertrag vereinbart." : ""),
-        "anzahlArbeitnehmerInBetroffenerAbteilung": a.anzahl_beschaeftigte,
+        "anzahlArbeitnehmerInBetroffenerAbteilung": a.arbeitzeitreduzierung_fuer === 'Abteilung' ? a.anzahl_beschaeftigte_in_abteilung : a.anzahl_beschaeftigte,
         "anzahlLeiharbeiterInBetroffenerAbteilung": a.wieviele_leiharbeiter_in_gesamtbetrieb_bzw_betriebsabteilung,
         "anzahlArbeitnehmerMitEntgeltAusfall": a.anzahl_beschaeftigte_in_kurzarbeit,
         "angabenArbeitsausfall": "- siehe Anlage -",
@@ -1480,7 +1624,7 @@ function downloadPdf()
 var botui = new BotUI('my-botui-app');
 
 function runBot()
-{    
+{
     restartConversation();
 }
 
@@ -1497,5 +1641,3 @@ function unblockUi()
         jQuery('#ui_blocker').remove();
     });
 }
-
-
