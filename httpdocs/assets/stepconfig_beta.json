@@ -1,0 +1,204 @@
+{
+    "startStepKey": "hallo",
+    "exitSteps": [
+        "ende_ohne_pdf",
+        "anzahl_beschaeftigte_in_kurzarbeit"
+    ],
+    "steps": {
+        "hallo": {            
+            "type": "textAndInteraction",
+            "text": {
+                "msg": "Mit den Grundlagen kennst du dich jetzt aus. Lass uns anfangen, das Formular zur Einreichung bei der Bundesagentur für Arbeit gemeinsam auszufüllen. Dazu stelle ich dir eine Reihe von Fragen. Deine Antworten nutze ich, um die Formularfelder für dich zu füllen. Danach kannst du es herunterladen, prüfen, ggfs. anpassen und dann an die Agentur übertragen. Los geht's!"
+            },
+            "interaction": {
+                "buttons": [
+                    {
+                        "icon": "check",
+                        "text": "Ich bin bereit",
+                        "value": true,
+                        "nextStepKey": "standard"
+                    }
+                ]
+            },
+            "nextStepKeys": {
+                "standard": "anzahl_beschaeftigte"
+            }
+        },
+        "anzahl_beschaeftigte": {            
+            "type": "textAndInteraction",
+            "text": {
+                "msg": "Wieviele Beschäftigte hat dein Unternehmen?",
+                "hint": "Einschließlich Auszubildender, geringfügig Beschäftigter (Mini-Job oder &quot;450 EUR&quot;-Job) und Leiharbeiter."
+            },
+            "interaction": {
+                "numberInput": {
+                    "defaultValue": 1,
+                    "minValue": 0,
+                    "maxValue": null,
+                    "stepValue": 1,
+                    "required": true,
+                    "replyFunctionCall": {
+                        "name": "replyAnzahlBeschaeftigte"
+                    },
+                    "forwardFunctionCall": {
+                        "name": "forwardAnzahlBeschaeftigte"
+                    }
+                }
+            },
+            "nextStepKeys": {
+                "standard": "arbeitzeitreduzierung_fuer",
+                "keine": "keine_beschaeftigte",
+                "zuviele": "anzahl_beschaeftigte_hoch"
+            }
+        },
+        "keine_beschaeftigte": {            
+            "type": "textAndInteraction",
+            "text": {
+                "msg": "Für Unternehmen ohne Beschäftigte kann leider kein Geld für Kurzarbeit beantragt werden.",
+                "hint": "Es gibt andere Möglichkeiten. Schau' doch mal nach unter [taxy.io](https://www.taxy.io/corona-hilfe-fuer-unternehmen)^ oder [wir-bleiben-liqui.de](https://wir-bleiben-liqui.de/)^."
+            },
+            "interaction": {
+                "buttons": [
+                    {
+                        "icon": "times",
+                        "text": "Ende",
+                        "value": "false",
+                        "nextStepKey": "ende"
+                    },
+                    {
+                        "icon": "check",
+                        "text": "Bearbeiten",
+                        "value": "true",
+                        "nextStepKey": "bearbeiten"
+                    }            
+                ]
+            },
+            "nextStepKeys": {
+                "ende": "ende_ohne_pdf",                
+                "bearbeiten": "anzahl_beschaeftigte"
+            }
+        },
+        "anzahl_beschaeftigte_hoch": {            
+            "type": "textAndInteraction",
+            "text": {
+                "msg": "Das tut mir leid; ich bin leider nicht gut für Unternehmen mit mehr als 50 Beschäftigten vorbereitet. Grundsätzlich empfehle ich Unternehmen mit entsprechender Größe professionelle Beratung in Anspruch zu nehmen. Möchtest du dennoch fortfahren?"
+            },
+            "interaction": {
+                "buttons": [
+                    {
+                        "icon": "times",
+                        "text": "Ende",
+                        "value": true,
+                        "nextStepKey": "ende"
+                    },
+                    {
+                        "icon": "check",
+                        "text": "Weiter",
+                        "value": false,
+                        "nextStepKey": "weiter"
+                    }
+                ]
+            },
+            "nextStepKeys": {
+                "ende": "ende_ohne_pdf",
+                "weiter" : "arbeitzeitreduzierung_fuer"
+            }
+        },
+        "arbeitzeitreduzierung_fuer": {            
+            "type": "textAndInteraction",
+            "text": {
+                "msg": "Betrifft die Kurzarbeit nur eine Abteilung oder das gesamte Unternehmen?"
+            },
+            "interaction": {
+                "buttons": [
+                    {
+                        "icon": "sitemap",
+                        "text": "Abteilung",
+                        "value": "Abteilung",
+                        "nextStepKey": "abteilung"
+                    },
+                    {
+                        "icon": "building",
+                        "text": "Gesamtes Unternehmen",
+                        "value": "Gesamtes Unternehmen",
+                        "nextStepKey": "gesamt"
+                    }
+                ]
+            },
+            "nextStepKeys": {
+                "abteilung": "arbeitzeitreduzierung_fuer_abteilung",
+                "gesamt" : "anzahl_beschaeftigte_in_kurzarbeit"
+            }
+        },
+        "arbeitzeitreduzierung_fuer_abteilung": {            
+            "type": "textAndInteraction",
+            "text": {
+                "msg": "Für welche Abteilung gilt die Kurzarbeit?"
+            },
+            "interaction": {
+                "textInput": {
+                    "defaultValue": null,
+                    "required": true,
+                    "nextStepKey": "weiter"
+                }
+            },
+            "nextStepKeys": {
+                "weiter": "anzahl_beschaeftigte_in_abteilung"
+            }
+        },
+        "anzahl_beschaeftigte_in_abteilung": {            
+            "type": "textAndInteraction",
+            "text": {
+                "msg": "Wieviele Beschäftigte hat diese Abteilung?",
+                "hint": "Einschließlich Auszubildender, geringfügig Beschäftigter (Mini-Job oder &quot;450 EUR&quot;-Job) und Leiharbeiter."
+            },
+            "interaction": {
+                "numberInput": {
+                    "defaultValue": 1,
+                    "minValue": 0,
+                    "maxValue": "${answers.anzahl_beschaeftigte}",
+                    "stepValue": 1,
+                    "required": true,
+                    "replyFunctionCall": {
+                        "name": "replyAnzahlBeschaeftigteInAbteilung"
+                    },
+                    "forwardFunctionCall": {
+                        "name": "forwardAnzahlBeschaeftigteInAbteilung"
+                    }
+                }
+            },
+            "nextStepKeys": {
+                "standard": "anzahl_beschaeftigte_in_kurzarbeit",
+                "keine": "keine_beschaeftigte_in_abteilung"
+            }
+        },
+        "keine_beschaeftigte_in_abteilung": {            
+            "type": "textAndInteraction",
+            "text": {
+                "msg": "Für Abteilungen ohne Beschäftigte kann leider kein Geld für Kurzarbeit beantragt werden.",
+                "hint": "Es gibt andere Möglichkeiten. Schau' doch mal nach unter [taxy.io](https://www.taxy.io/corona-hilfe-fuer-unternehmen)^ oder [wir-bleiben-liqui.de](https://wir-bleiben-liqui.de/)^."
+            },
+            "interaction": {
+                "buttons": [
+                    {
+                        "icon": "times",
+                        "text": "Ende",
+                        "value": false,
+                        "nextStepKey": "ende"
+                    },
+                    {
+                        "icon": "check",
+                        "text": "Bearbeiten",
+                        "value": true,
+                        "nextStepKey": "bearbeiten"
+                    }            
+                ]
+            },
+            "nextStepKeys": {
+                "ende": "ende_ohne_pdf",                
+                "bearbeiten": "anzahl_beschaeftigte_in_abteilung"
+            }
+        }
+    }
+}
+  

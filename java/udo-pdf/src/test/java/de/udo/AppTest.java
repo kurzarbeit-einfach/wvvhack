@@ -189,5 +189,10 @@ public class AppTest {
 			.build();
 		return anzeige;
 	}
+
+	@Test
+	public void gitTest() {
+		System.out.println("test dummy");
+	}
 	
 }

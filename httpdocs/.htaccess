@@ -45,7 +45,7 @@ ErrorDocument 404 /404.php
 ########  3 - Page-Speed-Modul aktivieren (kann während Entw. ausgeschaltet werden)  ########
 
 <IfModule pagespeed_module>
-    ModPagespeed off
+    ModPagespeed on
 </IfModule>
 
 

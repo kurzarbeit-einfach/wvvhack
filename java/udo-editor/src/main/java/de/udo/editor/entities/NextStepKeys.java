@@ -1,23 +1,24 @@
 package de.udo.editor.entities;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import lombok.Getter;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.*;
+import de.udo.editor.exceptions.ValidatorException;
+import lombok.Data;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.HashMap;
 import java.util.Map;
 
-@Getter
-@Setter
-public class NextStepKeys {
+import static de.udo.editor.exceptions.ValidatorException.ValidationErrorType.NEXT_STEP_KEYS_INVALID;
 
+@Data
+public class NextStepKeys implements SelfValidation {
+
+  @JsonIgnore
   private final Map<String, String> parameter;
 
   public NextStepKeys(){
     parameter = new HashMap<>();
   }
-
 
   @JsonAnyGetter
   public Map<String, String> any() {

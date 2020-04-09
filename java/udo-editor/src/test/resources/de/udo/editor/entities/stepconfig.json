@@ -9,15 +9,19 @@
         "default": "zweiterSchritt"
       },
       "type": "textAndInteraction",
-      "request": {
+      "text": {
         "msg": "message",
         "hint": "hintText"
       },
       "interaction": {
-        "confirmButton": {
-          "defaultValue": null,
-          "required": true
-        }
+        "buttons": [
+          {
+            "icon": "building",
+            "text": "Confirm Sample",
+            "value": "value1",
+            "nextStepKey": "default"
+          }
+        ]
       }
     },
     "zweiterSchritt": {
@@ -25,14 +29,15 @@
         "default": "zweiterSchritt"
       },
       "type": "textAndInteraction",
-      "request": {
+      "text": {
         "msg": "Wieviele Beschäftigte hat dein Unternehmen?",
         "hint": "Es zählen alle Beschäftigten und Leiharbeiter, außer Auszubildende."
       },
       "interaction": {
         "textInput": {
           "defaultValue": "Standard",
-          "required": false
+          "required": false,
+          "nextStepKey" : "default"
         }
       }
     },
@@ -42,7 +47,7 @@
         "value2": "dritterSchrittB"
       },
       "type": "textAndInteraction",
-      "request": {
+      "text": {
         "msg": "Wieviele Beschäftigte hat dein Unternehmen?",
         "hint": "Es zählen alle Beschäftigten und Leiharbeiter, außer Auszubildende."
       },
@@ -70,7 +75,7 @@
         "toBit": "achterSchrittB"
       },
       "type": "textAndInteraction",
-      "request": {
+      "text": {
         "msg": "Betriebsnummer"
       },
       "interaction": {
@@ -81,19 +86,10 @@
           "stepValue": 0.5,
           "required": false,
           "replyFunctionCall": {
-            "name": "functionToCall",
-            "parameter": {
-              "param1": "value1",
-              "param2": "value2"
-            }
+            "name": "functionToCall"
           },
           "forwardFunctionCall": {
-            "name": "functionToCall",
-            "parameter": {
-              "param1": "achterSchritt",
-              "param2": "achterSchrittB",
-              "param3": "achterSchrittA"
-            }
+            "name": "functionToCall"
           }
         }
       }
@@ -103,14 +99,16 @@
         "default": "siebterSchritt"
       },
       "type": "textAndInteraction",
-      "request": {
+      "text": {
         "msg": "Bis wann planst du die Reduzierung der Arbeitszeit?"
       },
       "interaction": {
-        "monthInputRelative": {
-          "minMonthFromRelative": 0,
+        "monthInput": {
+          "relativeField" :  "vierterSchritt",
+          "defaultFromRelative" : 0,
+          "minMonthFromRelative" : -1,
           "maxMonthFromRelative": 18,
-          "relative": "vierterSchritt"
+          "nextStepKey" : "default"
         }
       }
     },
@@ -119,15 +117,16 @@
         "default": "fünfterSchritt"
       },
       "type": "textAndInteraction",
-      "request": {
+      "text": {
         "msg": "Wieviele Beschäftigte hat dein Unternehmen?",
         "hint": "Es zählen alle Beschäftigten und Leiharbeiter, außer Auszubildende."
       },
       "interaction": {
-        "monthInputRelative": {
-          "minMonthFromRelative": -1,
-          "maxMonthFromRelative": 6,
-          "relative": "TODO:nowNewFieldInState"
+        "monthInput": {
+          "defaultFromRelative" : 0,
+          "minMonthFromRelative" : -1,
+          "maxMonthFromRelative": 18,
+          "nextStepKey" : "default"
         }
       }
     },
@@ -138,7 +137,7 @@
         "toBit": "achterSchrittB"
       },
       "type": "textAndInteraction",
-      "request": {
+      "text": {
         "msg": "Betriebsnummer"
       },
       "interaction": {
@@ -149,19 +148,10 @@
           "stepValue": 0.5,
           "required": false,
           "replyFunctionCall": {
-            "name": "functionToCall",
-            "parameter": {
-              "param1": "value1",
-              "param2": "value2"
-            }
+            "name": "functionToCall"
           },
           "forwardFunctionCall": {
-            "name": "functionToCall",
-            "parameter": {
-              "param1": "achterSchritt",
-              "param2": "achterSchrittB",
-              "param3": "achterSchrittA"
-            }
+            "name": "functionToCall"
           }
         }
       }
@@ -173,7 +163,7 @@
         "toLong": "siebterSchrittB"
       },
       "type": "textAndInteraction",
-      "request": {
+      "text": {
         "msg": "Wieviele Beschäftigte hat dein Unternehmen?",
         "hint": "Es zählen alle Beschäftigten und Leiharbeiter, außer Auszubildende."
       },
@@ -182,18 +172,11 @@
           "defaultValue": "langerText",
           "required": false,
           "regExPattern": "[0-9]+",
-          "validations": [
-            {
-              "type": "minLength",
-              "length": 30,
-              "nextStepKey": "siebterSchrittA"
-            },
-            {
-              "type": "maxLength",
-              "length": 100,
-              "nextStepKey": "siebterSchrittB"
-            }
-          ]
+          "minLength" : 30,
+          "maxLength" : 100,
+          "placeholder" : "PackWatRein",
+          "rows"        : 24,
+          "nextStepKey" : "siebterSchrittA"
         }
       }
     },
@@ -201,10 +184,9 @@
       "nextStepKeys": {
         "default": "ende_ohne_pdf"
       },
-      "request": {
-        "msg": "Oups das geht ${param1} nicht ${adfasdf}?",
-        "param1": "${state.answers[\"valueKey\"]}",
-        "irgendeinname": "adfasdf",
+      "type": "textAndInteraction",
+      "text": {
+        "msg": "Oups das geht 234234 nicht234",
         "hint": "Es zählen alle Beschäftigten und Leiharbeiter, außer Auszubildende."
       },
       "interaction": {

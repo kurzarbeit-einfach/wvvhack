@@ -1,143 +1,4 @@
-var steps = [
-    {
-        "id": "hallo",
-        "render": () => {
-            textAndInteraction(
-                "Mit den Grundlagen kennst du dich jetzt aus. Lass uns anfangen, das Formular zur Einreichung bei der Bundesagentur für Arbeit gemeinsam auszufüllen. Dazu stelle ich dir eine Reihe von Fragen. Deine Antworten nutze ich, um die Formularfelder für dich zu füllen. Danach kannst du es herunterladen, prüfen, ggfs. anpassen und dann an die Agentur übertragen. Los geht's!",
-                () => createConfirmButton("anzahl_beschaeftigte", "Ich bin bereit")
-            );
-        }
-    },
-    {
-        "id": "anzahl_beschaeftigte",
-        "render": () => {
-            textAndInteraction(
-                "Wieviele Beschäftigte hat dein Unternehmen?",
-                () => {
-                    createIntegerInput(state.answers["anzahl_beschaeftigte"] || 1, 0, null, 1, 1, false).then( (result) => { 
-                        setCurrentAnswer(result.value);
-
-                        if (result.value == 1) {
-                            createTextMessage("Ich habe zur Zeit _einen Beschäftigten_.","",true);
-                        } else {
-                            createTextMessage("Ich habe zur Zeit _"+result.value+" Beschäftigte_.","",true);
-                        }
-                        
-                        if (result.value <= 0) {
-                            renderStep("keine_beschaeftigte");
-                        } else if(result.value <= 50) {
-                            renderStep("arbeitzeitreduzierung_fuer");
-                        } else {
-                            renderStep("anzahl_beschaeftigte_hoch"); 
-                        }
-                    });
-                },
-                "Einschließlich Auszubildender, geringfügig Beschäftigter (Mini-Job oder &quot;450 EUR&quot;-Job) und Leiharbeiter."
-            );
-        }
-    },
-    {
-        "id": "keine_beschaeftigte",
-        "render": () => {
-            exitTextAndModifyQuestion(
-                "Für Unternehmen ohne Beschäftigte kann leider kein Geld für Kurzarbeit beantragt werden.",
-                "anzahl_beschaeftigte",
-                "Es gibt andere Möglichkeiten. Schau' doch mal nach unter [taxy.io](https://www.taxy.io/corona-hilfe-fuer-unternehmen)^ oder [wir-bleiben-liqui.de](https://wir-bleiben-liqui.de/)^."
-            );
-        }
-    },
-    {
-        "id": "anzahl_beschaeftigte_hoch",
-        "render": () => {
-            textAndInteraction(
-                "Das tut mir leid; ich bin leider nicht gut für Unternehmen mit mehr als 50 Beschäftigten vorbereitet. Grundsätzlich empfehle ich Unternehmen mit entsprechender Größe professionelle Beratung in Anspruch zu nehmen. Möchtest du dennoch fortfahren?",
-                () => createYesNoButtons("anzahl_beschaeftigte_in_kurzarbeit", "ende_ohne_pdf", "Weiter", "Ende")
-            );
-        }
-    },
-    {
-        "id": "arbeitzeitreduzierung_fuer",
-        "render": () => {
-            textAndInteraction(
-                "Betrifft die Kurzarbeit das gesamte Unternehmen oder nur eine Abteilung?",
-                () => {
-                    botui.action.button({
-                        action: [
-                            {
-                                icon: 'building',
-                                text: 'Gesamtes Unternehmen',
-                                value: 'Gesamtes Unternehmen'
-                            },
-                            {
-                                icon: 'sitemap',
-                                text: 'Abteilung',
-                                value: 'Abteilung'
-                            }
-                        ],
-                        delay: getRandomInteractionDelay(),
-                        loading: true
-                    }).then( (res) => {
-                        setCurrentAnswer(res.value);
-                        if (res.value === 'Abteilung') {
-                            renderStep("arbeitzeitreduzierung_fuer_abteilung");
-                        } else {
-                            renderStep("anzahl_beschaeftigte_in_kurzarbeit");
-                        }
-                    });
-                }
-            );
-        }
-    },
-    {
-        "id": "arbeitzeitreduzierung_fuer_abteilung",
-        "render": () => {
-            textAndInteraction(
-                "Für welche Abteilung gilt die Kurzarbeit?",
-                () => {
-                    createTextInput(state.answers["arbeitzeitreduzierung_fuer_abteilung"] || null, true).then( (result) => { 
-                        setCurrentAnswer(result.value);
-                        renderStep("anzahl_beschaeftigte_in_abteilung");
-                    });
-                }
-            );
-        }
-    },
-    {
-        "id": "anzahl_beschaeftigte_in_abteilung",
-        "render": () => {
-            textAndInteraction(
-                "Wieviele Beschäftigte hat diese Abteilung?",
-                () => {
-                    createIntegerInput(state.answers["anzahl_beschaeftigte_in_abteilung"] || 1, 0, state.answers["anzahl_beschaeftigte"], 1, 1, false).then( (result) => { 
-                        setCurrentAnswer(result.value);
-
-                        if (result.value == 1) {
-                            createTextMessage("Die betroffene Abteilung hat _einen Beschäftigten_.","",true);
-                        } else {
-                            createTextMessage("Die betroffene Abteilung hat _"+result.value+" Beschäftigte_.","",true);
-                        }
-                        
-                        if (result.value <= 0) {
-                            renderStep("keine_beschaeftigte_in_abteilung");
-                        } else {
-                            renderStep("anzahl_beschaeftigte_in_kurzarbeit"); 
-                        }
-                    });
-                },
-                "Einschließlich Auszubildender, geringfügig Beschäftigter (Mini-Job oder &quot;450 EUR&quot;-Job) und Leiharbeiter."
-            );
-        }
-    },    
-    {
-        "id": "keine_beschaeftigte_in_abteilung",
-        "render": () => {
-            exitTextAndModifyQuestion(
-                "Für Abteilungen ohne Beschäftigte kann leider kein Geld für Kurzarbeit beantragt werden.",
-                "anzahl_beschaeftigte_in_abteilung",
-                "Es gibt andere Möglichkeiten. Schau' doch mal nach unter [taxy.io](https://www.taxy.io/corona-hilfe-fuer-unternehmen)^ oder [wir-bleiben-liqui.de](https://wir-bleiben-liqui.de/)^."
-            );
-        }
-    },
+var stepsFromCode = [        
     {
         "id": "anzahl_beschaeftigte_in_kurzarbeit",
         "render": () => {
@@ -147,7 +8,7 @@ var steps = [
                 betrifftAbteilung ? "Wieviele Beschäftigte sollen in der Abteilung in Kurzarbeit gehen?" : "Wieviele Beschäftigte sollen in Kurzarbeit gehen?",
                 () => {                    
                     createIntegerInput(state.answers["anzahl_beschaeftigte_in_kurzarbeit"] || 1, 0, state.answers["arbeitzeitreduzierung_fuer"] === "Abteilung" ? state.answers["anzahl_beschaeftigte_in_abteilung"] : state.answers["anzahl_beschaeftigte"], 1, true, false).then( (result) => { 
-                        setCurrentAnswer(result.value);
+                        setCurrentAnswer(result.value*1);
 
                         if(result.value == 1)
                             createTextMessage(`Es soll _ein Beschäftigter_ in Kurzarbeit gehen.`,"",true);
@@ -210,7 +71,7 @@ var steps = [
                 "Wieviele Stunden arbeiten deine Vollzeitbeschäftigten normalerweise pro Woche?",
                 () => {                    
                     createIntegerInput(state.answers["anzahl_wochenstunden_der_beschaeftigten_regulaer"] || 40, 1, null, 0.5, true, false).then( (result) => { 
-                        setCurrentAnswer(result.value);
+                        setCurrentAnswer(result.value*1);
 
                         if(result.value == 1)
                             createTextMessage(`Sie arbeiten normalerweise _eine Stunde_ in der Woche.`,"",true);
@@ -230,7 +91,7 @@ var steps = [
                 "Wieviele Stunden sollen diese Vollzeitbeschäftigten während der Kurzarbeit pro Woche arbeiten?",
                 () => {                    
                     createIntegerInput(state.answers["anzahl_wochenstunden_der_beschaeftigten_in_kurzarbeit"] || 20, 0, state.answers["anzahl_wochenstunden_der_beschaeftigten_regulaer"], 1, true, false).then( (result) => { 
-                        setCurrentAnswer(result.value);
+                        setCurrentAnswer(result.value*1);
 
                         if (result.value == 0) {
                             createTextMessage(`Sie sollen _gar nicht_ arbeiten, wenn ich Kurzarbeit anordne.`,"",true);
@@ -268,9 +129,9 @@ var steps = [
                     botui.action.button({
                         action: [
                             {
-                                icon: 'check',
-                                text: "Unabwendbares Ereignis",
-                                value: true
+                                icon: 'times',
+                                text: "Andere Ursache",
+                                value: false
                             },
                             {
                                 icon: 'check',
@@ -278,13 +139,11 @@ var steps = [
                                 value: true
                             },
                             {
-                                icon: 'times',
-                                text: "Andere Ursache",
-                                value: false
+                                icon: 'check',
+                                text: "Unabwendbares Ereignis",
+                                value: true
                             }
-                        ],
-                        delay: getRandomInteractionDelay(),
-                        loading: true          
+                        ]         
                     }).then( (res) => {
                         setCurrentAnswer(res.value);
                         if(res.value)
@@ -293,7 +152,7 @@ var steps = [
                             renderStep("nicht_verursacht_durch_unabwendbares_ereignis_oder_wirtschaftlich");
                     });
                 },
-                "<ul><li>Ein unabwendbares Ereignis ist z.B. eine angeordnete Schließung zur Vorbeugung einer weiteren Ausbreitung der Corona-Pandemie.</li><li>Eine wirtschaftliche Ursache ist z.B. ein aufgrund der Corona-Krise stornierter Großauftrag.</li></ul>"
+                "<ul><li>Eine wirtschaftliche Ursache ist z.B. ein aufgrund der Corona-Krise stornierter Großauftrag.</li><li>Ein unabwendbares Ereignis ist z.B. eine angeordnete Schließung zur Vorbeugung einer weiteren Ausbreitung der Corona-Pandemie.</li></ul>"
             );
         }
     },
@@ -358,9 +217,7 @@ var steps = [
                                 text: "Andere Branche",
                                 value: "Andere Branche"
                             },                     
-                        ],
-                        delay: getRandomInteractionDelay(),
-                        loading: true
+                        ]
                     }).then( (result) => {
                         setCurrentAnswer(result.value);
                         if (result.value !== "Andere Branche") {
@@ -726,7 +583,7 @@ var steps = [
                 }
             );
         }
-    },    
+    },
     {
         "id": "besteht_unternehmen_laenger_als_1_jahr",
         "render": () => {
@@ -793,9 +650,7 @@ var steps = [
                                 text: '...für Arbeiter und Angestellte',
                                 value: 'beides'
                             }
-                        ],
-                        delay: getRandomInteractionDelay(),
-                        loading: true
+                        ]
                     }).then( (res) => {
                         setCurrentAnswer(res.value);
                         if (res.value === 'nur_arbeiter') {
@@ -833,7 +688,7 @@ var steps = [
                 "Wie viele Stunden Wochenarbeitszeit sind für die Arbeiter (Vollzeit) laut Tarifvertrag vereinbart?",
                 () => {                    
                     createIntegerInput(state.answers["wieviele_regulaere_wochenstunden_hat_tarifvertrag_fuer_arbeiter"] || 40, 1, null, 0.5).then( (result) => { 
-                        setCurrentAnswer(result.value);                           
+                        setCurrentAnswer(result.value*1);                           
                         renderStep("tarifvertrag_fuer_arbeiter_enthaelt_kurzarbeitsklausel");
                     });
                 }
@@ -858,9 +713,7 @@ var steps = [
                                 text: "Keine Kurzarbeitsklausel",
                                 value: false
                             }
-                        ],
-                        delay: getRandomInteractionDelay(),
-                        loading: true
+                        ]
                     }).then( (res) => {
                         setCurrentAnswer(res.value);
 
@@ -896,7 +749,7 @@ var steps = [
                 "Wie viele Stunden Wochenarbeitszeit sind für Angestellte (Vollzeit) laut Tarifvertrag vereinbart?",
                 () => {                    
                     createIntegerInput(state.answers["wieviele_regulaere_wochenstunden_hat_tarifvertrag_fuer_angestellte"] || 40, 1, null, 0.5).then( (result) => { 
-                        setCurrentAnswer(result.value);                           
+                        setCurrentAnswer(result.value*1);                           
                         renderStep("tarifvertrag_fuer_angestellte_enthaelt_kurzarbeitsklausel");
                     });
                 }
@@ -962,9 +815,7 @@ var steps = [
                                 text: 'Keine Vereinbarung',
                                 value: false
                             }
-                        ],
-                        delay: getRandomInteractionDelay(),
-                        loading: true
+                        ]
                     }).then( (res) => {
                         setCurrentAnswer(res.value);
                         if (res.value) {
@@ -1047,7 +898,7 @@ var steps = [
                     const betrifftAbteilung = state.answers["arbeitzeitreduzierung_fuer"] === "Abteilung";
 
                     createIntegerInput(state.answers["wieviele_leiharbeiter_in_gesamtbetrieb_bzw_betriebsabteilung"] || "0", 0, (betrifftAbteilung ? state.answers["anzahl_beschaeftigte_in_abteilung"] : state.answers["anzahl_beschaeftigte"]),1,false).then( (result) => { 
-                        setCurrentAnswer(result.value);
+                        setCurrentAnswer(result.value*1);
                         renderStep("ist_arbeitsausfall_massgeblich_branchenueblich_betriebsueblich_oder_saisonbedingt");
                     });
                 }
@@ -1082,9 +933,7 @@ var steps = [
                                 text: "Keine andere üblichen Ursachen",
                                 value: false
                             }
-                        ],
-                        delay: getRandomInteractionDelay(),
-                        loading: true
+                        ]
                     }).then( (res) => {
                         setCurrentAnswer(res.value);
                         renderStep("pdf_erstellung");
@@ -1179,9 +1028,7 @@ function exitTextAndModifyQuestion(exitReason, backStepId)
                         text: 'Ende',
                         value: false
                     }
-                ],
-                delay: getRandomInteractionDelay(),
-                loading: true           
+                ]
             }).then( (res) => {
                 setCurrentAnswer(res.value);
                 if (res.value) {
@@ -1233,22 +1080,10 @@ function goBack()
 
 function createTextMessage(msg,hint="",human=false)
 {
-    let delay, loading;
-    if (human === true) {
-        // no delay and loading state for human messages added
-        delay = 0;
-        loading = false;
-    } else {
-        delay = getRandomBotMsgDelay();
-        loading = true;
-    }
-
-    return botui.message.add({        
+    return botui.message.add({
         content: msg,
         hint_content: hint,
-        human: human,
-        delay: delay,
-        loading: loading
+        human: human
     });
 }
 
@@ -1267,9 +1102,7 @@ function createYesNoButtons(jumpOnYes,jumpOnNo,yesButtonText="Ja",noButtonText="
                 text: noButtonText,
                 value: false
             }
-        ],
-        delay: getRandomInteractionDelay(),
-        loading: true
+        ]
     }).then( (res) => {
         setCurrentAnswer(res.value);
         if(res.value)
@@ -1289,9 +1122,7 @@ function createConfirmButton(jumpOnConfirm, confirmText = 'OK',addAutoText=true)
                 text: confirmText,
                 value: true
             }
-        ],
-        delay: getRandomInteractionDelay(),
-        loading: true
+        ]
     }).then( (res) => {
         setCurrentAnswer(res.value);
         renderStep(jumpOnConfirm);
@@ -1313,9 +1144,7 @@ function createIntegerInput(value=1,min=null,max=null,step=1,required=true,addAu
                 icon: 'chevron-right',
                 label: 'OK'
             }
-        },
-        delay: getRandomInteractionDelay(),
-        loading: true
+        }
     });
 }
 
@@ -1334,9 +1163,7 @@ function createDateInput(defaultValue = null, required = true,addAutoText=true)
                 icon: 'chevron-right',
                 label: 'OK'
             }
-        },
-        delay: getRandomInteractionDelay(),
-        loading: true
+        }
     });
 }
 
@@ -1352,9 +1179,7 @@ function createTextInput(defaultValue = null, required = true,addAutoText=true,p
                 icon: 'chevron-right',
                 label: 'OK'
             }
-        },
-        delay: getRandomInteractionDelay(),
-        loading: true
+        }
     });
 }
 
@@ -1369,9 +1194,7 @@ function createTextareaInput(defaultValue = null,placeholder="Hier schreiben ...
             button: {
                 icon: 'chevron-right',
             }
-        },
-        delay: getRandomInteractionDelay(),
-        loading: true
+        }
     });
 }
 
@@ -1391,9 +1214,7 @@ function createSelect(options,defaultValue=null,placeholder="Bitte wählen...",s
               icon: 'check',
               label: 'OK'
             }
-        },
-        delay: getRandomInteractionDelay(),
-        loading: true
+        }
     });
 }
 
@@ -1408,23 +1229,6 @@ function createDateShiftedByNumberOfMonths(date, monthOffset)
 function getDateYearAndMonth(date)
 {
     return date.toLocaleString('default', { month: 'long' }) + ' ' + date.getFullYear();
-}
-
-function getRandomInt(min, max)
-{
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-function getRandomBotMsgDelay()
-{
-    return getRandomInt(500, 700);
-}
-
-function getRandomInteractionDelay()
-{
-    return getRandomInt(200, 300);
 }
 
 /**
@@ -1622,10 +1426,32 @@ function downloadPdf()
 }
 
 var botui = new BotUI('my-botui-app');
+var steps = [];
 
 function runBot()
 {
-    restartConversation();
+    $.ajax({
+        method: "GET",
+        url: "assets/stepconfig_beta.json",
+        dataType: "json"
+    }).done((response) => {
+        // steps from code are inserted first
+        const stepIdsFromCode = [];
+        stepsFromCode.forEach((step) => {
+            stepIdsFromCode.push(step.id);
+            steps.push(step);
+        });
+
+        // next we insert all steps from config that do not exist from code
+        const stepsFromConfig = parseStepConfigSteps(response);
+        stepsFromConfig.forEach((step) => {
+            if (stepIdsFromCode.indexOf(step.id) === -1) {
+                steps.push(step);
+            }
+        });
+
+        restartConversation();
+    });
 }
 
 function blockUi()
@@ -1640,4 +1466,238 @@ function unblockUi()
     jQuery('#ui_blocker').fadeOut(function(){
         jQuery('#ui_blocker').remove();
     });
+}
+
+/**
+ * Methods for config parsing
+ */
+
+const replyFunctionCalls = {
+    replyAnzahlBeschaeftigte: (value) => {
+        if (value === 1) {
+            return "Ich habe zur Zeit _einen Beschäftigten_.";
+        } else {
+            return `Ich habe zur Zeit _${value} Beschäftigte_.`;
+        }
+    },
+    replyAnzahlBeschaeftigteInAbteilung: (value) => {
+        if (value === 1) {
+            return "Die betroffene Abteilung hat _einen Beschäftigten_.";
+        } else {
+            return `Die betroffene Abteilung hat _${value} Beschäftigte_.`;
+        }
+    },
+};
+
+const forwardFunctionCalls = {
+    forwardAnzahlBeschaeftigte: (value) => {
+        if (value <= 0) {
+            return "keine";
+        }
+        if(value <= 50) {
+            return "standard";
+        }
+
+        return "zuviele";
+    },
+    forwardAnzahlBeschaeftigteInAbteilung: (value) => {
+        if (value <= 0) {
+            return "keine";
+        }
+
+        return "standard";
+    }
+};
+
+function parseStepConfigSteps(config)
+{
+    const steps = [];
+
+    Object.keys(config.steps).forEach((stepKey) => {
+        const stepConfig = config.steps[stepKey];
+
+        const type = stepConfig.type;
+        if (type !== 'textAndInteraction') {
+            throw new Error(`Invalid type "${type}"`);
+        }
+
+        const internalStepKeyToGlobalStepKeyMap = stepConfig.nextStepKeys;
+
+        let interactionFunc;
+        if (typeof stepConfig.interaction.buttons !== 'undefined') {
+            interactionFunc = buttons(stepConfig.interaction.buttons, internalStepKeyToGlobalStepKeyMap, stepKey);
+        } else if (typeof stepConfig.interaction.numberInput !== 'undefined') {
+            interactionFunc = numberInput(stepConfig.interaction.numberInput, internalStepKeyToGlobalStepKeyMap, stepKey);
+        } else if (typeof stepConfig.interaction.textInput !== 'undefined') {
+            interactionFunc = textInput(stepConfig.interaction.textInput, internalStepKeyToGlobalStepKeyMap, stepKey);
+        }
+
+        const renderFunc = () => {
+            textAndInteraction(
+                stepConfig.text.msg,
+                interactionFunc,
+                stepConfig.text.hint || ""
+            );
+        };
+
+        steps.push({
+            id: stepKey,
+            render: renderFunc
+        });
+    });
+
+    return steps;
+}
+
+function buttons(buttonsConfig, internalStepKeyToGlobalStepKeyMap, stepKey)
+{
+    const buttons = [];
+    const valueToStepKeyMap = {};
+    buttonsConfig.forEach((buttonConfig) => {
+        buttons.push({
+            icon: buttonConfig.icon,
+            text: buttonConfig.text,
+            value: buttonConfig.value
+        });
+        valueToStepKeyMap[buttonConfig.value] = buttonConfig.nextStepKey;
+    });
+
+    return () => {
+        botui.action.button({
+            action: buttons
+        }).then((res) => {
+            setCurrentAnswer(res.value);
+            renderStep(internalStepKeyToGlobalStepKeyMap[valueToStepKeyMap[res.value]]);
+        })
+    };
+}
+
+function numberInput(numberInputConfig, internalStepKeyToGlobalStepKeyMap, stepKey)
+{
+    let addAutoText = true;
+    let replyFunction = getReplyFunction(numberInputConfig);
+    if (replyFunction !== null) {
+        addAutoText = false;
+    }
+
+    let forwardFunction = getForwardFunction(numberInputConfig);
+
+    return () => {
+        botui.action.text({
+            addMessage: addAutoText,
+            action: {
+                sub_type: "number",
+                value: state.answers[stepKey] || getConfigValueWithPotentialReference(numberInputConfig.defaultValue),
+                min: getConfigValueWithPotentialReference(numberInputConfig.minValue),
+                max: typeof numberInputConfig.maxValue !== 'undefined' ? getConfigValueWithPotentialReference(numberInputConfig.maxValue) : null,
+                step: typeof numberInputConfig.stepValue !== 'undefined' ? numberInputConfig.stepValue : 1,
+                required: typeof numberInputConfig.required !== 'undefined' ? numberInputConfig.required : true,
+                button: {
+                    icon: 'chevron-right',
+                    label: 'OK'
+                }
+            }
+        }).then((result) => {
+            // ensure the output is always treated as either int or float by multiplying with 1
+            setCurrentAnswer(result.value*1);
+
+            if (replyFunction !== null) {
+                createTextMessage(replyFunction(result.value), "", true);
+            }
+
+            const internalForwardStepKey = forwardFunction !== null ? forwardFunction(result.value) : numberInputConfig.nextStepKey;
+            renderStep(internalStepKeyToGlobalStepKeyMap[internalForwardStepKey]);
+        });
+    };
+}
+
+function textInput(textInputConfig, internalStepKeyToGlobalStepKeyMap, stepKey)
+{
+    let addAutoText = true;
+    let replyFunction = getReplyFunction(textInputConfig);
+    if (replyFunction !== null) {
+        addAutoText = false;
+    }
+
+    let forwardFunction = getForwardFunction(textInputConfig);
+
+    return () => {
+        // TODO: minlength and maxlength
+        botui.action.text({
+            addMessage: addAutoText,
+            action: {
+                value: state.answers[stepKey] || (typeof textInputConfig.defaultValue !== 'undefined' ? getConfigValueWithPotentialReference(textInputConfig.defaultValue) : ''),
+                pattern: typeof textInputConfig.regExPattern !== 'undefined' ? textInputConfig.regExPattern : null,
+                required: typeof textInputConfig.required !== 'undefined' ? textInputConfig.required : true,
+                button: {
+                    icon: 'chevron-right',
+                    label: 'OK'
+                }
+            }
+        }).then((result) => {
+            setCurrentAnswer(result.value);
+
+            if (replyFunction !== null) {
+                createTextMessage(replyFunction(result.value), "", true);
+            }
+
+            const internalForwardStepKey = forwardFunction !== null ? forwardFunction(result.value) : textInputConfig.nextStepKey;
+            renderStep(internalStepKeyToGlobalStepKeyMap[internalForwardStepKey]);
+        });
+    };
+}
+
+/**
+ * "monthInput": {
+      "relativeField" :  "sechsterSchrittOptionalSonstNow",
+      "defaultFromRelative" : 0,
+      "minMonthFromRelative" : -1,
+      "maxMonthFromRelative": 18
+    } 
+ */
+
+function getConfigValueWithPotentialReference(configValue)
+{
+    if (configValue === null) {
+        return null;
+    }
+
+    // check if the config value references a different step's output via ${answers.id_der_frage_davor}
+    const pattern = /^\$\{([a-zA-Z0-9._]*)\}$/;
+    const matches = (configValue+"").match(pattern);
+    if (matches !== null) {
+        const pathParts = matches[1].split('.');
+        let curValue = state;
+        pathParts.forEach((part) => {
+            curValue = curValue[part];
+        });
+
+        return curValue;
+    }
+
+    return configValue;
+}
+
+function getReplyFunction(interactionConfig)
+{
+    if (typeof interactionConfig.replyFunctionCall !== 'undefined') {
+        if (typeof replyFunctionCalls[interactionConfig.replyFunctionCall.name] === 'undefined') {
+            throw new Error(`Got reference to non-existing reply function with name "${interactionConfig.replyFunctionCall.name}"`);
+        }
+        return replyFunctionCalls[interactionConfig.replyFunctionCall.name];
+    }
+
+    return null;
+}
+
+function getForwardFunction(interactionConfig)
+{
+    if (typeof interactionConfig.forwardFunctionCall !== 'undefined') {
+        if (typeof forwardFunctionCalls[interactionConfig.forwardFunctionCall.name] === 'undefined') {
+            throw new Error(`Got reference to non-existing forward function with name "${interactionConfig.forwardFunctionCall.name}"`);
+        }
+        return forwardFunctionCalls[interactionConfig.forwardFunctionCall.name];
+    }
+
+    return null;
 }

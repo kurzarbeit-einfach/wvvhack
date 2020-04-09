@@ -1,19 +1,15 @@
 package de.udo.editor;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.udo.editor.entities.NextStepKeys;
-import de.udo.editor.entities.Step;
 import de.udo.editor.entities.StepConfig;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -50,7 +46,7 @@ public class CheckRealStepConfigTest {
   }
 
   @Test
-  void test_load(){
+  void test_load() {
     assertThat(config, Matchers.is(Matchers.notNullValue()));
   }
 
@@ -70,37 +66,39 @@ public class CheckRealStepConfigTest {
   }
 
   @Test
-  @Disabled("not working")
-  void test_step_links_no_backLinks(){
-    final Step startStep = config.getSteps().get(config.getStartStepKey());
+  void test_no_deadEnds() {
 
-    final List<Step> processed = new ArrayList<>();
+    Set<String> knownSteps = config.getSteps().keySet();
+    List<String> exitSteps = Arrays.asList(config.getExitSteps());
 
+    Map<String, Collection<String>>
+      step2NextStep =
+      config.getSteps().entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().getNextStepKeys().getParameter().values()));
 
-
-    Map<String, Set<String>>  mappingKeyToNextKeys = config.getSteps().entrySet().stream().collect(Collectors.toMap(
-      entry -> entry.getKey(),
-      entry -> entry.getValue().getNextStepKeys().getParameter().values().stream().collect(Collectors.toSet())));
-
-
-    final List<String> validExits = new ArrayList<>();
-    validExits.addAll(Arrays.asList(config.getExitSteps()));
-
-    for (Map.Entry<String, Set<String>> entry : mappingKeyToNextKeys.entrySet() ) {
-
-      final Set<String> collect = entry.getValue();
-      collect.removeAll(validExits);
-      if (collect.isEmpty()) {
-        validExits.add(entry.getKey());
-      }
-      System.out.println(entry);
-      System.out.println("validExits: " + validExits);
-    }
+    Map<String, Collection<String>>
+      stepWithDeadEnd =
+      step2NextStep.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().stream().filter(stepkey -> isUnknown(knownSteps, stepkey))
+        .filter(stepKey -> isNotAExitStep(exitSteps, stepKey))
+        .collect(Collectors.toSet()))).entrySet().
+        stream().filter(e -> !e.getValue().isEmpty()).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue
+      ));
 
 
+    assertThat("noEntries expected: " + stepWithDeadEnd.toString(), stepWithDeadEnd.size(), is(equalTo(0)));
+
+  }
 
 
+  private boolean notContains(Collection<String> steps, String stepKey) {
+    return !steps.contains(stepKey);
+  }
 
+  private boolean isUnknown(Set<String> knownSteps, String stepKey) {
+    return notContains(knownSteps, stepKey);
 
+  }
+
+  private boolean isNotAExitStep(List<String> exitSteps, String stepKey) {
+    return notContains(exitSteps, stepKey);
   }
 }

@@ -1,18 +1,16 @@
 package de.udo.editor.entities;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import de.udo.editor.exceptions.ValidatorException;
+import lombok.Data;
 
-import java.util.Map;
+import javax.validation.constraints.NotEmpty;
 
-@Getter
-@Setter
-@NoArgsConstructor
-public class FunctionCall {
-  String name;
-  Map<String, String> parameter;
+import static de.udo.editor.exceptions.ValidatorException.ValidationErrorType.FUNCTION_CALL_INCOMPLETE;
 
+@Data
+public class FunctionCall implements SelfValidation {
 
+  @NotEmpty
+  private String name;
 
 }

@@ -2,13 +2,19 @@ package de.udo.editor.entities;
 
 import de.udo.editor.entities.testOnlyHelper.ResourceHelper;
 import de.udo.editor.entities.testOnlyHelper.StepHelper;
-import org.apache.commons.lang3.NotImplementedException;
+import de.udo.editor.exceptions.ValidatorException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Set;
 
+import static de.udo.editor.exceptions.ValidatorException.ValidationErrorType.INTERACTION_INCOMPLETE;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
@@ -26,13 +32,6 @@ public class InteractionTest {
 
   Interaction interaction;
 
-
-  @Test
-  void test_confirmButton()  {
-    interaction = stepMap.get(StepHelper.SCHRITT_001).getInteraction();
-    assertThat(interaction, is(notNullValue()));
-    assertThat(interaction.getConfirmButton(), is(notNullValue()));
-  }
 
   @Test
   void test_textInput()  {
@@ -62,7 +61,45 @@ public class InteractionTest {
   void test_monthInputRelative()  {
     interaction = stepMap.get(StepHelper.SCHRITT_005).getInteraction();
     assertThat(interaction, is(notNullValue()));
-    assertThat(interaction.getMonthInputRelative(), is(notNullValue()));
+    assertThat(interaction.getMonthInput(), is(notNullValue()));
   }
+
+  @Test
+  void test_internal_validate_positive(){
+    stepMap.values().stream().forEach(
+      step -> {
+        step.getInteraction().validate();
+      }
+    );
+  }
+
+
+  @Test
+  void testChilds() {
+    interaction = stepMap.get(StepHelper.SCHRITT_005).getInteraction();
+    assertThat(interaction.getChilds(), is(notNullValue()));
+    assertThat(interaction.getChilds().size(), is(greaterThan(0)));
+  }
+
+
+  @Test
+  void test_internal_validate_negative(){
+    ValidatorException validatorException = null;
+    try {
+      new Interaction().validate();
+    } catch (ValidatorException ex){
+      validatorException = ex;
+    }
+    assertThat(validatorException.getValidationErrorType(), is(INTERACTION_INCOMPLETE));
+  }
+
+  @Test
+  void test_internal_validate_negative_Standard_ValidationFramework() {
+    ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+    Validator validator = factory.getValidator();
+    Set<ConstraintViolation<Interaction>> result = validator.validate(new Interaction());
+    assertThat(result.size(), is(equalTo(0)));
+  }
+
 
 }

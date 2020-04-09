@@ -134,7 +134,7 @@
         <p>
             Damit deine Mitarbeiter Kurzarbeitergeld erhalten können, musst du der Bundesagentur für Arbeit anzeigen, dass du Kurzarbeit angeordnet hast.
             <ul>
-                <li>Du kannst Kurzarbeitergeld ab sofort für bis zu 12 Monate erhalten.</li>
+                <li>Du kannst Kurzarbeitergeld ab dem Monat des Eingangs der Anzeige bei der Agentur für Arbeit und für bis zu 12 Monate erhalten.</li>
                 <li>Verbessert sich deine Geschäftssituation vorübergehend, kannst du Kurzarbeit für bis zu drei Monate aussetzen und später fortführen, ohne einen neuen Antrag stellen zu müssen.</li>
                 <li>Konntest du länger als drei Monate auf Kurzarbeit verzichten, musst du es bei erneutem Bedarf auch neu beantragen.</li>
             </ul>
@@ -142,12 +142,31 @@
 
 
         <div class="innerBottom">
-            <button class="next" data-target="info5">Weiter zu: Ablauf</button>
+            <button class="next" data-target="info5">Weiter zu: Anspruch</button>
         </div>
     </div>
 </div>
 
 <div class="container info5">
+    <div class="inner">
+    <h2>Wer kann Kurzarbeitergeld erhalten?</h2>
+        <p>
+            Das Kurzarbeitergeld ist eine Leistung der Arbeitslosenversicherung. Kurzarbeitergeld können fast alle sozialversicherungspflichtig beschäftigten Personen erhalten. Beachte aber folgende Spezialfälle:
+            <ul>
+                <li>Das Kurzarbeitergeld für Leiharbeiter wird über den Verleiher abgewickelt.</li>
+                <li>Geringfügig beschäftigte Mitarbeiter (Minijob / 450€-Job) haben keinen Anspruch auf Kurzarbeitergeld.</li>
+                <li>Auszubildende können Kurzarbeitergeld erhalten, allerdings haben Sie zunächst Anspruch auf eine 6-Wöchige Gehaltsfortzahlung des Arbeitgebers, sobald Kurzarbeit angeordnet wird. Nähere Details dazu finden sich im Berufsbildungsgesetz.</li>
+            </ul>
+        </p>
+
+
+        <div class="innerBottom">
+            <button class="next" data-target="info6">Weiter zu: Ablauf</button>
+        </div>
+    </div>
+</div>
+
+<div class="container info6">
     <div class="inner">
         <h2>So läuft Kurzarbeit ab!</h2>
         <p>
@@ -211,7 +230,8 @@
             </p>
             <ol>
                 <li>
-                    Überprüfe das Formular, drucke es aus, unterschreibe es und scanne es wieder ein.
+                    Überprüfe das Formular, drucke es aus, unterschreibe es und scanne es wieder ein.<br/>
+                    Bitte nehme auch den Inhalt des <a href="https://www.arbeitsagentur.de/datei/anzeige-kug101_ba013134.pdf" target="_blank">Merkblatts 8a</a> zur Kenntnis.
                 </li>
                 <li>
                     Du wirst das Formular gleich direkt online zur Bundesagentur für Arbeit übertragen. Dazu benötigst du einen Zugang zu den eServices der Arbeitsagentur.

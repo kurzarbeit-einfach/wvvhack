@@ -1,33 +1,38 @@
 {
   "startStepKey": "hallo",
   "exitSteps": [
-    "ende_ohne_pdf"
+    "ende_ohne_pdf",
+    "anzahl_beschaeftigte_in_kurzarbeit"
   ],
   "steps": {
     "hallo": {
       "nextStepKeys": {
-        "default": "zweiterSchritt"
+        "default": "anzahl_beschaeftigte"
       },
       "type": "textAndInteraction",
-      "request": {
+      "text": {
         "msg": "Mit den Grundlagen kennst du dich jetzt aus. Lass uns anfangen, das Formular zur Einreichung bei der Bundesagentur für Arbeit gemeinsam auszufüllen. Dazu stelle ich dir eine Reihe von Fragen. Deine Antworten nutze ich, um die Formularfelder für dich zu füllen. Danach kannst du es herunterladen, prüfen, ggfs. anpassen und dann an die Agentur übertragen. Los geht's!",
         "hint": "hintText"
       },
       "interaction": {
-        "confirmButton": {
-          "defaultValue": "Ich bin bereit",
-          "required": true
-        }
+        "buttons": [
+          {
+            "icon": "check",
+            "text": "Ich bin bereit",
+            "value": "true",
+            "nextStepKey": "default"
+          }
+        ]
       }
     },
     "anzahl_beschaeftigte": {
       "nextStepKeys": {
         "default": "anzahl_beschaeftigte_in_kurzarbeit",
-        "keine_beschaeftigte": "keine_beschaeftigte",
-        "anzahl_beschaeftigte_hoch": "anzahl_beschaeftigte_hoch"
+        "keine": "keine_beschaeftigte",
+        "zuviele": "anzahl_beschaeftigte_hoch"
       },
       "type": "textAndInteraction",
-      "request": {
+      "text": {
         "msg": "Wieviele Beschäftigte hat dein Unternehmen?",
         "hint": "Einschließlich Auszubildender, geringfügig Beschäftigter (Mini-Job oder &quot;450 EUR&quot;-Job) und Leiharbeiter."
       },
@@ -39,35 +44,65 @@
           "stepValue": 0.5,
           "required": false,
           "replyFunctionCall": {
-            "name": "responseHeadCount",
-            "parameter": {
-              "param1": "state.answers[\"anzahl_beschaeftigte\"]"
-            }
+            "name": "responseHeadCount"
           },
           "forwardFunctionCall": {
-            "name": "forwardHeadCount",
-            "parameter": {
-              "param1": "state.answers[\"anzahl_beschaeftigte\"]",
-              "param2": "steps[\"anzahl_beschaeftigte\"]"
-            }
+            "name": "forwardHeadCount"
           }
         }
       }
     },
-    "keine_beschaeftigte": {
+    "anzahl_beschaeftigte_hoch": {
       "nextStepKeys": {
-        "default": "ende_ohne_pdf"
+        "default": "ende_ohne_pdf",
+        "yes" : "anzahl_beschaeftigte_in_kurzarbeit"
       },
       "type": "textAndInteraction",
-      "request": {
+      "text": {
+        "msg": "Das tut mir leid; ich bin leider nicht gut für Unternehmen mit mehr als 50 Beschäftigten vorbereitet. Grundsätzlich empfehle ich Unternehmen mit entsprechender Größe professionelle Beratung in Anspruch zu nehmen. Möchtest du dennoch fortfahren?"
+      },
+      "interaction": {
+        "buttons": [
+          {
+            "icon": "times",
+            "text": "Ende",
+            "value": "true",
+            "nextStepKey": "default"
+          },
+          {
+            "icon": "check",
+            "text": "Weiter",
+            "value": "false",
+            "nextStepKey": "yes"
+          }
+        ]
+      }
+    },
+    "keine_beschaeftigte": {
+      "nextStepKeys": {
+        "exit": "ende_ohne_pdf",
+        "edit" : "anzahl_beschaeftigte"
+      },
+      "type": "textAndInteraction",
+      "text": {
         "msg": "Für Unternehmen ohne Beschäftigte kann leider kein Geld für Kurzarbeit beantragt werden.",
         "hint": "Es gibt andere Möglichkeiten. Schau' doch mal nach unter [taxy.io](https://www.taxy.io/corona-hilfe-fuer-unternehmen)^ oder [wir-bleiben-liqui.de](https://wir-bleiben-liqui.de/)^."
       },
       "interaction": {
-        "confirmButton": {
-          "defaultValue": "Ich bin bereit",
-          "required": true
-        }
+        "buttons": [
+          {
+            "icon": "check",
+            "text": "Bearbeiten",
+            "value": "true",
+            "nextStepKey": "edit"
+          },
+          {
+            "icon": "check",
+            "text": "Ende",
+            "value": "false",
+            "nextStepKey": "exit"
+          }
+        ]
       }
     }
   }

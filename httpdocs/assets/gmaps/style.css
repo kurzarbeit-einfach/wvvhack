@@ -1,0 +1,287 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    background-color: #3D555D;
+}
+
+#autocomplete_input {
+    width: 96%;
+    margin-top: 10px;
+    margin-left: 2%;
+    padding: 5px 10px;
+    background-color: #FFF;
+    color: #3D555D;
+    margin-bottom: 5px;
+}
+#autocomplete_input::placeholder {
+    color: #999;
+}
+
+#autocomplete_result_list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+#autocomplete_result_list li {
+    padding: 5px 10px;
+    width: 96%;
+    margin-left: 2%;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+
+#autocomplete_result_list li:nth-child(even) {
+    background-color: #71C9B8;
+}
+#autocomplete_result_list li:nth-child(odd) {
+    background-color: #E6F4F1;
+}
+
+
+
+
+
+body, input {
+    font-family: sans-serif, Arial;
+    color:#103846;
+    -webkit-font-smoothing: antialiased;
+}
+
+
+/* raleway-regular - latin */
+@font-face {
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 400;
+    src: url('/assets/fonts/raleway-v14-latin-regular.eot'); /* IE9 Compat Modes */
+    src: local('Raleway'), local('Raleway-Regular'),
+        url('/assets/fonts/raleway-v14-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+        url('/assets/fonts/raleway-v14-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+        url('/assets/fonts/raleway-v14-latin-regular.woff') format('woff'), /* Modern Browsers */
+        url('/assets/fonts/raleway-v14-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+        url('/assets/fonts/raleway-v14-latin-regular.svg#Raleway') format('svg'); /* Legacy iOS */
+}
+/* raleway-700 - latin */
+@font-face {
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 700;
+    src: url('/assets/fonts/raleway-v14-latin-700.eot'); /* IE9 Compat Modes */
+    src: local('Raleway Bold'), local('Raleway-Bold'),
+        url('/assets/fonts/raleway-v14-latin-700.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+        url('/assets/fonts/raleway-v14-latin-700.woff2') format('woff2'), /* Super Modern Browsers */
+        url('/assets/fonts/raleway-v14-latin-700.woff') format('woff'), /* Modern Browsers */
+        url('/assets/fonts/raleway-v14-latin-700.ttf') format('truetype'), /* Safari, Android, iOS */
+        url('/assets/fonts/raleway-v14-latin-700.svg#Raleway') format('svg'); /* Legacy iOS */
+}
+
+/* roboto-regular - latin */
+@font-face {
+font-family: 'Roboto';
+font-style: normal;
+font-weight: 400;
+src: url('/assets/fonts/roboto-v20-latin-regular.eot'); /* IE9 Compat Modes */
+src: local('Roboto'), local('Roboto-Regular'),
+        url('/assets/fonts/roboto-v20-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+        url('/assets/fonts/roboto-v20-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+        url('/assets/fonts/roboto-v20-latin-regular.woff') format('woff'), /* Modern Browsers */
+        url('/assets/fonts/roboto-v20-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+        url('/assets/fonts/roboto-v20-latin-regular.svg#Roboto') format('svg'); /* Legacy iOS */
+}
+/* roboto-700 - latin */
+@font-face {
+font-family: 'Roboto';
+font-style: normal;
+font-weight: 700;
+src: url('/assets/fonts/roboto-v20-latin-700.eot'); /* IE9 Compat Modes */
+src: local('Roboto Bold'), local('Roboto-Bold'),
+        url('/assets/fonts/roboto-v20-latin-700.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+        url('/assets/fonts/roboto-v20-latin-700.woff2') format('woff2'), /* Super Modern Browsers */
+        url('/assets/fonts/roboto-v20-latin-700.woff') format('woff'), /* Modern Browsers */
+        url('/assets/fonts/roboto-v20-latin-700.ttf') format('truetype'), /* Safari, Android, iOS */
+        url('/assets/fonts/roboto-v20-latin-700.svg#Roboto') format('svg'); /* Legacy iOS */
+}
+/* roboto-900 - latin */
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 900;
+    src: url('/assets/fonts/roboto-v20-latin-900.eot'); /* IE9 Compat Modes */
+    src: local('Roboto Black'), local('Roboto-Black'),
+        url('/assets/fonts/roboto-v20-latin-900.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+        url('/assets/fonts/roboto-v20-latin-900.woff2') format('woff2'), /* Super Modern Browsers */
+        url('/assets/fonts/roboto-v20-latin-900.woff') format('woff'), /* Modern Browsers */
+        url('/assets/fonts/roboto-v20-latin-900.ttf') format('truetype'), /* Safari, Android, iOS */
+        url('/assets/fonts/roboto-v20-latin-900.svg#Roboto') format('svg'); /* Legacy iOS */
+}
+
+* {
+    box-sizing: border-box;
+    -webkit-box-sizing:border-box;
+    -moz-box-sizing:border-box;
+    -ms-box-sizing:border-box;
+    -o-box-sizing:border-box;
+    -webkit-font-smoothing: antialiased;
+}
+
+
+
+/* ----------------------------------------------------------------------------------------------------
+Super Form Reset
+A couple of things to watch out for:
+- IE8: If a text input doesn't have padding on all sides or none the text won't be centered.
+- The default border sizes on text inputs in all UAs seem to be slightly different. You're better off using custom borders.
+- You NEED to set the font-size and family on all form elements
+- Search inputs need to have their appearance reset and the box-sizing set to content-box to match other UAs
+- You can style the upload button in webkit using ::-webkit-file-upload-button
+- ::-webkit-file-upload-button selectors can't be used in the same selector as normal ones. FF and IE freak out.
+- IE: You don't need to fake inline-block with labels and form controls in IE. They function as inline-block.
+- By turning off ::-webkit-search-decoration, it removes the extra whitespace on the left on search inputs
+----------------------------------------------------------------------------------------------------*/
+
+input,
+label,
+select,
+button,
+textarea
+{
+	margin:0;
+	border:0;
+	padding:0;
+	display:inline-block;
+	vertical-align:middle;
+	white-space:normal;
+	background:none;
+	line-height:1;
+	
+	/* Browsers have different default form fonts */
+	font-size:13px;
+	font-family:Arial;
+}
+
+/* Remove the stupid outer glow in Webkit */
+input:focus
+{
+	outline:0;
+}
+
+/* Box Sizing Reset
+-----------------------------------------------*/
+
+
+/* These elements are usually rendered a certain way by the browser */
+button,
+input[type=reset],
+input[type=button],
+input[type=submit],
+input[type=checkbox],
+input[type=radio],
+select
+{
+	-webkit-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	box-sizing:border-box;
+}
+
+/* Text Inputs
+-----------------------------------------------*/
+
+input[type=date],
+input[type=datetime],
+input[type=datetime-local],
+input[type=email],
+input[type=month],
+input[type=number],
+input[type=password],
+input[type=range],
+input[type=search],
+input[type=tel],
+input[type=text],
+input[type=time],
+input[type=url],
+input[type=week]
+{
+}
+
+/* Button Controls
+-----------------------------------------------*/
+
+input[type=checkbox],
+input[type=radio]
+{
+	width:13px;
+	height:13px;
+}
+
+/* File Uploads
+-----------------------------------------------*/
+
+input[type=file]
+{
+
+}
+
+/* Search Input
+-----------------------------------------------*/
+
+/* Make webkit render the search input like a normal text field */
+input[type=search]
+{
+	-webkit-appearance:textfield;
+	-webkit-box-sizing:content-box;
+}
+
+/* Turn off the recent search for webkit. It adds about 15px padding on the left */
+::-webkit-search-decoration
+{
+	display:none;
+}
+
+/* Buttons
+-----------------------------------------------*/
+
+button,
+input[type="reset"],
+input[type="button"],
+input[type="submit"]
+{
+	/* Fix IE7 display bug */
+	overflow:visible;
+	width:auto;
+}
+
+/* IE8 and FF freak out if this rule is within another selector */
+::-webkit-file-upload-button
+{	
+	padding:0;
+	border:0;
+	background:none;
+}
+
+/* Textarea
+-----------------------------------------------*/
+
+textarea 
+{
+	/* Move the label to the top */
+	vertical-align:top;
+	
+	/* Turn off scroll bars in IE unless needed */
+	overflow:auto;
+}
+
+/* Selects
+-----------------------------------------------*/
+
+select
+{
+
+}
+
+select[multiple] 
+{
+	/* Move the label to the top */
+	vertical-align:top;
+}

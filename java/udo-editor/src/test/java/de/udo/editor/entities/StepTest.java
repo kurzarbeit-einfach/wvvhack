@@ -6,8 +6,13 @@ import de.udo.editor.entities.testOnlyHelper.StepHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -47,8 +52,8 @@ public class StepTest {
   }
 
   @Test
-  void test_request() {
-    assertThat(steps.get(StepHelper.SCHRITT_001).getRequest(),
+  void test_text() {
+    assertThat(steps.get(StepHelper.SCHRITT_001).getText(),
       is(notNullValue())
     );
   }
@@ -58,5 +63,13 @@ public class StepTest {
     assertThat(steps.get(StepHelper.SCHRITT_001).getInteraction(),
       is(notNullValue())
     );
+  }
+
+  @Test
+  void test_internal_validate_negative_Standard_ValidationFramework() {
+    ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+    Validator validator = factory.getValidator();
+    Set<ConstraintViolation<Step>> result = validator.validate(new Step());
+    assertThat(result.size(), is(greaterThan(3)));
   }
 }

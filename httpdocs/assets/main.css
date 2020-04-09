@@ -794,3 +794,22 @@ section.content .container.conversation .inner {
     }
 
 }
+
+/* --- Page specific rules --- */
+/* --------------------------------------------- */
+
+section.content .hero.terms .inner > p {
+    margin-bottom: 25px !important;
+}
+
+.terms h3 {
+    margin: 60px 0 15px 0;
+}
+
+.terms ul, .terms ol {
+    margin-bottom: 25px;
+}
+
+.terms li {
+    margin-bottom: 0px;
+}

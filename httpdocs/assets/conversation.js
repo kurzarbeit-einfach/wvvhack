@@ -26,13 +26,13 @@ var steps = [
                         if (result.value <= 0) {
                             renderStep("keine_beschaeftigte");
                         } else if(result.value <= 50) {
-                            renderStep("anzahl_beschaeftigte_in_kurzarbeit");
+                            renderStep("arbeitzeitreduzierung_fuer");
                         } else {
                             renderStep("anzahl_beschaeftigte_hoch"); 
                         }
                     });
                 },
-                "Einschließlich Auszubildender, geringfügig Beschäftigter (Mini-Job oder &quot;450 EUR&quot;-Job) und Leiharbeiter."
+                "Einschließlich geringfügig Beschäftigte (Mini-Job oder &quot;450 EUR&quot;-Job) und Leiharbeiter. Azubis zählen hier nicht mit."
             );
         }
     },
@@ -40,9 +40,9 @@ var steps = [
         "id": "keine_beschaeftigte",
         "render": () => {
             exitTextAndModifyQuestion(
-                "Für Unternehmen ohne Beschäftigte kann leider kein Geld für Kurzarbeit beantragt werden.",
+                "Nur Unternehmen mit mindestens einem Beschäftigten können Kurzarbeitergeld beantragen.",
                 "anzahl_beschaeftigte",
-                "Es gibt andere Möglichkeiten. Schau' doch mal nach unter [taxy.io](https://www.taxy.io/corona-hilfe-fuer-unternehmen)^ oder [wir-bleiben-liqui.de](https://wir-bleiben-liqui.de/)^."
+                "Es gibt Möglichkeiten für Selbstständige. Schau' doch mal nach unter [taxy.io](https://www.taxy.io/corona-hilfe-fuer-unternehmen)^ oder [wir-bleiben-liqui.de](https://wir-bleiben-liqui.de/)^."
             );
         }
     },
@@ -50,18 +50,102 @@ var steps = [
         "id": "anzahl_beschaeftigte_hoch",
         "render": () => {
             textAndInteraction(
-                "Das tut mir leid; ich bin leider nicht gut für Unternehmen mit mehr als 50 Beschäftigten vorbereitet. Grundsätzlich empfehle ich Unternehmen mit entsprechender Größe professionelle Beratung in Anspruch zu nehmen. Möchtest du dennoch fortfahren?",
-                () => createYesNoButtons("anzahl_beschaeftigte_in_kurzarbeit", "ende_ohne_pdf", "Weiter", "Ende")
+                "Das tut mir leid; ich bin leider nicht gut für Unternehmen mit mehr als 50 Beschäftigten vorbereitet. Bitte wende dich an deine Bundesagentur für Arbeit unter 0800 4555520 (gebührenfrei) für eine individuelle Beratung. Möchtest du dennoch fortfahren?",
+                () => createYesNoButtons("arbeitzeitreduzierung_fuer", "ende_ohne_pdf", "Weiter", "Ende")
+            );
+        }
+    },
+    {
+        "id": "arbeitzeitreduzierung_fuer",
+        "render": () => {
+            textAndInteraction(
+                "Betrifft die Kurzarbeit nur eine Abteilung oder das gesamte Unternehmen?",
+                () => {
+                    botui.action.button({
+                        action: [
+                            {
+                                icon: 'sitemap',
+                                text: 'Abteilung',
+                                value: 'Abteilung'
+                            },
+                            {
+                                icon: 'building',
+                                text: 'Gesamtes Unternehmen',
+                                value: 'Gesamtes Unternehmen'
+                            }
+                        ]
+                    }).then( (res) => {
+                        setCurrentAnswer(res.value);
+                        if (res.value === 'Abteilung') {
+                            renderStep("arbeitzeitreduzierung_fuer_abteilung");
+                        } else {
+                            renderStep("anzahl_beschaeftigte_in_kurzarbeit");
+                        }
+                    });
+                }
+            );
+        }
+    },
+    {
+        "id": "arbeitzeitreduzierung_fuer_abteilung",
+        "render": () => {
+            textAndInteraction(
+                "Für welche Abteilung gilt die Kurzarbeit?",
+                () => {
+                    createTextInput(state.answers["arbeitzeitreduzierung_fuer_abteilung"] || null, true).then( (result) => { 
+                        setCurrentAnswer(result.value);
+                        renderStep("anzahl_beschaeftigte_in_abteilung");
+                    });
+                },
+                "Kriterien für eine Abteilung: Eigene fachlich-technische Leitung, Eigener arbeitstechnischer Zweck/Hilfszweck, Geschlossene Arbeitsgruppe, Eigene Arbeitsmittel, Räumliche Trennung vom übrigen Betrieb"
+            );
+        }
+    },
+    {
+        "id": "anzahl_beschaeftigte_in_abteilung",
+        "render": () => {
+            textAndInteraction(
+                "Wieviele Beschäftigte hat diese Abteilung?",
+                () => {
+                    createIntegerInput(state.answers["anzahl_beschaeftigte_in_abteilung"] || 1, 0, state.answers["anzahl_beschaeftigte"], 1, 1, false).then( (result) => { 
+                        setCurrentAnswer(result.value);
+
+                        if (result.value == 1) {
+                            createTextMessage("Die betroffene Abteilung hat _einen Beschäftigten_.","",true);
+                        } else {
+                            createTextMessage("Die betroffene Abteilung hat _"+result.value+" Beschäftigte_.","",true);
+                        }
+                        
+                        if (result.value <= 0) {
+                            renderStep("keine_beschaeftigte_in_abteilung");
+                        } else {
+                            renderStep("anzahl_beschaeftigte_in_kurzarbeit"); 
+                        }
+                    });
+                },
+                "Einschließlich geringfügig Beschäftigte (Mini-Job oder &quot;450 EUR&quot;-Job) und Leiharbeiter. Azubis zählen hier nicht mit."
+            );
+        }
+    },    
+    {
+        "id": "keine_beschaeftigte_in_abteilung",
+        "render": () => {
+            exitTextAndModifyQuestion(
+                "Für Abteilungen ohne Beschäftigte kann leider kein Geld für Kurzarbeit beantragt werden.",
+                "anzahl_beschaeftigte_in_abteilung",
+                "Es gibt andere Möglichkeiten. Schau' doch mal nach unter [taxy.io](https://www.taxy.io/corona-hilfe-fuer-unternehmen)^ oder [wir-bleiben-liqui.de](https://wir-bleiben-liqui.de/)^."
             );
         }
     },
     {
         "id": "anzahl_beschaeftigte_in_kurzarbeit",
         "render": () => {
+            const betrifftAbteilung = state.answers["arbeitzeitreduzierung_fuer"] === "Abteilung";
+
             textAndInteraction(
-                "Wieviele Beschäftigte sollen in Kurzarbeit gehen?",
+                betrifftAbteilung ? "Wieviele Beschäftigte sollen in der Abteilung voraussichtlich in Kurzarbeit gehen?" : "Wieviele Beschäftigte sollen voraussichtlich in Kurzarbeit gehen?",
                 () => {                    
-                    createIntegerInput(state.answers["anzahl_beschaeftigte_in_kurzarbeit"] || 1, 0, state.answers["anzahl_beschaeftigte"], 1, true, false).then( (result) => { 
+                    createIntegerInput(state.answers["anzahl_beschaeftigte_in_kurzarbeit"] || 1, 0, null, 1, true, false).then( (result) => { 
                         setCurrentAnswer(result.value);
 
                         if(result.value == 1)
@@ -69,16 +153,25 @@ var steps = [
                         else
                             createTextMessage(`Es sollen _${result.value} Beschäftigte_ in Kurzarbeit gehen.`,"",true);
 
+                        const anzahlMitarbeiterGesamtbetriebOderAbteilung =
+                            betrifftAbteilung
+                                ? state.answers["anzahl_beschaeftigte_in_abteilung"]
+                                : state.answers["anzahl_beschaeftigte"];
+
                         if (result.value <= 0) {
                             renderStep("keine_beschaeftigte_in_kurzarbeit");
-                        } else if((result.value / state.answers["anzahl_beschaeftigte"] * 100) < 10) {
-                            renderStep("anzahl_beschaeftigte_in_kurzarbeit_kleiner_10_prozent");
+                        } else if((result.value / anzahlMitarbeiterGesamtbetriebOderAbteilung * 100) < 10) {
+                            if (betrifftAbteilung) {
+                                renderStep("anzahl_beschaeftigte_in_kurzarbeit_in_abteilung_kleiner_10_prozent");
+                            } else {                                
+                                renderStep("anzahl_beschaeftigte_in_kurzarbeit_kleiner_10_prozent");
+                            }                            
                         } else {
                             renderStep("anzahl_wochenstunden_der_beschaeftigten_regulaer");
                         }
                     });
                 },
-		        "<ul><li>Fast alle betroffenen Mitarbeiter können Kurzarbeitergeld erhalten &ndash; auch zeitlich befristet angestellte Mitarbeiter.</li><li>Ausgenommen sind z.B. geringfügig Beschäftigte (Mini-Job oder &quot;450 EUR&quot;-Job), Auszubildende und schon gekündigte Mitarbeiter.</li></ul>"
+		        "<ul><li>Fast alle betroffenen sozialversicherungspflichtig beschäftigten Mitarbeiter können Kurzarbeitergeld erhalten &ndash; auch zeitlich befristet angestellte Mitarbeiter und Auszubildende.</li><li>Ausgenommen sind z.B. geringfügig Beschäftigte (Mini-Job oder &quot;450 EUR&quot;-Job) und gekündigte Mitarbeiter.</li></ul>"
             );
         }
     },
@@ -86,7 +179,7 @@ var steps = [
         "id": "keine_beschaeftigte_in_kurzarbeit",
         "render": () => {
             exitTextAndModifyQuestion(
-                "Du möchtest niemanden in Kurzarbeit schicken.",
+                "Du möchtest niemanden kurzarbeiten lassen.",
                 "anzahl_beschaeftigte_in_kurzarbeit"
             );
         }
@@ -95,7 +188,16 @@ var steps = [
         "id": "anzahl_beschaeftigte_in_kurzarbeit_kleiner_10_prozent",
         "render": () => {
             exitTextAndModifyQuestion(
-                `Du möchtest nur ${state.answers["anzahl_beschaeftigte_in_kurzarbeit"]} von ${state.answers["anzahl_beschaeftigte"]} Beschäftigten in Kurzarbeit schicken. Um Unterstützung zu erhalten musst du mindestens 10% deiner Beschäftigten in Kurzarbeit schicken.`,
+                `Du möchtest nur ${state.answers["anzahl_beschaeftigte_in_kurzarbeit"]} von ${state.answers["anzahl_beschaeftigte"]} Beschäftigten kurzarbeiten lassen. Um Kurzarbeitergeld zu erhalten musst du aber mindestens 10% deiner Beschäftigten kurzarbeiten lassen.`,
+                "anzahl_beschaeftigte_in_kurzarbeit"
+            );
+        }
+    },
+    {
+        "id": "anzahl_beschaeftigte_in_kurzarbeit_in_abteilung_kleiner_10_prozent",
+        "render": () => {
+            exitTextAndModifyQuestion(
+                `Du möchtest nur ${state.answers["anzahl_beschaeftigte_in_kurzarbeit"]} von ${state.answers["anzahl_beschaeftigte_in_abteilung"]} Beschäftigten in dieser Abteilung kurzarbeiten lassen. Um Unterstützung zu erhalten musst du mindestens 10% deiner Beschäftigten kurzarbeiten lassen.`,
                 "anzahl_beschaeftigte_in_kurzarbeit"
             );
         }
@@ -104,7 +206,7 @@ var steps = [
         "id": "anzahl_wochenstunden_der_beschaeftigten_regulaer",
         "render": () => {
             textAndInteraction(
-                "Wieviele Stunden arbeiten deine Vollzeitbeschäftigten normalerweise pro Woche?",
+                "Wieviele Stunden arbeiten deine Beschäftigten normalerweise pro Woche?",
                 () => {                    
                     createIntegerInput(state.answers["anzahl_wochenstunden_der_beschaeftigten_regulaer"] || 40, 1, null, 0.5, true, false).then( (result) => { 
                         setCurrentAnswer(result.value);
@@ -124,35 +226,23 @@ var steps = [
         "id": "anzahl_wochenstunden_der_beschaeftigten_in_kurzarbeit",
         "render": () => {
             textAndInteraction(
-                "Wieviele Stunden sollen diese Vollzeitbeschäftigten während der Kurzarbeit pro Woche arbeiten?",
+                "Wieviele Stunden sollen diese Beschäftigten voraussichtlich während der Kurzarbeit pro Woche arbeiten?",
                 () => {                    
                     createIntegerInput(state.answers["anzahl_wochenstunden_der_beschaeftigten_in_kurzarbeit"] || 20, 0, state.answers["anzahl_wochenstunden_der_beschaeftigten_regulaer"], 1, true, false).then( (result) => { 
                         setCurrentAnswer(result.value);
 
                         if (result.value == 0) {
-                            createTextMessage(`Sie sollen _gar nicht_ arbeiten, wenn ich Kurzarbeit anordne.`,"",true);
+                            createTextMessage(`Sie sollen _gar nicht_ arbeiten.`,"",true);
                         } else if(result.value == 1) {
-                            createTextMessage(`Sie sollen _eine Stunde_ in der Woche arbeiten, wenn ich Kurzarbeit anordne.`,"",true);
+                            createTextMessage(`Sie sollen _eine Stunde_ in der Woche arbeiten.`,"",true);
                         } else {
-                            createTextMessage(`Sie sollen _${result.value} Stunden_ in der Woche arbeiten, wenn ich Kurzarbeit anordne.`,"",true);
+                            createTextMessage(`Sie sollen _${result.value} Stunden_ in der Woche arbeiten.`,"",true);
                         }
 
-                        if (result.value > (state.answers["anzahl_wochenstunden_der_beschaeftigten_regulaer"]/1.1)) {
-                            renderStep("anzahl_wochenstunden_der_beschaeftigten_in_kurzarbeit_kleiner_10_prozent_geringer");
-                        } else {
-                            renderStep("ist_verursacht_durch_unabwendbares_ereignis_oder_wirtschaftlich");
-                        }
+                        renderStep("ist_verursacht_durch_unabwendbares_ereignis_oder_wirtschaftlich");
                     });
-                }
-            );
-        }
-    },
-    {
-        "id": "anzahl_wochenstunden_der_beschaeftigten_in_kurzarbeit_kleiner_10_prozent_geringer",
-        "render": () => {
-            exitTextAndModifyQuestion(
-                `Du möchtest die Wochenstunden während der Kurzarbeit von regulär ${state.answers["anzahl_wochenstunden_der_beschaeftigten_regulaer"]} auf ${state.answers["anzahl_wochenstunden_der_beschaeftigten_in_kurzarbeit"]} senken. Um Unterstützung zu erhalten musst du die Wochenstunden um mindestens 10% senken.`,
-                "anzahl_wochenstunden_der_beschaeftigten_in_kurzarbeit"
+                },
+                "<ul><li>Wenn die Beschäftigten voraussichtlich gar nicht mehr arbeiten sollen, so kannst du hier einfach 0 Stunden angeben.</li><li>Um Unterstützung zu erhalten müssen durch die Kurzarbeit mindestens 10% des Gehaltes der betroffenen Mitarbeiter wegfallen.</li></ul>"
             );
         }
     },
@@ -165,9 +255,9 @@ var steps = [
                     botui.action.button({
                         action: [
                             {
-                                icon: 'check',
-                                text: "Unabwendbares Ereignis",
-                                value: true
+                                icon: 'times',
+                                text: "Andere Ursache",
+                                value: false
                             },
                             {
                                 icon: 'check',
@@ -175,11 +265,11 @@ var steps = [
                                 value: true
                             },
                             {
-                                icon: 'times',
-                                text: "Andere Ursache",
-                                value: false
+                                icon: 'check',
+                                text: "Unabwendbares Ereignis",
+                                value: true
                             }
-                        ]               
+                        ]         
                     }).then( (res) => {
                         setCurrentAnswer(res.value);
                         if(res.value)
@@ -188,7 +278,7 @@ var steps = [
                             renderStep("nicht_verursacht_durch_unabwendbares_ereignis_oder_wirtschaftlich");
                     });
                 },
-                "<ul><li>Ein unabwendbares Ereignis ist z.B. eine angeordnete Schließung zur Vorbeugung einer weiteren Ausbreitung der Corona-Pandemie.</li><li>Eine wirtschaftliche Ursache ist z.B. ein aufgrund der Corona-Krise stornierter Großauftrag.</li></ul>"
+                "<ul><li>Eine wirtschaftliche Ursache ist z.B. ein aufgrund der Corona-Krise stornierter Großauftrag.</li><li>Ein unabwendbares Ereignis ist z.B. eine angeordnete Schließung zur Vorbeugung einer weiteren Ausbreitung der Corona-Pandemie.</li></ul>"
             );
         }
     },
@@ -196,7 +286,7 @@ var steps = [
         "id": "nicht_verursacht_durch_unabwendbares_ereignis_oder_wirtschaftlich",
         "render": () => {
             exitTextAndModifyQuestion(
-                `Die Voraussetzung für Kurzarbeit ist, dass der Arbeitsausfall auf einem unabwendbaren Ereignis basiert oder wirtschaftliche Ursachen hat.`,
+                `Die Voraussetzung für die Gewährung von Kurzarbeitergeld ist, dass der Arbeitsausfall auf einem unabwendbaren Ereignis basiert oder wirtschaftliche Ursachen hat.`,
                 "ist_verursacht_durch_unabwendbares_ereignis_oder_wirtschaftlich"
             );
         }
@@ -206,8 +296,8 @@ var steps = [
         "render": () => {
             textAndInteraction(
                 "Sind alle internen Maßnahmen zur Vermeidung von Kurzarbeit umgesetzt worden?",
-                () => createYesNoButtons("branche", "massnahmen_zur_vermeidung_sind_nicht_umgesetzt_worden", "Maßnahmen umgesetzt", "Nicht umgesetzt"),
-                "Beispiele: Resturlaub aufbrauchen, Überstunden abbauen, Mitarbeiter in andere Abteilungen versetzen"
+                () => createYesNoButtons("branche_freitext", "massnahmen_zur_vermeidung_sind_nicht_umgesetzt_worden", "Maßnahmen umgesetzt", "Nicht umgesetzt"),
+                "Beispiele: Resturlaub aufbrauchen, Überstunden abbauen, Mitarbeiter in andere Abteilungen umsetzen"
             );
         }
     },
@@ -221,65 +311,10 @@ var steps = [
         }
     },
     {
-        "id": "branche",
-        "render": () => {
-            textAndInteraction(
-                "Welcher Branche gehört dein Unternehmen an?",
-                () => {
-                    botui.action.button({
-                        action: [                            
-                            {
-                                icon: 'times',
-                                text: "Bauhauptgewerbe",
-                                value: "Bauhauptgewerbe"
-                            },
-                            {
-                                icon: 'times',
-                                text: "Dachdeckerhandwerk",
-                                value: "Dachdeckerhandwerk"
-                            },
-                            {
-                                icon: 'times',
-                                text: "Garten-, Landschafts- und Sportplatzbau",
-                                value: "Garten-, Landschafts- und Sportplatzbau"
-                            },
-                            {
-                                icon: 'times',
-                                text: "Gerüstbau",
-                                value: "Gerüstbau"
-                            },
-                            {
-                                icon: 'check',
-                                text: "Andere Branche",
-                                value: "Andere Branche"
-                            },                     
-                        ]               
-                    }).then( (result) => {
-                        setCurrentAnswer(result.value);
-                        if (result.value !== "Andere Branche") {
-                            renderStep("besondere_branche");
-                        } else {
-                            renderStep("branche_freitext");
-                        }
-                    });
-                }
-            );
-        }
-    },
-    {
-        "id": "besondere_branche",
-        "render": () => {
-            textAndInteraction(
-                "Für deine Branche gilt eine Sonderbehandlung in den Wintermonaten. Ich rate dir, dazu weitere Beratung einzuholen. Möchtest du dennoch fortfahren?",
-                () => createYesNoButtons("sektion_gruende", "ende_ohne_pdf", "Weiter", "Ende")
-            );
-        }
-    },
-    {
         "id": "branche_freitext",
         "render": () => {
             textAndInteraction(
-                "Um welche Branche handelt es sich?",
+                "Welcher Branche gehört dein Unternehmen an?",
                 () => {
                     createTextInput(state.answers["branche_freitext"] || null, true).then( (result) => { 
                         setCurrentAnswer(result.value);
@@ -293,7 +328,7 @@ var steps = [
         "id": "sektion_gruende",
         "render": () => {
             textAndInteraction(
-                "Vielen Dank für diese ersten Informationen. Nun müssen wir der Agentur erklären, wie es zu deinem Arbeitsausfall gekommen ist. Hierzu stelle ich dir nun ein paar Fragen zu deinem Geschäft.",
+                "Vielen Dank für diese ersten Informationen. Nun müssen wir der Bundesagentur für Arbeit erklären, wie es zu deinem Arbeitsausfall gekommen ist. Hierzu stelle ich dir nun ein paar Fragen zu deinem Unternehmen.",
                 () => createConfirmButton("ursachen_fuer_arbeitsausfall", "OK, verstanden")
             );
         }
@@ -306,7 +341,7 @@ var steps = [
                 () => {
                     createTextareaInput(state.answers["ursachen_fuer_arbeitsausfall"] || null, "Bitte eingeben...", 5).then( (result) => { 
                         setCurrentAnswer(result.value);
-                        if(result.value.length < 30) {
+                        if(result.value.length < 20) {
                             renderStep("zu_kurze_ursachen_fuer_arbeitsausfall");
                         } else {
                             renderStep("angaben_zu_produkten_dienstleistungen_auftraggebern_und_auftragnehmern");
@@ -333,7 +368,7 @@ var steps = [
                 () => {
                     createTextareaInput(state.answers["angaben_zu_produkten_dienstleistungen_auftraggebern_und_auftragnehmern"] || null, "Bitte eingeben...", 5).then( (result) => { 
                         setCurrentAnswer(result.value);
-                        if (result.value.length < 30) {
+                        if (result.value.length < 20) {
                             renderStep("zu_kurze_angaben_zu_produkten_dienstleistungen_auftraggebern_und_auftragnehmern");
                         } else {
                             renderStep("angaben_zu_voruebergehender_natur_des_arbeitsausfalls");
@@ -356,17 +391,18 @@ var steps = [
         "id": "angaben_zu_voruebergehender_natur_des_arbeitsausfalls",
         "render": () => {
             textAndInteraction(
-                "Wieso ist der Arbeitsausfall vorübergehender Natur?",
+                "Warum gehst du davon aus, dass dein Unternehmen innerhalb der nächsten 12 Monate wieder voll arbeiten kann?",
                 () => {
                     createTextareaInput(state.answers["angaben_zu_voruebergehender_natur_des_arbeitsausfalls"] || null, "Bitte eingeben...", 5).then( (result) => { 
                         setCurrentAnswer(result.value);
-                        if(result.value.length < 30) {
+                        if(result.value.length < 20) {
                             renderStep("zu_kurze_angaben_zu_voruebergehender_natur_des_arbeitsausfalls");
                         } else {
                             renderStep("sektion_betriebsangaben");
                         }
                     });
-                }
+                },
+                "Um Unterstützung zu erhalten muss der Arbeitsausfall durch die Kurzarbeit vorübergehender Natur sein."
             );
         }
     },
@@ -400,7 +436,7 @@ var steps = [
                         renderStep("betriebsname");
                     });
                 },
-                "<ul><li>Hier geht es _nicht_ um die Betriebsnummer der Krankenkasse oder Berufsgenossenschaft.</li><li>Du kannst diese Nummer bei der Bundesagentur für Arbeit telefonisch erfragen.</li></ul>"
+                "Die Betriebsnummer verwendest du für die Meldung deiner Beschäftigten an die Sozialversicherungsträger. Die Betriebsnummer erhältst du auch von deiner Lohnbuchhaltung."
             );
         }
     },
@@ -414,7 +450,8 @@ var steps = [
                         setCurrentAnswer(result.value);
                         renderStep("betriebsadresse");
                     });
-                }
+                },
+                "Hier ist auf die richtige Angabe der Rechtsform zu achten, z.B. Max Mustermann GmbH."
             );
         }
     },
@@ -450,13 +487,13 @@ var steps = [
         "id": "betriebsansprechpartner",
         "render": () => {
             textAndInteraction(
-                "Wer ist der richtige Ansprechpartner in deinem Unternehmen?",
+                "Wer ist der Ansprechpartner in deinem Unternehmen bei Fragen zu Kurzarbeit?",
                 () => {
                     createTextInput(state.answers["betriebsansprechpartner"] || null, true).then( (result) => { 
                         setCurrentAnswer(result.value);
                         renderStep("betriebskontakt");
                     });
-                }
+                },
             );
         }
     },
@@ -471,7 +508,7 @@ var steps = [
                         renderStep("hat_abweichende_lohnabrechnungsstelle");
                     });
                 },
-                "Hier kannst du eine Telefonnummer oder E-Mail Adresse angeben."
+                "Hier kannst du eine Telefonnummer und E-Mail Adresse angeben."
             );
         }
     },
@@ -479,23 +516,8 @@ var steps = [
         "id": "hat_abweichende_lohnabrechnungsstelle",
         "render": () => {
             textAndInteraction(
-                "Hast du eine externe Lohnbuchhaltung?",
-                () => createYesNoButtons("lohnabrechnungsstellenname", "arbeitzeitreduzierung_von"),
-                "Zum Beispiel dein Steuerberater"
-            );
-        }
-    },
-    {
-        "id": "lohnabrechnungsstellenname",
-        "render": () => {
-            textAndInteraction(
-                "Welches Unternehmen übernimmt für dein Unternehmen die Lohnbuchhaltung?",
-                () => {
-                    createTextInput(state.answers["lohnabrechnungsstellenname"] || null, true).then( (result) => { 
-                        setCurrentAnswer(result.value);
-                        renderStep("lohnabrechnungsstellenadresse");
-                    });
-                }                
+                "Führst du die Lohnunterlagen deiner Mitarbeiter (z.B. Gehaltsabrechnungen, Stundenzettel) in einer anderen Niederlassung deines Unternehmens?",
+                () => createYesNoButtons("lohnabrechnungsstellenadresse", "arbeitzeitreduzierung_von")
             );
         }
     },
@@ -503,7 +525,7 @@ var steps = [
         "id": "lohnabrechnungsstellenadresse",
         "render": () => {
             textAndInteraction(
-                "Wie lautet die Straße und Hausnummer deiner Lohnbuchhaltung?",
+                "Wie lautet die Straße und Hausnummer deiner Lohnabrechnungsstelle?",
                 () => {
                     createTextInput(state.answers["lohnabrechnungsstellenadresse"] || null, true).then( (result) => { 
                         setCurrentAnswer(result.value);
@@ -517,7 +539,7 @@ var steps = [
         "id": "lohnabrechnungsstellenort",
         "render": () => {
             textAndInteraction(
-                "Wie lautet die PLZ und der Ort deiner Lohnbuchhaltung?",
+                "Wie lautet die PLZ und der Ort deiner Lohnabrechnungsstelle?",
                 () => {
                     createTextInput(state.answers["lohnabrechnungsstellenort"] || null, true).then( (result) => { 
                         setCurrentAnswer(result.value);
@@ -531,7 +553,7 @@ var steps = [
         "id": "lohnabrechnungsstellenansprechpartner",
         "render": () => {
             textAndInteraction(
-                "Wer ist der richtige Ansprechpartner für deine Lohnbuchhaltung?",
+                "Wer ist der richtige Ansprechpartner in deinem Unternehmen, wenn es um Lohnabrechnungen geht?",
                 () => {
                     createTextInput(state.answers["lohnabrechnungsstellenansprechpartner"] || null, true).then( (result) => { 
                         setCurrentAnswer(result.value);
@@ -545,14 +567,14 @@ var steps = [
         "id": "lohnabrechnungsstellenkontakt",
         "render": () => {
             textAndInteraction(
-                "Wie kann der Ansprechpartner deiner Lohnbuchhaltung kontaktiert werden?",
+                "Wie kann dieser Ansprechpartner kontaktiert werden?",
                 () => {
                     createTextInput(state.answers["lohnabrechnungsstellenkontakt"] || null, true).then( (result) => { 
                         setCurrentAnswer(result.value);
                         renderStep("arbeitzeitreduzierung_von");
                     });
                 },
-                "Hier kannst du eine Telefonnummer oder E-Mail Adresse angeben."
+                "Hier kannst du eine Telefonnummer und E-Mail Adresse angeben."
             );
         }
     },
@@ -560,11 +582,11 @@ var steps = [
         "id": "arbeitzeitreduzierung_von",
         "render": () => {
             textAndInteraction(
-                "Ab wann planst du die Reduzierung der Arbeitszeit?",
+                "Ab welchem Monat planst du die Reduzierung der Arbeitszeit?",
                 () => {
                     const date = new Date();              
                     const options = [];
-                    for (let i=-1; i<6; i++) {
+                    for (let i=0; i<6; i++) {
                         const curDateStr = getDateYearAndMonth(createDateShiftedByNumberOfMonths(date, i));
 
                         options.push({
@@ -573,7 +595,7 @@ var steps = [
                         });
                     }
 
-                    createSelect(options, state.answers["arbeitzeitreduzierung_von"] || options[1].value).then( (result) => { 
+                    createSelect(options, state.answers["arbeitzeitreduzierung_von"] || options[0].value).then( (result) => { 
                         setCurrentAnswer(result.value);
                         renderStep("arbeitzeitreduzierung_bis");
                     });
@@ -592,7 +614,7 @@ var steps = [
                     const fromDateStr = state.answers["arbeitzeitreduzierung_von"];
                     let onOrAfterFromDate = false;
                     let defaultValue = null;
-                    for (let i=-1; i<18; i++) {
+                    for (let i=0; i<18; i++) {
                         const curDateStr = getDateYearAndMonth(createDateShiftedByNumberOfMonths(date, i));
                         if (curDateStr === fromDateStr) {
                             onOrAfterFromDate = true;
@@ -614,54 +636,10 @@ var steps = [
 
                     createSelect(options, state.answers["arbeitzeitreduzierung_bis"] || defaultValue).then( (result) => { 
                         setCurrentAnswer(result.value);
-                        renderStep("arbeitzeitreduzierung_fuer");
-                    });
-                }
-            );
-        }
-    },
-    {
-        "id": "arbeitzeitreduzierung_fuer",
-        "render": () => {
-            textAndInteraction(
-                "Betrifft die Kurzarbeit das gesamte Unternehmen oder nur eine Abteilung?",
-                () => {
-                    botui.action.button({
-                        action: [
-                            {
-                                icon: 'building',
-                                text: 'Gesamtes Unternehmen',
-                                value: 'Gesamtes Unternehmen'
-                            },
-                            {
-                                icon: 'sitemap',
-                                text: 'Abteilung',
-                                value: 'Abteilung'
-                            }
-                        ]               
-                    }).then( (res) => {
-                        setCurrentAnswer(res.value);
-                        if (res.value === 'Abteilung') {
-                            renderStep("arbeitzeitreduzierung_fuer_abteilung");
-                        } else {
-                            renderStep("besteht_unternehmen_laenger_als_1_jahr");
-                        }
-                    });
-                }
-            );
-        }
-    },
-    {
-        "id": "arbeitzeitreduzierung_fuer_abteilung",
-        "render": () => {
-            textAndInteraction(
-                "Für welche Abteilung gilt die Kurzarbeit?",
-                () => {
-                    createTextInput(state.answers["arbeitzeitreduzierung_fuer_abteilung"] || null, true).then( (result) => { 
-                        setCurrentAnswer(result.value);
                         renderStep("besteht_unternehmen_laenger_als_1_jahr");
                     });
-                }
+                },
+                "Bitte möglichst großzügig planen. Ein früheres Ende ist jederzeit möglich, Verlängerungen sind aufwändiger."
             );
         }
     },
@@ -670,7 +648,7 @@ var steps = [
         "render": () => {
             textAndInteraction(
                 "Besteht dein Unternehmen länger als ein Jahr?",
-                () => createYesNoButtons("gibt_es_eines_tarifvertrag", "betriebsgruendung", "Länger als ein Jahr", "Kürzer als ein Jahr")
+                () => createYesNoButtons("gibt_es_einen_tarifvertrag", "betriebsgruendung", "Länger als ein Jahr", "Kürzer als ein Jahr")
             );
         }
     },
@@ -692,7 +670,7 @@ var steps = [
 
                     createSelect(options, state.answers["betriebsgruendung"] || getDateYearAndMonth(date)).then( (result) => { 
                         setCurrentAnswer(result.value);
-                        renderStep("gibt_es_eines_tarifvertrag");
+                        renderStep("gibt_es_einen_tarifvertrag");
                     });
                 }
             );
@@ -700,7 +678,7 @@ var steps = [
     },
 
     {
-        "id": "gibt_es_eines_tarifvertrag",
+        "id": "gibt_es_einen_tarifvertrag",
         "render": () => {
             textAndInteraction(
                 "Gilt für deine Beschäftigten ein Tarifvertrag?",
@@ -731,7 +709,7 @@ var steps = [
                                 text: '...für Arbeiter und Angestellte',
                                 value: 'beides'
                             }
-                        ]               
+                        ]
                     }).then( (res) => {
                         setCurrentAnswer(res.value);
                         if (res.value === 'nur_arbeiter') {
@@ -794,7 +772,7 @@ var steps = [
                                 text: "Keine Kurzarbeitsklausel",
                                 value: false
                             }
-                        ]               
+                        ]
                     }).then( (res) => {
                         setCurrentAnswer(res.value);
 
@@ -881,8 +859,10 @@ var steps = [
     {
         "id": "wurde_kurzarbeit_vereinbart",
         "render": () => {
+            const esGibtEinenBetriebsrat = (state.answers["gibt_es_einen_betriebsrat"] === true);
+
             textAndInteraction(
-                "Hat dein Unternehmen mit den Beschäftigten eine Regelung zur Kurzarbeit vereinbart?",
+                "Hat dein Unternehmen mit " + (esGibtEinenBetriebsrat ? "dem Betriebsrat" : "den Beschäftigten") + " eine Regelung zur Einführung der Kurzarbeit vereinbart?",
                 () => {
                     botui.action.button({
                         action: [
@@ -896,14 +876,27 @@ var steps = [
                                 text: 'Keine Vereinbarung',
                                 value: false
                             }
-                        ]               
+                        ]
                     }).then( (res) => {
                         setCurrentAnswer(res.value);
-                        if (res.value) {
+
+                        const esGibtEinenBetriebsrat = (state.answers["gibt_es_einen_betriebsrat"] === true);
+
+                        if (res.value === true && esGibtEinenBetriebsrat) {
+                            // kurzarbeit vereinbart und es gibt einen betriebsrat
+                            state.answers["wie_wurde_vereinbart"] = "Per Betriebsvereinbarung";
+                            renderStep("wann_wurde_vereinbart");
+                        } else if (res.value === true && !esGibtEinenBetriebsrat) {
+                            // kurzarbeit vereinbart und es gibt KEINEN betriebsrat
                             renderStep("wie_wurde_vereinbart");
-                        } else if (state.answers["gibt_es_einen_betriebsrat"] === true) {
+                        } else if (res.value === false && esGibtEinenBetriebsrat) {
+                            // kurzarbeit NICHT vereinbart und es gibt einen betriebsrat
+                            // auch hier setzen wir bereits die beantwortung der frage auf "Per Betriebsvereinbarung", da der Hinweis der folgt
+                            // einfach nur ein Verstanden abverlangt und dann davon ausgeht, dass diese Vereinbarung nachgeholt wird.
+                            state.answers["wie_wurde_vereinbart"] = "Per Betriebsvereinbarung";                            
                             renderStep("hinweis_betriebsvereinbarung");
                         } else {
+                            // kurzarbeit NICHT vereinbart und es gibt KEINEN betriebsrat
                             renderStep("hinweis_vereinbarung_oder_aenderungskuendigung");
                         }
                     });
@@ -915,8 +908,8 @@ var steps = [
         "id": "hinweis_betriebsvereinbarung",
         "render": () => {
             textAndInteraction(
-                "Es ist wichtig, dass du mit eurem Betriebsrat eine Vereinbarung zur Kurzarbeit triffst, bevor dein Unternehmen Kurzarbeit anzeigen kann.",
-                () => createConfirmButton("wie_wurde_vereinbart", "Verstanden")
+                "Es ist wichtig, dass du mit eurem Betriebsrat eine Vereinbarung zur Kurzarbeit triffst, bevor dein Unternehmen Kurzarbeit durchführen kann.",
+                () => createConfirmButton("wann_wurde_vereinbart", "Verstanden")
             );
         }
     },  
@@ -924,7 +917,7 @@ var steps = [
         "id": "hinweis_vereinbarung_oder_aenderungskuendigung",
         "render": () => {
             textAndInteraction(
-                "Es ist wichtig, dass du mit deinen Beschäftigten eine Vereinbarung zur Kurzarbeit triffst. Sollte ein Beschäftigter damit nicht einverstanden sein, so besteht die Möglichkeit einer Änderungskündigung.",
+                "Für die Einführung von Kurzarbeit ist ggf. eine Änderung des Arbeitsvertrags notwendig und muss in gegenseitigem Einvernehmen getroffen werden. Sollte ein Beschäftigter damit nicht einverstanden sein, so besteht die Möglichkeit einer Änderungskündigung (Achtung: Kündigungsfrist beachten!).",
                 () => createConfirmButton("wie_wurde_vereinbart", "Verstanden")
             );
         }
@@ -933,19 +926,15 @@ var steps = [
         "id": "wie_wurde_vereinbart",
         "render": () => {
             textAndInteraction(
-                "Wie wurde die Vereinbarung getroffen?",
+                "Wie hast du mit deinen Beschäftigten Kurzarbeit vereinbart?",
                 () => {
                     const date = new Date();
                     const options = [
-                        { value: "Per einfacher Vereinbarung", text: "Per einfacher Vereinbarung"},
-                        { value: "Per Arbeitsvertrag", text: "Per Arbeitsvertrag"},
-                        { value: "Per Änderungskündigung", text: "Per Änderungskündigung"}
+                        { value: "Per separater Vereinbarung", text: "Per separater Vereinbarung"},                        
+                        { value: "Per Änderungskündigung", text: "Per Änderungskündigung"},
+                        { value: "Per existierender Regelung im Arbeitsvertrag", text: "Per existierender Regelung im Arbeitsvertrag"}
                     ];
-                    let defaultValue = "Per einfacher Vereinbarung";
-                    if (state.answers["gibt_es_einen_betriebsrat"] === true) {
-                        options.push({ value: "Per Betriebsvereinbarung", text: "Per Betriebsvereinbarung" });
-                        defaultValue = "Per Betriebsvereinbarung";
-                    }
+                    let defaultValue = "Per separater Vereinbarung";
 
                     createSelect(options, state.answers["wie_wurde_vereinbart"] || defaultValue).then( (result) => { 
                         setCurrentAnswer(result.value);
@@ -966,7 +955,7 @@ var steps = [
                         renderStep("wieviele_leiharbeiter_in_gesamtbetrieb_bzw_betriebsabteilung");
                     });
                 },
-		"Sollten Vereinbarungen an verschiedenen Tagen abgeschlossen worden sein, so kannst du hier das spätere Datum wählen."
+		        "Sollten Vereinbarungen an verschiedenen Tagen abgeschlossen worden sein, so kannst du hier das spätere Datum wählen."
             );
         }
     },
@@ -974,13 +963,16 @@ var steps = [
         "id": "wieviele_leiharbeiter_in_gesamtbetrieb_bzw_betriebsabteilung",
         "render": () => {
             textAndInteraction(
-                "Wieviele Leiharbeiter beschäftigst du in deinem Unternehmen bzw. in der betroffenen Abteilung?",
+                state.answers["arbeitzeitreduzierung_fuer"] === "Abteilung" ? "Wieviele Leiharbeiter beschäftigst du in der betroffenen Abteilung?" : "Wieviele Leiharbeiter beschäftigst du in deinem Unternehmen?",
                 () => {
-                    createIntegerInput(state.answers["wieviele_leiharbeiter_in_gesamtbetrieb_bzw_betriebsabteilung"] || "0", 0, state.answers["anzahl_beschaeftigte"],1,false).then( (result) => { 
+                    const betrifftAbteilung = state.answers["arbeitzeitreduzierung_fuer"] === "Abteilung";
+
+                    createIntegerInput(state.answers["wieviele_leiharbeiter_in_gesamtbetrieb_bzw_betriebsabteilung"] || "0", 0, (betrifftAbteilung ? state.answers["anzahl_beschaeftigte_in_abteilung"] : state.answers["anzahl_beschaeftigte"]),1,false).then( (result) => { 
                         setCurrentAnswer(result.value);
                         renderStep("ist_arbeitsausfall_massgeblich_branchenueblich_betriebsueblich_oder_saisonbedingt");
                     });
-                }
+                },
+                "Das Kurzarbeitergeld für Leiharbeiter wird über den Verleiher abgewickelt."
             );
         }
     },  
@@ -988,7 +980,7 @@ var steps = [
         "id": "ist_arbeitsausfall_massgeblich_branchenueblich_betriebsueblich_oder_saisonbedingt",
         "render": () => {
             textAndInteraction(
-                "Sind für den Arbeitsausfall auch _andere_ Ursachen maßgeblich?",
+                "Sind für den Arbeitsausfall _auch andere_ Ursachen maßgeblich?",
                 () => {
                     botui.action.button({
                         action: [
@@ -1012,12 +1004,13 @@ var steps = [
                                 text: "Keine andere üblichen Ursachen",
                                 value: false
                             }
-                        ]               
+                        ]
                     }).then( (res) => {
                         setCurrentAnswer(res.value);
                         renderStep("pdf_erstellung");
                     });
-                }
+                },
+                "Beispiele: Skiliftschließung im Sommer, Eisdiele im Winter, Änderung von internen Betriebsabläufen"
             );
         }
     },
@@ -1038,7 +1031,7 @@ var steps = [
         "render": () => {
             botui.message.add({
                 content: 'Vielen Dank, dass du meine Hilfe genutzt hast. Falls du Ideen zur Verbesserung dieses Angebots hast, dann freue ich mich sehr, wenn du mir eine E-Mail an hallo@kurzarbeit-einfach.de schickst.',
-                hint_content: "Es gibt andere Möglichkeiten. Schau' doch mal nach unter [taxy.io](https://www.taxy.io/corona-hilfe-fuer-unternehmen)^ oder [wir-bleiben-liqui.de](https://wir-bleiben-liqui.de/)^.",
+                hint_content: "Es gibt andere Möglichkeiten. Schau' doch mal nach unter [taxy.io](https://www.taxy.io/corona-hilfe-fuer-unternehmen)^ oder [wir-bleiben-liqui.de](https://wir-bleiben-liqui.de/)^. <br/> Viele Informationen zum Kurzarbeitergeld findest du auch auf [arbeitsagentur.de](https://www.arbeitsagentur.de)^. Filme zu den erforderlichen Vordrucken der Arbeitsagenturen stehen auch auf [YouTube](https://www.youtube.com/channel/UCAqWLJfbZCzDhBo9i4xGDtQ)^ zur Verfügung.",
                 human: false
             });
         }
@@ -1054,8 +1047,8 @@ var state = {
 /**
  * Search for first answer with "null"-answer + draw
  */
-function renderStep(stepId) {
-
+function renderStep(stepId)
+{
     if (stepId === null) {        
         return;
     }
@@ -1065,22 +1058,32 @@ function renderStep(stepId) {
     if(matchingSteps.length > 0) {
         state.currentStep = stepId;
         state.path.push(stepId);
-        matchingSteps[0].render();        
-        
-        if (state.path.length > 2) {
-            $('#backButton').show();
-        } else {
-            $('#backButton').hide();
-        }
+        matchingSteps[0].render();
+
+        showBackButton();
     }
 };
+
+function hideBackButton()
+{
+    $('#backButton').hide();
+}
+
+function showBackButton()
+{
+    if (state.path.length > 2) {
+        $('#backButton').show();
+    } else {
+        hideBackButton();
+    }
+}
 
 function textAndInteraction(msg,interaction,hint="")
 {
     createTextMessage(msg,hint).then(interaction);
 }
 
-function exitTextAndModifyQuestion(exitReason, backStepId)
+function exitTextAndModifyQuestion(exitReason, backStepId, hint="")
 {
     textAndInteraction(
         `${exitReason} Möchtest du deine Antwort nochmals bearbeiten?`,
@@ -1097,7 +1100,7 @@ function exitTextAndModifyQuestion(exitReason, backStepId)
                         text: 'Ende',
                         value: false
                     }
-                ]               
+                ]
             }).then( (res) => {
                 setCurrentAnswer(res.value);
                 if (res.value) {
@@ -1107,7 +1110,7 @@ function exitTextAndModifyQuestion(exitReason, backStepId)
                 }
             });
         },
-        "Es gibt andere Möglichkeiten. Schau' doch mal nach unter [taxy.io](https://www.taxy.io/corona-hilfe-fuer-unternehmen)^ oder [wir-bleiben-liqui.de](https://wir-bleiben-liqui.de/)^."
+        hint !== "" ? hint : "Es gibt andere Möglichkeiten. Schau' doch mal nach unter [taxy.io](https://www.taxy.io/corona-hilfe-fuer-unternehmen)^ oder [wir-bleiben-liqui.de](https://wir-bleiben-liqui.de/)^."
     );
 }
 
@@ -1171,7 +1174,7 @@ function createYesNoButtons(jumpOnYes,jumpOnNo,yesButtonText="Ja",noButtonText="
                 text: noButtonText,
                 value: false
             }
-        ]               
+        ]
     }).then( (res) => {
         setCurrentAnswer(res.value);
         if(res.value)
@@ -1191,7 +1194,7 @@ function createConfirmButton(jumpOnConfirm, confirmText = 'OK',addAutoText=true)
                 text: confirmText,
                 value: true
             }
-        ]               
+        ]
     }).then( (res) => {
         setCurrentAnswer(res.value);
         renderStep(jumpOnConfirm);
@@ -1283,7 +1286,7 @@ function createSelect(options,defaultValue=null,placeholder="Bitte wählen...",s
               icon: 'check',
               label: 'OK'
             }
-          }
+        }
     });
 }
 
@@ -1300,7 +1303,6 @@ function getDateYearAndMonth(date)
     return date.toLocaleString('default', { month: 'long' }) + ' ' + date.getFullYear();
 }
 
-
 /**
  * Convert answers to data structure for Bastian PDF
  */
@@ -1312,7 +1314,7 @@ function getPdfDataFromState() {
     */
 
     //TESTING_START
-    /*fakeState = {"currentStep":"pdf_erstellung","path":["anzahl_beschaeftigte","anzahl_beschaeftigte_in_kurzarbeit","anzahl_wochenstunden_der_beschaeftigten_regulaer","anzahl_wochenstunden_der_beschaeftigten_in_kurzarbeit","ist_verursacht_durch_unabwendbares_ereignis_oder_wirtschaftlich","massnahmen_zur_vermeidung_sind_umgesetzt_worden","branche","ursachen_fuer_arbeitsausfall","angaben_zu_produkten_dienstleistungen_auftraggebern_und_auftragnehmern","angaben_zu_voruebergehender_natur_des_arbeitsausfalls","sektion_betriebsangaben","ist_betriebsnummer_bekannt","betriebsnummer","betriebsname","betriebsanschrift","betriebsansprechpartner","betriebskontakt","lohnabrechnungsstellenname","lohnabrechnungsstellenanschrift","lohnabrechnungsstellenansprechpartner","lohnabrechnungsstellenkontakt","arbeitzeitreduzierung_von","arbeitzeitreduzierung_bis","arbeitzeitreduzierung_fuer","arbeitzeitreduzierung_fuer_abteilung","besteht_unternehmen_laenger_als_1_jahr","betriebsgruendung","gibt_es_eines_tarifvertrag","gibt_es_einen_betriebsrat","wurde_kurzarbeit_vereinbart","wie_wurde_vereinbart","wann_wurde_vereinbart","wieviele_leiharbeiter_in_gesamtbetrieb_bzw_betriebsabteilung","ist_arbeitsausfall_massgeblich_branchenueblich_betriebsueblich_oder_saisonbedingt","pdf_erstellung"],"answers":{"anzahl_beschaeftigte":1,"anzahl_beschaeftigte_in_kurzarbeit":1,"anzahl_wochenstunden_der_beschaeftigten_regulaer":40,"anzahl_wochenstunden_der_beschaeftigten_in_kurzarbeit":20,"ist_verursacht_durch_unabwendbares_ereignis_oder_wirtschaftlich":true,"massnahmen_zur_vermeidung_sind_umgesetzt_worden":true,"branche":"andere","ursachen_fuer_arbeitsausfall":"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.","angaben_zu_produkten_dienstleistungen_auftraggebern_und_auftragnehmern":"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.","angaben_zu_voruebergehender_natur_des_arbeitsausfalls":"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.","sektion_betriebsangaben":true,"ist_betriebsnummer_bekannt":true,"betriebsnummer":"123456789","betriebsname":"Clair Grube Entsorgungsbetriebe gGmbH","betriebsanschrift":"Rainer-Zufall-Str. 12","betriebsansprechpartner":"Frau Bauklo","betriebskontakt":"0123456789, mail@baukloh.de","lohnabrechnungsstellenname":"Keins.","lohnabrechnungsstellenanschrift":"asdlkjsad 2,. asdasd","lohnabrechnungsstellenansprechpartner":"asdasd","lohnabrechnungsstellenkontakt":"0123456789","arbeitzeitreduzierung_von":"Mai 2020","arbeitzeitreduzierung_bis":"Februar 2021","arbeitzeitreduzierung_fuer":"betriebsabteilung","arbeitzeitreduzierung_fuer_abteilung":"SEK","besteht_unternehmen_laenger_als_1_jahr":false,"betriebsgruendung":"September 2019","gibt_es_eines_tarifvertrag":false,"gibt_es_einen_betriebsrat":false,"wurde_kurzarbeit_vereinbart":true,"wie_wurde_vereinbart":"einfache_vereinbarung","wann_wurde_vereinbart":"2020-03-22","wieviele_leiharbeiter_in_gesamtbetrieb_bzw_betriebsabteilung":"1","ist_arbeitsausfall_massgeblich_branchenueblich_betriebsueblich_oder_saisonbedingt":false}}
+    /*fakeState = {"currentStep":"pdf_erstellung","path":["anzahl_beschaeftigte","anzahl_beschaeftigte_in_kurzarbeit","anzahl_wochenstunden_der_beschaeftigten_regulaer","anzahl_wochenstunden_der_beschaeftigten_in_kurzarbeit","ist_verursacht_durch_unabwendbares_ereignis_oder_wirtschaftlich","massnahmen_zur_vermeidung_sind_umgesetzt_worden","branche","ursachen_fuer_arbeitsausfall","angaben_zu_produkten_dienstleistungen_auftraggebern_und_auftragnehmern","angaben_zu_voruebergehender_natur_des_arbeitsausfalls","sektion_betriebsangaben","ist_betriebsnummer_bekannt","betriebsnummer","betriebsname","betriebsanschrift","betriebsansprechpartner","betriebskontakt","lohnabrechnungsstellenname","lohnabrechnungsstellenanschrift","lohnabrechnungsstellenansprechpartner","lohnabrechnungsstellenkontakt","arbeitzeitreduzierung_von","arbeitzeitreduzierung_bis","arbeitzeitreduzierung_fuer","arbeitzeitreduzierung_fuer_abteilung","besteht_unternehmen_laenger_als_1_jahr","betriebsgruendung","gibt_es_einen_tarifvertrag","gibt_es_einen_betriebsrat","wurde_kurzarbeit_vereinbart","wie_wurde_vereinbart","wann_wurde_vereinbart","wieviele_leiharbeiter_in_gesamtbetrieb_bzw_betriebsabteilung","ist_arbeitsausfall_massgeblich_branchenueblich_betriebsueblich_oder_saisonbedingt","pdf_erstellung"],"answers":{"anzahl_beschaeftigte":1,"anzahl_beschaeftigte_in_kurzarbeit":1,"anzahl_wochenstunden_der_beschaeftigten_regulaer":40,"anzahl_wochenstunden_der_beschaeftigten_in_kurzarbeit":20,"ist_verursacht_durch_unabwendbares_ereignis_oder_wirtschaftlich":true,"massnahmen_zur_vermeidung_sind_umgesetzt_worden":true,"branche":"andere","ursachen_fuer_arbeitsausfall":"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.","angaben_zu_produkten_dienstleistungen_auftraggebern_und_auftragnehmern":"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.","angaben_zu_voruebergehender_natur_des_arbeitsausfalls":"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.","sektion_betriebsangaben":true,"ist_betriebsnummer_bekannt":true,"betriebsnummer":"123456789","betriebsname":"Clair Grube Entsorgungsbetriebe gGmbH","betriebsanschrift":"Rainer-Zufall-Str. 12","betriebsansprechpartner":"Frau Bauklo","betriebskontakt":"0123456789, mail@baukloh.de","lohnabrechnungsstellenname":"Keins.","lohnabrechnungsstellenanschrift":"asdlkjsad 2,. asdasd","lohnabrechnungsstellenansprechpartner":"asdasd","lohnabrechnungsstellenkontakt":"0123456789","arbeitzeitreduzierung_von":"Mai 2020","arbeitzeitreduzierung_bis":"Februar 2021","arbeitzeitreduzierung_fuer":"betriebsabteilung","arbeitzeitreduzierung_fuer_abteilung":"SEK","besteht_unternehmen_laenger_als_1_jahr":false,"betriebsgruendung":"September 2019","gibt_es_einen_tarifvertrag":false,"gibt_es_einen_betriebsrat":false,"wurde_kurzarbeit_vereinbart":true,"wie_wurde_vereinbart":"einfache_vereinbarung","wann_wurde_vereinbart":"2020-03-22","wieviele_leiharbeiter_in_gesamtbetrieb_bzw_betriebsabteilung":"1","ist_arbeitsausfall_massgeblich_branchenueblich_betriebsueblich_oder_saisonbedingt":false}}
     var state = fakeState; // Overwrite state-Variable only for local scope / testing*/
     //TESTING_END
 
@@ -1346,7 +1348,7 @@ function getPdfDataFromState() {
             "zusaetzlicheKontaktinfos": a.betriebskontakt
         },
         "lohnabrechnungsstelle": {
-            "nameAnschrift": a.hat_abweichende_lohnabrechnungsstelle === true ? a.lohnabrechnungsstellenname+"\n"+a.lohnabrechnungsstellenadresse+"\n"+a.lohnabrechnungsstellenort : "",
+            "nameAnschrift": a.hat_abweichende_lohnabrechnungsstelle === true ? a.lohnabrechnungsstellenadresse+"\n"+a.lohnabrechnungsstellenort : "",
             "zusaetzlicheKontaktinfos":a.hat_abweichende_lohnabrechnungsstelle === true ? a.lohnabrechnungsstellenkontakt : ""
         },
         "lohnabrechnungsstelleAnsprechpartner": {
@@ -1354,7 +1356,7 @@ function getPdfDataFromState() {
             "zusaetzlicheKontaktinfos": a.hat_abweichende_lohnabrechnungsstelle === true ? a.lohnabrechnungsstellenkontakt : ""
         },
       
-        "branche" : a.besondere_branche ? a.branche : a.branche_freitext,
+        "branche" : a.branche_freitext,
         "zeitraumVon" : {
           "monat" : a.arbeitzeitreduzierung_von.split(" ")[0],
           "jahr" : a.arbeitzeitreduzierung_von.split(" ")[1]
@@ -1381,16 +1383,16 @@ function getPdfDataFromState() {
         "tarifvertragHatAnkuendigungsfrist": a.hat_tarifvertrag_ankuendigungsfrist,
         "tarifvertragAnkuendigungZ1" : tarifvertragAnkuendigungZeile1,
         "tarifvertragAnkuendigungZ2" : tarifvertragAnkuendigungZeile2,
-        "betriebNichtTarifgebunden": !a.gibt_es_eines_tarifvertrag,
+        "betriebNichtTarifgebunden": !a.gibt_es_einen_tarifvertrag,
         "betriebsratVorhanden": a.gibt_es_einen_betriebsrat,
         "kurzarbeitVereinbartDurchBetriebsvereinbarung": (a.wie_wurde_vereinbart == 'Per Betriebsvereinbarung'),
-        "kurzarbeitVereinbartDurchVereinbarungMitArbeitnehmern": (a.wie_wurde_vereinbart == 'Per Arbeitsvertrag' || a.wie_wurde_vereinbart == 'Per einfacher Vereinbarung'),
+        "kurzarbeitVereinbartDurchVereinbarungMitArbeitnehmern": (a.wie_wurde_vereinbart == 'Per existierender Regelung im Arbeitsvertrag' || a.wie_wurde_vereinbart == 'Per separater Vereinbarung'),
         "kurzarbeitVereinbartDurchAenderungskuendigung": (a.wie_wurde_vereinbart == 'Per Änderungskündigung'),
         "kurzarbeitVereinbartDurchAenderungskuendigungVereinbartAm": parseYmdDateStrIntoLocalDateStr(a.wann_wurde_vereinbart),
         "kurzarbeitVereinbartDurchAenderungskuendigungWirksamZu": parseYmdDateStrIntoLocalDateStr(a.wann_wurde_vereinbart),    // Same as vereinbarung / make it less complex
-      	"kurzarbeitVereinbartDurchSonstiges": (a.wie_wurde_vereinbart == 'Per Arbeitsvertrag'),
-        "kurzarbeitVereinbartAnmerkungen": (a.wie_wurde_vereinbart == 'Per Arbeitsvertrag' ? "Im Arbeitsvertrag vereinbart." : ""),
-        "anzahlArbeitnehmerInBetroffenerAbteilung": a.anzahl_beschaeftigte,
+      	"kurzarbeitVereinbartDurchSonstiges": (a.wie_wurde_vereinbart == 'Per existierender Regelung im Arbeitsvertrag'),
+        "kurzarbeitVereinbartAnmerkungen": (a.wie_wurde_vereinbart == 'Per existierender Regelung im Arbeitsvertrag' ? "Per existierender Regelung im Arbeitsvertrag" : ""),
+        "anzahlArbeitnehmerInBetroffenerAbteilung": a.arbeitzeitreduzierung_fuer === 'Abteilung' ? a.anzahl_beschaeftigte_in_abteilung : a.anzahl_beschaeftigte,
         "anzahlLeiharbeiterInBetroffenerAbteilung": a.wieviele_leiharbeiter_in_gesamtbetrieb_bzw_betriebsabteilung,
         "anzahlArbeitnehmerMitEntgeltAusfall": a.anzahl_beschaeftigte_in_kurzarbeit,
         "angabenArbeitsausfall": "- siehe Anlage -",
