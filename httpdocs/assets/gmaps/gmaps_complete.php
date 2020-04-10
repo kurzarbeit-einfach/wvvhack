@@ -2,7 +2,7 @@
 
     
     function suggest_location($query){
-          $apikey = "AIzaSyDqg5bY0YZ2MQ5Hu-JdiF9xkrUDvNhwsGU";
+          $apikey = file_get_contents('apikey.txt'); // Will not be pushed to public GITHUB
           $url = 'https://maps.googleapis.com/maps/api/place/autocomplete/json?key='.$apikey.'&types=address&components=country:de&sensor=false&language=de&input='.urlencode($query);
           $ch = curl_init();
           curl_setopt($ch, CURLOPT_URL, $url);

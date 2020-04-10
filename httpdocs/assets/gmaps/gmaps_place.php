@@ -2,7 +2,7 @@
 
     
     function getPlaceInfo($placeId){
-          $apikey = "AIzaSyDqg5bY0YZ2MQ5Hu-JdiF9xkrUDvNhwsGU";
+          $apikey = file_get_contents('apikey.txt'); // Will not be pushed to public GITHUB
           $url = 'https://maps.googleapis.com/maps/api/place/details/json?key='.$apikey.'&language=de&placeid='.urlencode($placeId);
           $ch = curl_init();
           curl_setopt($ch, CURLOPT_URL, $url);
